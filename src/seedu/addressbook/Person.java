@@ -9,7 +9,7 @@ public class Person {
     /**
      * Key values for the Person property storage. The enum is public for use from other classes.
      */
-    public enum PersonProperty {NAME, EMAIL, PHONE};
+    public enum PersonProperty {NAME, PHONE, EMAIL};
 
     /**
      * The HashMap storage system for the properties. If
@@ -25,8 +25,8 @@ public class Person {
     public Person(String name, String phone, String email) {
         fields = new HashMap<>(3, 1);
         fields.put(PersonProperty.NAME, name);
-        fields.put(PersonProperty.EMAIL, phone);
-        fields.put(PersonProperty.PHONE, email);
+        fields.put(PersonProperty.PHONE, phone);
+        fields.put(PersonProperty.EMAIL, email);
     }
 
     /**
