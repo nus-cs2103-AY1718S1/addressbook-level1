@@ -65,6 +65,10 @@
 || sort: Finds and Sorts all persons in the alphabetical order and show them.
 || 	Example: sort
 || 
+|| edit: Edits a particular person record by a first find and then alter the name, phone or email by supplying argument exactly like add.
+|| 	Parameters: INDEX [MORE_KEYWORDS]
+|| 	Example: edit 1 Bobby p/12345678 e/123@321.com
+|| 
 || delete: Deletes a person identified by the index number used in the last find/list call.
 || 	Parameters: INDEX
 || 	Example: delete 1
@@ -226,6 +230,27 @@
 || 
 || 5 persons found!
 || ===================================================
+|| Enter command: || [Command entered:  list]
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg
+|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg
+|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
+|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 
+|| 5 persons found!
+|| ===================================================
+|| Enter command: || [Command entered:  edit 2 Bobby p/12344321 e/123@321.com]
+|| Person Edited: Bobby, Phone: 12344321, Email: 123@321.com
+|| ===================================================
+|| Enter command: || [Command entered:  list]
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com
+|| 	2. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg
+|| 	3. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
+|| 	4. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 	5. Bobby  Phone Number: 12344321  Email: 123@321.com
+|| 
+|| 5 persons found!
+|| ===================================================
 || Enter command: || [Command entered:  delete]
 || Invalid command format: delete 
 || delete: Deletes a person identified by the index number used in the last find/list call.
@@ -255,18 +280,18 @@
 || 
 || ===================================================
 || Enter command: || [Command entered:  delete 3]
-|| Deleted Person: Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg
+|| Deleted Person: Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
 || ===================================================
 || Enter command: || [Command entered:  delete 2]
-|| Deleted Person: Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg
+|| Deleted Person: Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg
 || ===================================================
 || Enter command: || [Command entered:  delete 2]
 || Person could not be found in address book
 || ===================================================
 || Enter command: || [Command entered:  list]
 || 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com
-|| 	2. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
-|| 	3. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 	2. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 	3. Bobby  Phone Number: 12344321  Email: 123@321.com
 || 
 || 3 persons found!
 || ===================================================
@@ -275,8 +300,8 @@
 || ===================================================
 || Enter command: || [Command entered:  list]
 || 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com
-|| 	2. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
-|| 	3. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 	2. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 	3. Bobby  Phone Number: 12344321  Email: 123@321.com
 || 
 || 3 persons found!
 || ===================================================
@@ -284,8 +309,8 @@
 || Deleted Person: Adam Brown  Phone Number: 111111  Email: adam@gmail.com
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
-|| 	2. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 	1. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 	2. Bobby  Phone Number: 12344321  Email: 123@321.com
 || 
 || 2 persons found!
 || ===================================================

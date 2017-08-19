@@ -70,6 +70,17 @@
   list
 
 ##########################################################
+# test edit person command
+##########################################################
+
+  # firstly we need to have a list
+  list
+  # secondly we provide the index and edit that
+  edit 2 Bobby p/12344321 e/123@321.com
+  # check if the edit persists through list command
+  list
+
+##########################################################
 # test delete person command
 ##########################################################
 
