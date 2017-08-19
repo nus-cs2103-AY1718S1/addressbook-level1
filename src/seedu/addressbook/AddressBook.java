@@ -508,9 +508,16 @@ public class AddressBook {
      */
     private static ArrayList<HashMap<PersonProperty, String>> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
         final ArrayList<HashMap<PersonProperty, String>> matchedPersons = new ArrayList<>();
+        //an ArrayList to record all the keywords in lower case without affecting outside parameter passing logic
+        ArrayList<String> keywordsLowerCase = new ArrayList<>();
+        for (String keyword : keywords) {
+            keywordsLowerCase.add(keyword.toLowerCase());
+        }
+
         for (HashMap<PersonProperty, String> person : getAllPersonsInAddressBook()) {
-            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
-            if (!Collections.disjoint(wordsInName, keywords)) {
+            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person).toLowerCase()));
+            //Intersection between the wordsInName (lowercase) and Keywords (lowercase) -> add this person
+            if (!Collections.disjoint(wordsInName, keywordsLowerCase)) {
                 matchedPersons.add(person);
             }
         }
@@ -1175,10 +1182,10 @@ public class AddressBook {
      */
 
     /**
-     * Removes sign(p/, d/, etc) from parameter string if the prefix occurs at the start of the string
+     * Removes prefix(p/, d/, etc) from parameter string if the prefix occurs at the start of the fullString
      *
-     * @param s  Parameter as a string
-     * @param sign  Parameter sign to be removed
+     * @param fullString  Parameter as a fullString
+     * @param prefix  Parameter prefix to be removed
      * @return  string without the sign
      */
     private static String removePrefixSign(String fullString, String prefix) {
