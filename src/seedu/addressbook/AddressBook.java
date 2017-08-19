@@ -143,20 +143,8 @@ public class AddressBook {
      * used by the internal String[] storage format.
      * For example, a person's name is stored as the 0th element in the array.
      */
-    //private static final int PERSON_DATA_INDEX_NAME = 0;
-    //private static final int PERSON_DATA_INDEX_PHONE = 1;
-    //private static final int PERSON_DATA_INDEX_EMAIL = 2;
-
-    //private static final String PERSON_PROPERTY_NAME = "NAME";
-    //private static final String PERSON_PROPERTY_PHONE = "PHONE";
-    //private static final String PERSON_PROPERTY_EMAIL = "EMAIL";
 
     private enum PersonProperty {NAME , PHONE, EMAIL};
-
-    /**
-     * The number of data elements for a single person.
-     */
-    //private static final int PERSON_DATA_COUNT = 3;
 
     /**
      * Offset required to convert between 1-indexing and 0-indexing.COMMAND_
@@ -270,18 +258,18 @@ public class AddressBook {
      * @param args full program arguments passed to application main method
      */
     private static void processProgramArgs(String[] args) {
+
         if (args.length >= 2) {
             showToUser(MESSAGE_INVALID_PROGRAM_ARGS);
             exitProgram();
         }
-
-        if (args.length == 1) {
+        else if (args.length == 1) {
             setupGivenFileForStorage(args[0]);
         }
-
-        if(args.length == 0) {
+        else {
             setupDefaultFileForStorage();
         }
+
     }
 
     /**
@@ -304,10 +292,12 @@ public class AddressBook {
      * Displays the goodbye message and exits the runtime.
      */
     private static void exitProgram() {
+
         showToUser(MESSAGE_GOODBYE);
         showToUser(DIVIDER);
         showToUser(DIVIDER);
         System.exit(0);
+
     }
 
     /**
@@ -454,7 +444,9 @@ public class AddressBook {
      */
     private static String getMessageForSuccessfulAddPerson(HashMap<PersonProperty, String> addedPerson) {
         return String.format(MESSAGE_ADDED,
-                getNameFromPerson(addedPerson), getPhoneFromPerson(addedPerson), getEmailFromPerson(addedPerson));
+                getNameFromPerson(addedPerson),
+                getPhoneFromPerson(addedPerson),
+                getEmailFromPerson(addedPerson));
     }
 
     /**
@@ -958,10 +950,10 @@ public class AddressBook {
      * @return if cannot decode any: empty Optional
      *         else: Optional containing decoded persons
      */
-    private static Optional<ArrayList<HashMap<PersonProperty, String> > > decodePersonsFromStrings(ArrayList<String> encodedPersons) {
-        final ArrayList<HashMap<PersonProperty, String> > decodedPersons = new ArrayList<>();
+    private static Optional<ArrayList<HashMap<PersonProperty, String>>> decodePersonsFromStrings(ArrayList<String> encodedPersons) {
+        final ArrayList<HashMap<PersonProperty, String>> decodedPersons = new ArrayList<>();
         for (String encodedPerson : encodedPersons) {
-            final Optional<HashMap<PersonProperty, String> > decodedPerson = decodePersonFromString(encodedPerson);
+            final Optional<HashMap<PersonProperty, String>> decodedPerson = decodePersonFromString(encodedPerson);
             if (!decodedPerson.isPresent()) {
                 return Optional.empty();
             }
