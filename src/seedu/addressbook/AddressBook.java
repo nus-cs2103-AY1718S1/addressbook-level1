@@ -113,6 +113,10 @@ public class AddressBook {
     private static final String COMMAND_FIND_PARAMETERS = "KEYWORD [MORE_KEYWORDS]";
     private static final String COMMAND_FIND_EXAMPLE = COMMAND_FIND_WORD + " alice bob charlie";
 
+    private static final String COMMAND_SORT_WORD = "sort";
+    private static final String COMMAND_SORT_DESC = "Finds and Sorts all persons in the alphabetical order and show them.";
+    private static final String COMMAND_SORT_EXAMPLE = COMMAND_SORT_WORD;
+
     private static final String COMMAND_LIST_WORD = "list";
     private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers.";
     private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD;
@@ -205,19 +209,7 @@ public class AddressBook {
     public static void main(String[] args) {
         showWelcomeMessage();
 
-        //processProgramArgs(args);
-        //process program args as a SLAP violation exercise
-        if (args.length >= 2) {
-            showToUser(MESSAGE_INVALID_PROGRAM_ARGS);
-            exitProgram();
-        }
-        else if (args.length == 1) {
-            setupGivenFileForStorage(args[0]);
-        }
-        else {
-            setupDefaultFileForStorage();
-        }
-
+        processProgramArgs(args);
         loadDataFromStorage();
         while (true) {
             String userCommand = getUserInput();
@@ -271,7 +263,6 @@ public class AddressBook {
      * @param args full program arguments passed to application main method
      */
 
-    /*
     private static void processProgramArgs(String[] args) {
 
         if (args.length >= 2) {
@@ -286,8 +277,6 @@ public class AddressBook {
         }
 
     }
-
-    */
 
     /**
      * Sets up the storage file based on the supplied file path.
