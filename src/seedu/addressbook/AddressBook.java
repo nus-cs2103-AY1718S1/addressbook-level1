@@ -208,7 +208,6 @@ public class AddressBook {
 
     public static void main(String[] args) {
         showWelcomeMessage();
-
         processProgramArgs(args);
         loadDataFromStorage();
         while (true) {
