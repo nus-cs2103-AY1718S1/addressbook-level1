@@ -14,15 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 
 /*
@@ -89,6 +81,7 @@ public class AddressBook {
     private static final String MESSAGE_ERROR_READING_FROM_FILE = "Unexpected error: unable to read from file: %1$s";
     private static final String MESSAGE_ERROR_WRITING_TO_FILE = "Unexpected error: unable to write to file: %1$s";
     private static final String MESSAGE_PERSONS_FOUND_OVERVIEW = "%1$d persons found!";
+    private static final String MESSAGE_PERSONS_SORTED_OVERVIEW = "%1$d persons sorted!";
     private static final String MESSAGE_STORAGE_FILE_CREATED = "Created new empty storage file: %1$s";
     private static final String MESSAGE_WELCOME = "Welcome to your Address Book!";
     private static final String MESSAGE_USING_DEFAULT_FILE = "Using default storage file : " + DEFAULT_STORAGE_FILEPATH;
@@ -385,6 +378,8 @@ public class AddressBook {
             return executeFindPersons(commandArgs);
         case COMMAND_LIST_WORD:
             return executeListAllPersonsInAddressBook();
+        case COMMAND_SORT_WORD:
+            return executeSortAllPersonInAddressBook();
         case COMMAND_DELETE_WORD:
             return executeDeletePerson(commandArgs);
         case COMMAND_CLEAR_WORD:
@@ -476,6 +471,10 @@ public class AddressBook {
      */
     private static String getMessageForPersonsDisplayedSummary(ArrayList<HashMap<PersonProperty, String> > personsDisplayed) {
         return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW, personsDisplayed.size());
+    }
+
+    private static String getMessageForPersonsSortedSummary(ArrayList<HashMap<PersonProperty, String>> personsSorted) {
+        return String.format(MESSAGE_PERSONS_SORTED_OVERVIEW, personsSorted.size());
     }
 
     /**
@@ -596,6 +595,37 @@ public class AddressBook {
         ArrayList<HashMap<PersonProperty, String> > toBeDisplayed = getAllPersonsInAddressBook();
         showToUser(toBeDisplayed);
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
+    }
+
+    /**
+     * Sorts and then Displays all persons in the address book; in alphabetical order. (ASCII standard)
+     * @return feedback display message for the operation result
+     */
+    private static String executeSortAllPersonInAddressBook() {
+        ArrayList<HashMap<PersonProperty, String> > persons = sortAllPersonsInAddressBook();
+
+        //delete all the users and then gradually add each Person into the address book.
+        clearAddressBook();
+
+        for (HashMap<PersonProperty, String> person : persons) {
+            addPersonToAddressBook(person);
+        }
+
+        return executeListAllPersonsInAddressBook();
+    }
+
+    /**
+     * Sorts all the persons currently inside the address book.
+     * @return the alphabetically sorted person collection
+     */
+    private static ArrayList<HashMap<PersonProperty, String>> sortAllPersonsInAddressBook() {
+        ArrayList<HashMap<PersonProperty, String> > retrieved = getAllPersonsInAddressBook();
+        ArrayList<HashMap<PersonProperty, String> > persons = new ArrayList<>();
+        for (HashMap<PersonProperty, String> person : retrieved) {
+            persons.add(hashMapDeepCopy(person));
+        }
+        Collections.sort (persons, new HashMapComparator ());
+        return persons;
     }
 
     /**
@@ -1111,6 +1141,7 @@ public class AddressBook {
         return getUsageInfoForAddCommand() + LS
                 + getUsageInfoForFindCommand() + LS
                 + getUsageInfoForViewCommand() + LS
+                + getUsageInfoForSortCommand() + LS
                 + getUsageInfoForDeleteCommand() + LS
                 + getUsageInfoForClearCommand() + LS
                 + getUsageInfoForExitCommand() + LS
@@ -1150,6 +1181,12 @@ public class AddressBook {
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_LIST_EXAMPLE) + LS;
     }
 
+    /** Returns string for showing 'sort' command usage instruction */
+    private static String getUsageInfoForSortCommand() {
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_SORT_WORD, COMMAND_SORT_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_SORT_EXAMPLE) + LS;
+    }
+
     /** Returns string for showing 'help' command usage instruction */
     private static String getUsageInfoForHelpCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_HELP_WORD, COMMAND_HELP_DESC)
@@ -1165,7 +1202,7 @@ public class AddressBook {
 
     /*
      * ============================
-     *         UTILITY METHODS
+     *         UTILITY METHODS AND CLASSES
      * ============================
      */
 
@@ -1191,6 +1228,33 @@ public class AddressBook {
      */
     private static ArrayList<String> splitByWhitespace(String toSplit) {
         return new ArrayList<>(Arrays.asList(toSplit.trim().split("\\s+")));
+    }
+
+    /**
+     * A comparator class for the person hashmap data structure to compare two person's name (use String comparator
+     */
+    private static class HashMapComparator implements Comparator<HashMap<PersonProperty, String>> {
+
+        public HashMapComparator () {}
+
+        public int compare (HashMap<PersonProperty, String> person1, HashMap<PersonProperty, String> person2) {
+            String name1 = person1.get(PersonProperty.NAME);
+            String name2 = person2.get(PersonProperty.NAME);
+            return name1.compareTo(name2);
+        }
+    }
+
+    /**
+     * A HashMap deepcopier that takes one hashmap and return a newly created deep copy by key value pairs
+     * @param src, the src HashMap to be copied
+     * @return des, the des HashMap copied to be returned
+     */
+    private static HashMap<PersonProperty, String> hashMapDeepCopy (HashMap<PersonProperty, String> src) {
+        HashMap<PersonProperty, String> des = new HashMap<>();
+        for (PersonProperty key : src.keySet()) {
+            des.put(key, src.get(key));
+        }
+        return des;
     }
 
 }

@@ -62,6 +62,9 @@
 || list: Displays all persons as a list with index numbers.
 || 	Example: list
 || 
+|| sort: Finds and Sorts all persons in the alphabetical order and show them.
+|| 	Example: sort
+|| 
 || delete: Deletes a person identified by the index number used in the last find/list call.
 || 	Parameters: INDEX
 || 	Example: delete 1
@@ -205,6 +208,24 @@
 || 
 || 2 persons found!
 || ===================================================
+|| Enter command: || [Command entered:  sort]
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg
+|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg
+|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
+|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 
+|| 5 persons found!
+|| ===================================================
+|| Enter command: || [Command entered:  list]
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg
+|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg
+|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
+|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 
+|| 5 persons found!
+|| ===================================================
 || Enter command: || [Command entered:  delete]
 || Invalid command format: delete 
 || delete: Deletes a person identified by the index number used in the last find/list call.
@@ -234,29 +255,28 @@
 || 
 || ===================================================
 || Enter command: || [Command entered:  delete 3]
-|| The person index provided is invalid
+|| Deleted Person: Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg
 || ===================================================
 || Enter command: || [Command entered:  delete 2]
-|| Deleted Person: Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg
+|| Deleted Person: Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg
 || ===================================================
 || Enter command: || [Command entered:  delete 2]
 || Person could not be found in address book
 || ===================================================
 || Enter command: || [Command entered:  list]
 || 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com
-|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg
-|| 	3. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
-|| 	4. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| 	2. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
+|| 	3. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
 || 
-|| 4 persons found!
+|| 3 persons found!
 || ===================================================
 || Enter command: || [Command entered:  delete 4]
-|| Deleted Person: Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
+|| The person index provided is invalid
 || ===================================================
 || Enter command: || [Command entered:  list]
 || 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com
-|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg
-|| 	3. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
+|| 	2. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
+|| 	3. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
 || 
 || 3 persons found!
 || ===================================================
@@ -264,8 +284,8 @@
 || Deleted Person: Adam Brown  Phone Number: 111111  Email: adam@gmail.com
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg
-|| 	2. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
+|| 	1. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg
+|| 	2. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato
 || 
 || 2 persons found!
 || ===================================================
