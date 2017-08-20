@@ -837,7 +837,8 @@ public class AddressBook {
      * Returns all persons in the address book, using the sorted arguments
      */
     private static ArrayList<Person> getAllPersonsInAddressBook(String rawArgs) {
-        ArrayList<Person> sortedPersons = new ArrayList<>(ALL_PERSONS);
+        if (rawArgs.matches("")) return getAllPersonsInAddressBook();
+        ArrayList<Person> sortedPersons = new ArrayList<>(getAllPersonsInAddressBook());
         String[] sortArgs = rawArgs.split(" ");
         for (int i = sortArgs.length - 1; i >= 0; i--) {
             switch (sortArgs[i]) {
