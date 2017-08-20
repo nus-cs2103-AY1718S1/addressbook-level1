@@ -19,26 +19,28 @@
 
   # should catch invalid args format
   add wrong args wrong args
-  add Valid Name p/12345 valid@email.butNoPrefix
-  add Valid Name 12345 e/valid@email.butPhonePrefixMissing
+  add Valid Name p/12345 valid@email.butNoPrefix d/1995-1-1
+  add Valid Name 12345 e/valid@email.butPhonePrefixMissing d/1995-1-1
+  add Valid Name p/12345 e/valid@DobPrefixMissing.com 1995-1-1
   
   # should catch invalid person data
-  add []\[;] p/12345 e/valid@e.mail
-  add Valid Name p/not_numbers e/valid@e.mail
-  add Valid Name p/12345 e/notAnEmail
+  add []\[;] p/12345 e/valid@e.mail d/1995-1-1
+  add Valid Name p/not_numbers e/valid@e.mail d/1995-1-1
+  add Valid Name p/12345 e/notAnEmail d/1995-1-1
+  add Valid Name p/12345 e/123@321.com d/not-dob
 
   # should add correctly
-  add Adam Brown p/111111 e/adam@gmail.com
+  add Adam Brown p/111111 e/adam@gmail.com d/1995-1-1
   list
-  add Betsy Choo p/222222 e/benchoo@nus.edu.sg
+  add Betsy Choo p/222222 e/benchoo@nus.edu.sg d/1995-1-1
   list
 
   # order of phone and email should not matter
-  add Charlie Dickson e/charlie.d@nus.edu.sg p/333333
+  add Charlie Dickson e/charlie.d@nus.edu.sg p/333333 d/1995-1-1
   list
-  add Dickson Ee e/dickson@nus.edu.sg p/444444
+  add Dickson Ee e/dickson@nus.edu.sg p/444444 d/1995-1-1
   list
-  add Esther Potato p/555555 e/esther@notreal.potato
+  add Esther Potato p/555555 e/esther@notreal.potato d/1995-1-1
   list
 
 ##########################################################
@@ -76,7 +78,7 @@
   # firstly we need to have a list
   list
   # secondly we provide the index and edit that
-  edit 2 Bobby p/12344321 e/123@321.com
+  edit 2 Bobby p/12344321 e/123@321.com d/1995-1-1
   # check if the edit persists through list command
   list
 
