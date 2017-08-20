@@ -230,16 +230,11 @@ public class AddressBook {
      */
 
     private static void showWelcomeMessage() {
-        showToUser(DIVIDER);
-        showToUser(DIVIDER);
-        showToUser(VERSION);
-        showToUser(MESSAGE_WELCOME);
-        showToUser(DIVIDER);
+        showToUser(DIVIDER, DIVIDER, VERSION, MESSAGE_WELCOME, DIVIDER);
     }
 
     private static void showResultToUser(String result) {
-        showToUser(result);
-        showToUser(DIVIDER);
+        showToUser(result, DIVIDER);
     }
 
     /*
@@ -301,9 +296,7 @@ public class AddressBook {
      */
     private static void exitProgram() {
 
-        showToUser(MESSAGE_GOODBYE);
-        showToUser(DIVIDER);
-        showToUser(DIVIDER);
+        showToUser(MESSAGE_GOODBYE, DIVIDER, DIVIDER);
         System.exit(0);
 
     }
