@@ -14,14 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /*
@@ -93,6 +86,7 @@ public class AddressBook {
     private static final String MESSAGE_USING_DEFAULT_FILE = "Using default storage file : " + DEFAULT_STORAGE_FILEPATH;
 
     // These are the prefix strings to define the data type of a command parameter
+    private static final String PERSON_DATA_PREFIX_NAME = "n/";
     private static final String PERSON_DATA_PREFIX_PHONE = "p/";
     private static final String PERSON_DATA_PREFIX_EMAIL = "e/";
 
@@ -113,8 +107,18 @@ public class AddressBook {
     private static final String COMMAND_FIND_EXAMPLE = COMMAND_FIND_WORD + " alice bob charlie";
 
     private static final String COMMAND_LIST_WORD = "list";
-    private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers.";
-    private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD;
+    private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers by addition"
+                                        + " order or the specified sort order.";
+    private static final String COMMAND_LIST_PARAMETER = "SORT_ORDER (\"" + PERSON_DATA_PREFIX_NAME + "\", "
+                                        +"\"" + PERSON_DATA_PREFIX_PHONE + "\", "
+                                        +"\"" + PERSON_DATA_PREFIX_EMAIL + "\", "
+                                        +"\"" + PERSON_DATA_PREFIX_NAME + "DESC\", "
+                                        +"\"" + PERSON_DATA_PREFIX_PHONE + "DESC\", "
+                                        +"\"" + PERSON_DATA_PREFIX_EMAIL + "DESC\")";
+    private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD + "\t\t"
+                                        + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + "\t\t"
+                                        + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + " "
+                                                                    + PERSON_DATA_PREFIX_PHONE + "DESC\t";
 
     private static final String COMMAND_DELETE_WORD = "delete";
     private static final String COMMAND_DELETE_DESC = "Deletes a person identified by the index number used in "
@@ -136,20 +140,6 @@ public class AddressBook {
 
     private static final String DIVIDER = "===================================================";
 
-
-    /* We use a String array to store details of a single person.
-     * The constants given below are the indexes for the different data elements of a person
-     * used by the internal String[] storage format.
-     * For example, a person's name is stored as the 0th element in the array.
-     */
-    private static final int PERSON_DATA_INDEX_NAME = 0;
-    private static final int PERSON_DATA_INDEX_PHONE = 1;
-    private static final int PERSON_DATA_INDEX_EMAIL = 2;
-
-    /**
-     * The number of data elements for a single person.
-     */
-    private static final int PERSON_DATA_COUNT = 3;
 
     /**
      * Offset required to convert between 1-indexing and 0-indexing.COMMAND_
@@ -407,7 +397,7 @@ public class AddressBook {
         case COMMAND_FIND_WORD:
             return executeFindPersons(commandArgs);
         case COMMAND_LIST_WORD:
-            return executeListAllPersonsInAddressBook();
+            return executeListAllPersonsInAddressBook(commandArgs);
         case COMMAND_DELETE_WORD:
             return executeDeletePerson(commandArgs);
         case COMMAND_CLEAR_WORD:
@@ -477,7 +467,7 @@ public class AddressBook {
 
     /**
      * Finds and lists all persons in address book whose name contains any of the argument keywords.
-     * Keyword matching is case sensitive.
+     * Keyword matching is not case sensitive.
      *
      * @param commandArgs full command args string from the user
      * @return feedback display message for the operation result
@@ -602,12 +592,13 @@ public class AddressBook {
     }
 
     /**
-     * Displays all persons in the address book to the user; in added order.
+     * Displays all persons in the address book to the user; in added order, or sorted order.
      *
+     * @param commandArgs full command args string from the user
      * @return feedback display message for the operation result
      */
-    private static String executeListAllPersonsInAddressBook() {
-        ArrayList<Person> toBeDisplayed = getAllPersonsInAddressBook();
+    private static String executeListAllPersonsInAddressBook(String commandArgs) {
+        ArrayList<Person> toBeDisplayed = getAllPersonsInAddressBook(commandArgs);
         showToUser(toBeDisplayed);
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
     }
@@ -839,6 +830,33 @@ public class AddressBook {
      */
     private static ArrayList<Person> getAllPersonsInAddressBook() {
         return ALL_PERSONS;
+    }
+
+    /**
+     * Returns all persons in the address book, using the sorted arguments
+     */
+    private static ArrayList<Person> getAllPersonsInAddressBook(String rawArgs) {
+        ArrayList<Person> sortedPersons = new ArrayList<>(ALL_PERSONS);
+        String[] sortArgs = rawArgs.split(" ");
+        for (int i = sortArgs.length - 1; i >= 0; i--) {
+            switch (sortArgs[i]) {
+                case PERSON_DATA_PREFIX_NAME:
+                    sortedPersons.sort(Comparator.comparing(Person::getName)); break;
+                case PERSON_DATA_PREFIX_PHONE:
+                    sortedPersons.sort(Comparator.comparing(Person::getPhoneNumber)); break;
+                case PERSON_DATA_PREFIX_EMAIL:
+                    sortedPersons.sort(Comparator.comparing(Person::getEmail)); break;
+                case PERSON_DATA_PREFIX_NAME + "DESC":
+                    sortedPersons.sort(Comparator.comparing(Person::getName).reversed()); break;
+                case PERSON_DATA_PREFIX_PHONE + "DESC":
+                    sortedPersons.sort(Comparator.comparing(Person::getPhoneNumber).reversed()); break;
+                case PERSON_DATA_PREFIX_EMAIL + "DESC":
+                    sortedPersons.sort(Comparator.comparing(Person::getEmail).reversed()); break;
+                default:
+                    return ALL_PERSONS;
+            }
+        }
+        return sortedPersons;
     }
 
     /**
@@ -1146,6 +1164,7 @@ public class AddressBook {
     /** Returns the string for showing 'view' command usage instruction */
     private static String getUsageInfoForViewCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_LIST_WORD, COMMAND_LIST_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_LIST_PARAMETER) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_LIST_EXAMPLE) + LS;
     }
 
