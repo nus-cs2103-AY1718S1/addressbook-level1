@@ -109,16 +109,17 @@ public class AddressBook {
     private static final String COMMAND_LIST_WORD = "list";
     private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers by addition"
                                         + " order or the specified sort order.";
-    private static final String COMMAND_LIST_PARAMETER = "SORT_ORDER (\"" + PERSON_DATA_PREFIX_NAME + "\", "
-                                        +"\"" + PERSON_DATA_PREFIX_PHONE + "\", "
-                                        +"\"" + PERSON_DATA_PREFIX_EMAIL + "\", "
-                                        +"\"" + PERSON_DATA_PREFIX_NAME + "DESC\", "
-                                        +"\"" + PERSON_DATA_PREFIX_PHONE + "DESC\", "
-                                        +"\"" + PERSON_DATA_PREFIX_EMAIL + "DESC\")";
+    private static final String COMMAND_LIST_DESCENDING = "DESC";
+    private static final String COMMAND_LIST_PARAMETER = "SORT_ORDER ('" + PERSON_DATA_PREFIX_NAME + "', "
+                                        +"'" + PERSON_DATA_PREFIX_PHONE + "', "
+                                        +"'" + PERSON_DATA_PREFIX_EMAIL + "', "
+                                        +"'" + PERSON_DATA_PREFIX_NAME + COMMAND_LIST_DESCENDING + "', "
+                                        +"'" + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING + "', "
+                                        +"'" + PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_DESCENDING + "')";
     private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD + "\t\t"
                                         + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + "\t\t"
                                         + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + " "
-                                                                    + PERSON_DATA_PREFIX_PHONE + "DESC\t";
+                                                                    + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING;
 
     private static final String COMMAND_DELETE_WORD = "delete";
     private static final String COMMAND_DELETE_DESC = "Deletes a person identified by the index number used in "
@@ -846,14 +847,14 @@ public class AddressBook {
                     sortedPersons.sort(Comparator.comparing(Person::getPhoneNumber)); break;
                 case PERSON_DATA_PREFIX_EMAIL:
                     sortedPersons.sort(Comparator.comparing(Person::getEmail)); break;
-                case PERSON_DATA_PREFIX_NAME + "DESC":
+                case PERSON_DATA_PREFIX_NAME + COMMAND_LIST_DESCENDING:
                     sortedPersons.sort(Comparator.comparing(Person::getName).reversed()); break;
-                case PERSON_DATA_PREFIX_PHONE + "DESC":
+                case PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING:
                     sortedPersons.sort(Comparator.comparing(Person::getPhoneNumber).reversed()); break;
-                case PERSON_DATA_PREFIX_EMAIL + "DESC":
+                case PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_DESCENDING:
                     sortedPersons.sort(Comparator.comparing(Person::getEmail).reversed()); break;
                 default:
-                    return ALL_PERSONS;
+                    return new ArrayList<>();
             }
         }
         return sortedPersons;
