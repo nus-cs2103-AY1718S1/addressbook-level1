@@ -653,7 +653,7 @@ public class AddressBook {
      */
     private static int extractTargetIndexFromEditPersonArgs(String encoded) {
         // index is leading substring up to first data prefix symbol, less -1 values.
-        return Integer.parseInt(encoded.substring(0, 1).trim());
+        return Integer.parseInt(encoded.split(" ")[0].trim());
     }
 
     /**
@@ -1165,7 +1165,9 @@ public class AddressBook {
      * @return true if the given person was found and replaced in the model
      */
     private static boolean editPersonWithinAddressBook(Person exactPerson, Person newPerson) {
-        final boolean changed = (ALL_PERSONS.set(ALL_PERSONS.indexOf(exactPerson), newPerson).equals(exactPerson));
+        final boolean changed =
+                (latestPersonListingView.set(latestPersonListingView.indexOf(exactPerson), newPerson).equals(exactPerson))
+                && (ALL_PERSONS.set(ALL_PERSONS.indexOf(exactPerson), newPerson).equals(exactPerson));
         if (changed) {
             savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
         }
