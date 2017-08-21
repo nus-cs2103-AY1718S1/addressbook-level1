@@ -103,35 +103,37 @@ public class AddressBook {
     private static final String COMMAND_ADD_PARAMETERS = "NAME "
                                                       + PERSON_DATA_PREFIX_PHONE + "PHONE_NUMBER "
                                                       + PERSON_DATA_PREFIX_EMAIL + "EMAIL";
-    private static final String COMMAND_ADD_EXAMPLE = COMMAND_ADD_WORD + " John Doe p/+6598765432 e/johnd@gmail.com";
+    private static final String COMMAND_ADD_EXAMPLE = COMMAND_ADD_WORD + " John Doe p/98765432 e/johnd@gmail.com"
+                                        + LS + " Jane Doe p/+6587765552 e/janed@gmail.com";
+
+    private static final String COMMAND_LIST_WORD = "list";
+    private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers, "
+                                        + "sorted by addition order or the specified sort order.";
+    private static final String COMMAND_LIST_DESCENDING = "DESC";
+    private static final String COMMAND_LIST_ASCENDING = "ASC";
+    private static final String COMMAND_LIST_PARAMETER = "[optional:SORT_FIELD - '" + PERSON_DATA_PREFIX_NAME + "' "
+                                        +"'" + PERSON_DATA_PREFIX_PHONE + "' "
+                                        +"'" + PERSON_DATA_PREFIX_EMAIL + "' "
+                                        +"'" + PERSON_DATA_PREFIX_NAME + COMMAND_LIST_DESCENDING + "' "
+                                        +"'" + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING + "' "
+                                        +"'" + PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_DESCENDING + "']";
+    private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD + LS + "\t\t\t"
+                                        + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + LS + "\t\t\t"
+                                        + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + " "
+                                        + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING;
 
     private static final String COMMAND_FIND_WORD = "find";
     private static final String COMMAND_FIND_DESC = "Finds all persons whose names contain any of the specified "
-                                        + "keywords (case-sensitive) and displays them as a list with index numbers.";
-    private static final String COMMAND_FIND_PARAMETERS = "KEYWORD [MORE_KEYWORDS]";
-    private static final String COMMAND_FIND_EXAMPLE = COMMAND_FIND_WORD + " alice bob charlie";
+                                        + "keywords and displays them as a list with index numbers, "
+                                        + "sorted by addition order or the specified sorted order.";
+    private static final String COMMAND_FIND_PARAMETERS = "KEYWORD [MORE_KEYWORDS] " + COMMAND_LIST_PARAMETER;
+    private static final String COMMAND_FIND_EXAMPLE = COMMAND_FIND_WORD + " alice bob charlie n/ p/DESC";
 
     private static final String COMMAND_EDIT_WORD = "edit";
     private static final String COMMAND_EDIT_DESC = "Edits a particular index's parameter values.";
     private static final String COMMAND_EDIT_PARAMETERS = "INDEX [FIELD/VALUE]";
     private static final String COMMAND_EDIT_EXAMPLE = COMMAND_EDIT_WORD + " 1 n/Ricky Ray p/12345678"
                                         + LS + "\t\t\t" + COMMAND_EDIT_WORD + " 2 e/noob@noob.com";
-
-    private static final String COMMAND_LIST_WORD = "list";
-    private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers by addition"
-                                        + " order or the specified sort order.";
-    private static final String COMMAND_LIST_DESCENDING = "DESC";
-    private static final String COMMAND_LIST_ASCENDING = "ASC";
-    private static final String COMMAND_LIST_PARAMETER = "SORT_FIELD - '" + PERSON_DATA_PREFIX_NAME + "' "
-                                        +"'" + PERSON_DATA_PREFIX_PHONE + "' "
-                                        +"'" + PERSON_DATA_PREFIX_EMAIL + "' "
-                                        +"'" + PERSON_DATA_PREFIX_NAME + COMMAND_LIST_DESCENDING + "' "
-                                        +"'" + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING + "' "
-                                        +"'" + PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_DESCENDING + "'";
-    private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD + LS + "\t\t\t"
-                                        + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + LS + "\t\t\t"
-                                        + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + " "
-                                                                    + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING;
 
     private static final String COMMAND_DELETE_WORD = "delete";
     private static final String COMMAND_DELETE_DESC = "Deletes a person identified by the index number used in "
@@ -550,7 +552,7 @@ public class AddressBook {
      */
     private static String executeFindPersons(String commandArgs) {
         final Set<String> keywords = extractKeywordsFromFindPersonArgs(commandArgs);
-        final ArrayList<Person> personsFound = getPersonsWithNameContainingAnyKeyword(keywords);
+        final ArrayList<Person> personsFound = getPersonsWithNameContainingAnyKeyword(keywords, commandArgs);
         showToUser(personsFound);
         return getMessageForPersonsDisplayedSummary(personsFound);
     }
@@ -578,12 +580,13 @@ public class AddressBook {
     /**
      * Retrieves all persons in the full model whose names contain some of the specified keywords.
      *
+     * @param commandArgs full command args string from the find persons command
      * @param keywords for searching
-     * @return list of persons in full model with name containing some of the keywords
+     * @return sorted list of persons in full model with name containing some of the keywords
      */
-    private static ArrayList<Person> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
+    private static ArrayList<Person> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords, String commandArgs) {
         final ArrayList<Person> matchedPersons = new ArrayList<>();
-        for (Person person : getAllPersonsInAddressBook()) {
+        for (Person person : getAllPersonsInAddressBook(extractSortParameters(commandArgs))) {
             final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person).toLowerCase()));
             if (!Collections.disjoint(wordsInName, keywords)) {
                 matchedPersons.add(person);
@@ -1422,6 +1425,33 @@ public class AddressBook {
         // name is leading substring up to first data prefix symbol
         int indexOfFirstPrefix = Math.min(indexOfEmailPrefix, indexOfPhonePrefix);
         return encoded.substring(0, indexOfFirstPrefix).trim();
+    }
+
+    /**
+     * Extracts substring representing sort parameters from search parameter substring.
+     *
+     * @param findPersonCommandArgs full command args string for the find persons command
+     * @return sort arguments substring
+     */
+    private static String extractSortParameters(String findPersonCommandArgs) {
+        String[] splitWords = findPersonCommandArgs.split(" ");
+        StringBuilder sortParameterStringBuilder = new StringBuilder();
+        for (String word : splitWords) {
+            if (word.equals(PERSON_DATA_PREFIX_NAME)
+                    || word.equals(PERSON_DATA_PREFIX_PHONE)
+                    || word.equals(PERSON_DATA_PREFIX_EMAIL)
+                    || word.equals(PERSON_DATA_PREFIX_NAME + COMMAND_LIST_DESCENDING)
+                    || word.equals(PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING)
+                    || word.equals(PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_DESCENDING)
+                    || word.equals(PERSON_DATA_PREFIX_NAME + COMMAND_LIST_ASCENDING)
+                    || word.equals(PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_ASCENDING)
+                    || word.equals(PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_ASCENDING)) {
+                sortParameterStringBuilder.append(word);
+                sortParameterStringBuilder.append(" ");
+            }
+        }
+
+        return sortParameterStringBuilder.toString();
     }
 
     /**
