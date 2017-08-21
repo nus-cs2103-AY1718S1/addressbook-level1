@@ -6,7 +6,7 @@ package seedu.addressbook;
  * Yes, it is possible to write non-OO code using an OO language.
  * ====================================================================
  */
-
+//PROJECT TODO: Password, Dynamic fields, Filter (WHERE and LIKE)
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class AddressBook {
      * at which java String.format(...) method can insert values.
      * =========================================================================
      */
-    private static final String MESSAGE_ADDED = "New person added: %1$s, Phone: %2$s, Email: %3$s";
+    private static final String MESSAGE_ADDED = "New person added: %1$s";
     private static final String MESSAGE_ADDRESSBOOK_CLEARED = "Address book has been cleared!";
     private static final String MESSAGE_COMMAND_HELP = "%1$s: %2$s";
     private static final String MESSAGE_COMMAND_HELP_PARAMETERS = "\tParameters: %1$s";
@@ -67,10 +67,13 @@ public class AddressBook {
     private static final String MESSAGE_EDIT_PERSON_SUCCESS = "Old Person: %1$s "
                                                             + LS + "\tNew Person: %2$s";
     private static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+    private static final String MESSAGE_UNDO_REDO_SUCCESS = "Successfully completed %1$s operation. Changes:" + LS;
     private static final String MESSAGE_DISPLAY_PERSON_DATA = "%1$s  Phone Number: %2$s  Email: %3$s";
     private static final String MESSAGE_DISPLAY_LIST_ELEMENT_INDEX = "%1$d. ";
     private static final String MESSAGE_GOODBYE = "Exiting Address Book... Good bye!";
+    private static final String MESSAGE_APPLICATION_ERROR = "Application Error: %1$s command was unable to be resolved.";
     private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format: %1$s " + LS + "%2$s";
+    private static final String MESSAGE_EMPTY_HISTORY_STACK = "Unable to %1$s: You are already at the most recent %1$s state.";
     private static final String MESSAGE_INVALID_FILE = "The given file name [%1$s] is not a valid file name!";
     private static final String MESSAGE_INVALID_PROGRAM_ARGS = "Too many parameters! Correct program argument format:"
                                                             + LS + "\tjava AddressBook"
@@ -111,7 +114,8 @@ public class AddressBook {
     private static final String COMMAND_EDIT_WORD = "edit";
     private static final String COMMAND_EDIT_DESC = "Edits a particular index's parameter values.";
     private static final String COMMAND_EDIT_PARAMETERS = "INDEX [FIELD/VALUE]";
-    private static final String COMMAND_EDIT_EXAMPLE = COMMAND_EDIT_WORD + " 1 n/Ricky Ray p/12345678";
+    private static final String COMMAND_EDIT_EXAMPLE = COMMAND_EDIT_WORD + " 1 n/Ricky Ray p/12345678"
+                                        + LS + "\t\t\t" + COMMAND_EDIT_WORD + " 2 e/noob@noob.com";
 
     private static final String COMMAND_LIST_WORD = "list";
     private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers by addition"
@@ -124,8 +128,8 @@ public class AddressBook {
                                         +"'" + PERSON_DATA_PREFIX_NAME + COMMAND_LIST_DESCENDING + "' "
                                         +"'" + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING + "' "
                                         +"'" + PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_DESCENDING + "'";
-    private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD + "\t\t"
-                                        + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + "\t\t"
+    private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD + LS + "\t\t\t"
+                                        + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + LS + "\t\t\t"
                                         + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + " "
                                                                     + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING;
 
@@ -134,6 +138,14 @@ public class AddressBook {
                                                     + "the last find/list call.";
     private static final String COMMAND_DELETE_PARAMETER = "INDEX";
     private static final String COMMAND_DELETE_EXAMPLE = COMMAND_DELETE_WORD + " 1";
+
+    private static final String COMMAND_UNDO_WORD = "undo";
+    private static final String COMMAND_UNDO_DESC = "Undo a previous add, edit, delete or clear operation.";
+    private static final String COMMAND_UNDO_EXAMPLE = COMMAND_UNDO_WORD;
+
+    private static final String COMMAND_REDO_WORD = "redo";
+    private static final String COMMAND_REDO_DESC = "Redo a previous undo operation.";
+    private static final String COMMAND_REDO_EXAMPLE = COMMAND_REDO_WORD;
 
     private static final String COMMAND_CLEAR_WORD = "clear";
     private static final String COMMAND_CLEAR_DESC = "Clears address book permanently.";
@@ -214,6 +226,26 @@ public class AddressBook {
      * List of all persons in the address book.
      */
     private static final ArrayList<Person> ALL_PERSONS = new ArrayList<>();
+
+    /**
+     * List of all persons in the previous application state.
+     */
+    private static ArrayList<Person> saveState = new ArrayList<>();
+
+    /**
+     * Maximum size of the history state before getting deleted. Minimum value 1.
+     */
+    private static final int MAX_HISTORY_SIZE = 15;
+
+    /**
+     * Stack of all history states in the current session.
+     */
+    private static Stack<ArrayList<Person>> historyStack = new Stack<>();
+
+    /**
+     * Stack of all undo history states in the current undo sequence.
+     */
+    private static Stack<ArrayList<Person>> redoStack = new Stack<>();
 
     /**
      * Stores the most recent list of persons shown to the user as a result of a user command.
@@ -411,6 +443,10 @@ public class AddressBook {
             return executeListAllPersonsInAddressBook(commandArgs);
         case COMMAND_DELETE_WORD:
             return executeDeletePerson(commandArgs);
+        case COMMAND_UNDO_WORD:
+            return executeUndo();
+        case COMMAND_REDO_WORD:
+            return executeRedo();
         case COMMAND_CLEAR_WORD:
             return executeClearAddressBook();
         case COMMAND_HELP_WORD:
@@ -433,13 +469,34 @@ public class AddressBook {
     }
 
     /**
+     * Constructs a generic error message from an unhandled application error and the source of origination.
+     *
+     * @param userCommand origination command of error
+     * @return application error message
+     */
+    private static String getMessageForApplicationError(String userCommand) {
+        return String.format(MESSAGE_APPLICATION_ERROR, userCommand);
+    }
+
+    /**
      * Constructs a generic feedback message for an invalid command from user, with instructions for correct usage.
      *
+     * @param userCommand origination command of error
      * @param correctUsageInfo message showing the correct usage
      * @return invalid command args feedback message
      */
     private static String getMessageForInvalidCommandInput(String userCommand, String correctUsageInfo) {
         return String.format(MESSAGE_INVALID_COMMAND_FORMAT, userCommand, correctUsageInfo);
+    }
+
+    /**
+     * Constructs a feedback message for empty undo or redo history.
+     *
+     * @param userCommand origination command of error
+     * @return empty history stack feedback message
+     */
+    private static String getMessageForEmptyHistoryStack(String userCommand) {
+        return String.format(MESSAGE_EMPTY_HISTORY_STACK, userCommand);
     }
 
     /**
@@ -450,18 +507,27 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeAddPerson(String commandArgs) {
+        saveStateBeforeOperation(); // save state for undo
         // try decoding a person from the raw args
         final Optional<Person> decodeResult = decodePersonFromString(commandArgs);
 
         // checks if args are valid (decode result will not be present if the person is invalid)
-        if (!decodeResult.isPresent()) {
+        if (decodeResult.isPresent()) {
+
+            // add the person as specified
+            final Person personToAdd = decodeResult.get();
+            addPersonToAddressBook(personToAdd);
+
+            addStateAfterSuccessfulOperation(); // update state for undo
+            clearRedoStackAfterSuccessfulOperation(); // clear redo for new redo branch
+
+            return getMessageForSuccessfulAddPerson(personToAdd);
+
+        } else {
+
+            //invalid arg
             return getMessageForInvalidCommandInput(COMMAND_ADD_WORD, getUsageInfoForAddCommand());
         }
-
-        // add the person as specified
-        final Person personToAdd = decodeResult.get();
-        addPersonToAddressBook(personToAdd);
-        return getMessageForSuccessfulAddPerson(personToAdd);
     }
 
     /**
@@ -472,8 +538,7 @@ public class AddressBook {
      * @return successful add person feedback message
      */
     private static String getMessageForSuccessfulAddPerson(Person addedPerson) {
-        return String.format(MESSAGE_ADDED,
-                getNameFromPerson(addedPerson), getPhoneFromPerson(addedPerson), getEmailFromPerson(addedPerson));
+        return String.format(MESSAGE_ADDED, getMessageForFormattedPersonData(addedPerson));
     }
 
     /**
@@ -534,6 +599,7 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeEditPerson(String commandArgs) {
+        saveStateBeforeOperation(); // save state for undo
         if (!isEditPersonArgsValid(commandArgs)) {
             return getMessageForInvalidCommandInput(COMMAND_EDIT_WORD, getUsageInfoForEditCommand());
         }
@@ -548,9 +614,15 @@ public class AddressBook {
         if (!isPersonDataValid(newTarget)) {
             return getMessageForInvalidCommandInput(COMMAND_EDIT_WORD, getUsageInfoForEditCommand());
         }
-        return editPersonWithinAddressBook(targetInModel, newTarget)
-                                      ? getMessageForSuccessfulEdit(targetInModel, newTarget) // success
-                                      : MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
+        if (editPersonWithinAddressBook(targetInModel, newTarget)) {
+
+            addStateAfterSuccessfulOperation(); // update state for undo
+            clearRedoStackAfterSuccessfulOperation(); // clear redo for new redo branch
+
+            return getMessageForSuccessfulEdit(targetInModel, newTarget); // success
+        } else {
+            return MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
+        }
     }
 
     /**
@@ -690,6 +762,7 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeDeletePerson(String commandArgs) {
+        saveStateBeforeOperation(); // save state for undo
         if (!isDeletePersonArgsValid(commandArgs)) {
             return getMessageForInvalidCommandInput(COMMAND_DELETE_WORD, getUsageInfoForDeleteCommand());
         }
@@ -698,8 +771,15 @@ public class AddressBook {
             return MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
         }
         final Person targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
-        return deletePersonFromAddressBook(targetInModel) ? getMessageForSuccessfulDelete(targetInModel) // success
-                                                          : MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
+        if (deletePersonFromAddressBook(targetInModel)) {
+
+            addStateAfterSuccessfulOperation(); // update state for undo
+            clearRedoStackAfterSuccessfulOperation(); // clear redo for new redo branch
+
+            return getMessageForSuccessfulDelete(targetInModel); // success
+        } else {
+            return MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
+        }
     }
 
     /**
@@ -754,8 +834,104 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeClearAddressBook() {
-        clearAddressBook();
+        saveStateBeforeOperation(); // save state for undo
+
+        clearAddressBook(); // clear
+
+        addStateAfterSuccessfulOperation(); // update state for undo
+        clearRedoStackAfterSuccessfulOperation(); // clear redo for new redo branch
+
         return MESSAGE_ADDRESSBOOK_CLEARED;
+    }
+
+    /**
+     * Undoes the last add, edit, delete or clear operation
+     *
+     * @return feedback display message for the operation result
+     */
+    private static String executeUndo() {
+        if (historyStack.isEmpty()) {
+            return getMessageForEmptyHistoryStack(COMMAND_UNDO_WORD);
+        }
+        saveStateBeforeOperation();
+        if (!loadAddressbookState(historyStack.pop())) {
+            return getMessageForApplicationError(COMMAND_UNDO_WORD);
+        }
+        redoStack.push(saveState);
+        updateLatestViewedPersonListing(getAllPersonsInAddressBook());
+        return getMessageForSuccessfulUndoRedo(saveState, COMMAND_UNDO_WORD);
+    }
+
+    /**
+     * Redoes the previous undo operation. Will fail if redo stack is empty.
+     *
+     * @return feedback display message for the operation result
+     */
+    private static String executeRedo() {
+        if (redoStack.isEmpty()) {
+            return getMessageForEmptyHistoryStack(COMMAND_REDO_WORD);
+        }
+        saveStateBeforeOperation();
+        if (!loadAddressbookState(redoStack.pop())) {
+            return getMessageForApplicationError(COMMAND_REDO_WORD);
+        }
+        addStateAfterSuccessfulOperation();
+        updateLatestViewedPersonListing(getAllPersonsInAddressBook());
+        return getMessageForSuccessfulUndoRedo(saveState, COMMAND_REDO_WORD);
+    }
+
+    /**
+     * Logic for saving state before all editor operations (add,edit,delete,clear).
+     * Needs to be called before the beginning of execution.
+     */
+    private static void saveStateBeforeOperation() {
+        saveState = new ArrayList<>(getAllPersonsInAddressBook());
+    }
+
+    /**
+     * Adds the latest saveState to the undo stack after a successful editor operation (add,edit,delete,clear),
+     * up to the maximum history size.
+     * Needs to be called after successful execution of an editor operation.
+     */
+    private static void addStateAfterSuccessfulOperation() {
+        while (historyStack.size() >= MAX_HISTORY_SIZE) historyStack.removeElementAt(0);
+        historyStack.push(saveState);
+    }
+
+    /**
+     * Clears the redo stack after successful editor operation (add,edit,delete,clear).
+     * New 'branch' of edits will override previous redo stack.
+     */
+    private static void clearRedoStackAfterSuccessfulOperation() {
+        redoStack.clear();
+    }
+
+    /**
+     * Constructs a feedback message for a successful undo or redo command execution.
+     *
+     * @see #executeUndo()
+     * @see #executeRedo()
+     * @param previousState the address book of the previous state
+     * @param userCommand the type of operation (undo or redo)
+     * @return successful undo or redo feedback message
+     */
+    private static String getMessageForSuccessfulUndoRedo(ArrayList<Person> previousState, String userCommand) {
+        StringBuilder successfulMessageBuilder = new StringBuilder(String.format(MESSAGE_UNDO_REDO_SUCCESS, userCommand));
+        // show added elements not existing in previous
+        for (Person person : getAllPersonsInAddressBook()) {
+            if (!previousState.contains(person)) {
+                successfulMessageBuilder.append(getMessageForSuccessfulAddPerson(person));
+                successfulMessageBuilder.append(LS);
+            }
+        }
+        // show elements in previous not existing in current
+        for (Person person : previousState) {
+            if (!getAllPersonsInAddressBook().contains(person)) {
+                successfulMessageBuilder.append(getMessageForSuccessfulDelete(person));
+                successfulMessageBuilder.append(LS);
+            }
+        }
+        return successfulMessageBuilder.toString();
     }
 
     /**
@@ -1003,6 +1179,28 @@ public class AddressBook {
         final boolean changed = ALL_PERSONS.remove(exactPerson);
         if (changed) {
             savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
+        }
+        return changed;
+    }
+
+    /**
+     * Replaces the current addressbook state with a new addressbook state
+     *
+     * @param addressbookState new state to be loaded
+     * @return true if successfully loaded state into database and false otherwise.
+     */
+    private static boolean loadAddressbookState(ArrayList<Person> addressbookState) {
+        ALL_PERSONS.clear();
+        //if new state is empty, simply return true as new state would be the same as the cleared list.
+        final boolean changed = addressbookState.isEmpty() || ALL_PERSONS.addAll(addressbookState);
+        // successfully loaded specified state to current state
+        if (changed) {
+            savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
+
+            // failed to load state: revert to previous save state
+        } else {
+            ALL_PERSONS.clear();
+            ALL_PERSONS.addAll(saveState);
         }
         return changed;
     }
@@ -1327,11 +1525,13 @@ public class AddressBook {
 
     /** Returns usage info for all commands */
     private static String getUsageInfoForAllCommands() {
-        return getUsageInfoForAddCommand() + LS
+        return LS + getUsageInfoForAddCommand() + LS
                 + getUsageInfoForFindCommand() + LS
                 + getUsageInfoForViewCommand() + LS
                 + getUsageInfoForEditCommand() + LS
                 + getUsageInfoForDeleteCommand() + LS
+                + getUsageInfoForUndoCommand() + LS
+                + getUsageInfoForRedoCommand() + LS
                 + getUsageInfoForClearCommand() + LS
                 + getUsageInfoForExitCommand() + LS
                 + getUsageInfoForHelpCommand();
@@ -1358,20 +1558,32 @@ public class AddressBook {
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_DELETE_EXAMPLE) + LS;
     }
 
+    /** Returns the string for showing 'undo' command usage instruction */
+    private static String getUsageInfoForUndoCommand() {
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_UNDO_WORD, COMMAND_UNDO_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_UNDO_EXAMPLE) + LS;
+    }
+
+    /** Returns the string for showing 'redo' command usage instruction */
+    private static String getUsageInfoForRedoCommand() {
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_REDO_WORD, COMMAND_REDO_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_REDO_EXAMPLE) + LS;
+    }
+
     /** Returns string for showing 'clear' command usage instruction */
     private static String getUsageInfoForClearCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_CLEAR_WORD, COMMAND_CLEAR_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_CLEAR_EXAMPLE) + LS;
     }
 
-    /** Returns the string for showing 'view' command usage instruction */
+    /** Returns the string for showing 'list' command usage instruction */
     private static String getUsageInfoForViewCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_LIST_WORD, COMMAND_LIST_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_LIST_PARAMETER) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_LIST_EXAMPLE) + LS;
     }
 
-    /** Returns the string for showing 'view' command usage instruction */
+    /** Returns the string for showing 'edit' command usage instruction */
     private static String getUsageInfoForEditCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_EDIT_WORD, COMMAND_EDIT_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_EDIT_PARAMETERS) + LS
@@ -1380,14 +1592,14 @@ public class AddressBook {
 
     /** Returns string for showing 'help' command usage instruction */
     private static String getUsageInfoForHelpCommand() {
-        return String.format(MESSAGE_COMMAND_HELP, COMMAND_HELP_WORD, COMMAND_HELP_DESC)
-                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_HELP_EXAMPLE);
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_HELP_WORD, COMMAND_HELP_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_HELP_EXAMPLE) + LS;
     }
 
     /** Returns the string for showing 'exit' command usage instruction */
     private static String getUsageInfoForExitCommand() {
-        return String.format(MESSAGE_COMMAND_HELP, COMMAND_EXIT_WORD, COMMAND_EXIT_DESC)
-                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_EXIT_EXAMPLE);
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_EXIT_WORD, COMMAND_EXIT_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_EXIT_EXAMPLE) + LS;
     }
 
 
