@@ -486,7 +486,7 @@ public class AddressBook {
      */
     private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
-        for (String[] person : getAllPersonsInAddressBook()) {
+        for (HashMap<String, String> person : getAllPersonsInAddressBook()) {
             final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
             if (!Collections.disjoint(wordsInName, keywords)) {
                 matchedPersons.add(person);
@@ -643,7 +643,7 @@ public class AddressBook {
     private static String getDisplayString(ArrayList<String[]> persons) {
         final StringBuilder messageAccumulator = new StringBuilder();
         for (int i = 0; i < persons.size(); i++) {
-            final String[] person = persons.get(i);
+            final HashMap<String, String> person = persons.get(i);
             final int displayIndex = i + DISPLAYED_INDEX_OFFSET;
             messageAccumulator.append('\t')
                               .append(getIndexedPersonListElementMessage(displayIndex, person))
@@ -659,7 +659,7 @@ public class AddressBook {
      * @param person to show
      * @return formatted listing message with index
      */
-    private static String getIndexedPersonListElementMessage(int visibleIndex, String[] person) {
+    private static String getIndexedPersonListElementMessage(int visibleIndex, HashMap<String, String> person) {
         return String.format(MESSAGE_DISPLAY_LIST_ELEMENT_INDEX, visibleIndex) + getMessageForFormattedPersonData(person);
     }
 
@@ -669,7 +669,7 @@ public class AddressBook {
      * @param person to show
      * @return formatted message showing internal state
      */
-    private static String getMessageForFormattedPersonData(String[] person) {
+    private static String getMessageForFormattedPersonData(HashMap<String, String> person) {
         return String.format(MESSAGE_DISPLAY_PERSON_DATA,
                 getNameFromPerson(person), getPhoneFromPerson(person), getEmailFromPerson(person));
     }
@@ -784,7 +784,7 @@ public class AddressBook {
      *
      * @param person to add
      */
-    private static void addPersonToAddressBook(String[] person) {
+    private static void addPersonToAddressBook(HashMap<String, String> person) {
         ALL_PERSONS.add(person);
         savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
     }
@@ -840,7 +840,7 @@ public class AddressBook {
      *
      * @param person whose name you want
      */
-    private static String getNameFromPerson(String[] person) {
+    private static String getNameFromPerson(HashMap<String, String> person) {
         return person[PERSON_DATA_INDEX_NAME];
     }
 
@@ -849,7 +849,7 @@ public class AddressBook {
      *
      * @param person whose phone number you want
      */
-    private static String getPhoneFromPerson(String[] person) {
+    private static String getPhoneFromPerson(HashMap<String, String> person) {
         return person[PERSON_DATA_INDEX_PHONE];
     }
 
@@ -858,7 +858,7 @@ public class AddressBook {
      *
      * @param person whose email you want
      */
-    private static String getEmailFromPerson(String[] person) {
+    private static String getEmailFromPerson(HashMap<String, String> person) {
         return person[PERSON_DATA_INDEX_EMAIL];
     }
 
