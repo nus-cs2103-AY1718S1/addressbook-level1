@@ -841,7 +841,7 @@ public class AddressBook {
      * @param person whose name you want
      */
     private static String getNameFromPerson(HashMap<String, String> person) {
-        return person[PERSON_DATA_INDEX_NAME];
+        return person[PERSON_PROPERTY_NAME];
     }
 
     /**
@@ -850,7 +850,7 @@ public class AddressBook {
      * @param person whose phone number you want
      */
     private static String getPhoneFromPerson(HashMap<String, String> person) {
-        return person[PERSON_DATA_INDEX_PHONE];
+        return person[PERSON_PROPERTY_PHONE];
     }
 
     /**
@@ -859,7 +859,7 @@ public class AddressBook {
      * @param person whose email you want
      */
     private static String getEmailFromPerson(HashMap<String, String> person) {
-        return person[PERSON_DATA_INDEX_EMAIL];
+        return person[PERSON_PROPERTY_EMAIL];
     }
 
     /**
@@ -1031,9 +1031,9 @@ public class AddressBook {
      * @param person String array representing the person (used in internal data)
      */
     private static boolean isPersonDataValid(HashMap<String, String> person) {
-        return isPersonNameValid(person[PERSON_DATA_INDEX_NAME])
-                && isPersonPhoneValid(person[PERSON_DATA_INDEX_PHONE])
-                && isPersonEmailValid(person[PERSON_DATA_INDEX_EMAIL]);
+        return isPersonNameValid(person[PERSON_PROPERTY_NAME])
+                && isPersonPhoneValid(person[PERSON_PROPERTY_PHONE])
+                && isPersonEmailValid(person[PERSON_PROPERTY_EMAIL]);
     }
 
     /*
