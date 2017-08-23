@@ -20,7 +20,7 @@ import java.util.*;
 /*
  * NOTE : =============================================================
  * This class header comment below is brief because details of how to
- * use this class are documented elsewhere.
+ * use this class are documented elsewhere.F
  * ====================================================================
  */
 
@@ -72,8 +72,8 @@ public class AddressBook {
     private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format: %1$s " + LS + "%2$s";
     private static final String MESSAGE_INVALID_FILE = "The given file name [%1$s] is not a valid file name!";
     private static final String MESSAGE_INVALID_PROGRAM_ARGS = "Too many parameters! Correct program argument format:"
-                                                            + LS + "\tjava AddressBook"
-                                                            + LS + "\tjava AddressBook [custom storage file path]";
+            + LS + "\tjava AddressBook"
+            + LS + "\tjava AddressBook [custom storage file path]";
     private static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided is invalid";
     private static final String MESSAGE_INVALID_STORAGE_FILE_CONTENT = "Storage file has invalid content";
     private static final String MESSAGE_PERSON_NOT_IN_ADDRESSBOOK = "Person could not be found in address book";
@@ -92,21 +92,21 @@ public class AddressBook {
     private static final String PERSON_DATA_PREFIX_DOB = "d/";
 
     private static final String PERSON_STRING_REPRESENTATION = "%1$s " // name
-                                                            + PERSON_DATA_PREFIX_PHONE + "%2$s " // phone
-                                                            + PERSON_DATA_PREFIX_EMAIL + "%3$s " // email
-                                                            + PERSON_DATA_PREFIX_DOB + "%4$s "; //date of birth
+            + PERSON_DATA_PREFIX_PHONE + "%2$s " // phone
+            + PERSON_DATA_PREFIX_EMAIL + "%3$s " // email
+            + PERSON_DATA_PREFIX_DOB + "%4$s "; //date of birth
     private static final String COMMAND_ADD_WORD = "add";
     private static final String COMMAND_ADD_DESC = "Adds a person to the address book.";
     private static final String COMMAND_ADD_PARAMETERS = "NAME "
-                                                      + PERSON_DATA_PREFIX_PHONE + "PHONE_NUMBER "
-                                                      + PERSON_DATA_PREFIX_EMAIL + "EMAIL "
-                                                      + PERSON_DATA_PREFIX_DOB + "DateOfBirth";
+            + PERSON_DATA_PREFIX_PHONE + "PHONE_NUMBER "
+            + PERSON_DATA_PREFIX_EMAIL + "EMAIL "
+            + PERSON_DATA_PREFIX_DOB + "DateOfBirth";
     private static final String COMMAND_ADD_EXAMPLE = COMMAND_ADD_WORD + " John Doe p/98765432 e/johnd@gmail.com "
-                                                                       +"d/1998-5-20";
+            + "d/1998-5-20";
 
     private static final String COMMAND_FIND_WORD = "find";
     private static final String COMMAND_FIND_DESC = "Finds all persons whose names contain any of the specified "
-                                        + "keywords (case-sensitive) and displays them as a list with index numbers.";
+            + "keywords (case-sensitive) and displays them as a list with index numbers.";
     private static final String COMMAND_FIND_PARAMETERS = "KEYWORD [MORE_KEYWORDS]";
     private static final String COMMAND_FIND_EXAMPLE = COMMAND_FIND_WORD + " alice bob charlie";
 
@@ -120,13 +120,13 @@ public class AddressBook {
 
     private static final String COMMAND_DELETE_WORD = "delete";
     private static final String COMMAND_DELETE_DESC = "Deletes a person identified by the index number used in "
-                                                    + "the last find/list call.";
+            + "the last find/list call.";
     private static final String COMMAND_DELETE_PARAMETER = "INDEX";
     private static final String COMMAND_DELETE_EXAMPLE = COMMAND_DELETE_WORD + " 1";
 
     private static final String COMMAND_EDIT_WORD = "edit";
     private static final String COMMAND_EDIT_DESC = "Edits a particular person record by a first find and then alter "
-                                        + "the name, phone or email by supplying argument exactly like add.";
+            + "the name, phone or email by supplying argument exactly like add.";
     private static final String COMMAND_EDIT_PARAMETER = "INDEX [MORE_KEYWORDS]";
     private static final String COMMAND_EDIT_EXAMPLE = COMMAND_EDIT_WORD + " 1 Bobby p/12345678 e/123@321.com d/1998-1-1";
 
@@ -151,7 +151,9 @@ public class AddressBook {
      * For example, a person's name is stored as the 0th element in the array.
      */
 
-    private enum PersonProperty {NAME , PHONE, EMAIL, DOB};
+    private enum PersonProperty {NAME, PHONE, EMAIL, DOB}
+
+    ;
 
     /**
      * Offset required to convert between 1-indexing and 0-indexing.COMMAND_
@@ -184,14 +186,14 @@ public class AddressBook {
     /**
      * List of all persons in the address book.
      */
-    private static final ArrayList<HashMap<PersonProperty, String> > ALL_PERSONS = new ArrayList<>();
+    private static final ArrayList<HashMap<PersonProperty, String>> ALL_PERSONS = new ArrayList<>();
 
     /**
      * Stores the most recent list of persons shown to the user as a result of a user command.
      * This is a subset of the full list. Deleting persons in the pull list does not delete
      * those persons from this list.
      */
-    private static ArrayList<HashMap<PersonProperty, String> > latestPersonListingView = getAllPersonsInAddressBook(); // initial view is of all
+    private static ArrayList<HashMap<PersonProperty, String>> latestPersonListingView = getAllPersonsInAddressBook(); // initial view is of all
 
     /**
      * The path to the file used for storing person data.
@@ -265,11 +267,9 @@ public class AddressBook {
         if (args.length >= 2) {
             showToUser(MESSAGE_INVALID_PROGRAM_ARGS);
             exitProgram();
-        }
-        else if (args.length == 1) {
+        } else if (args.length == 1) {
             setupGivenFileForStorage(args[0]);
-        }
-        else {
+        } else {
             setupDefaultFileForStorage();
         }
 
@@ -367,45 +367,45 @@ public class AddressBook {
     /**
      * Executes the command as specified by the {@code userInputString}
      *
-     * @param userInputString  raw input from user
-     * @return  feedback about how the command was executed
+     * @param userInputString raw input from user
+     * @return feedback about how the command was executed
      */
     private static String executeCommand(String userInputString) {
         final String[] commandTypeAndParams = splitCommandWordAndArgs(userInputString);
         final String commandType = commandTypeAndParams[0];
         final String commandArgs = commandTypeAndParams[1];
         switch (commandType) {
-        case COMMAND_ADD_WORD:
-            return executeAddPerson(commandArgs);
-        case COMMAND_FIND_WORD:
-            return executeFindPersons(commandArgs);
-        case COMMAND_LIST_WORD:
-            return executeListAllPersonsInAddressBook();
-        case COMMAND_SORT_WORD:
-            return executeSortAllPersonInAddressBook();
-        case COMMAND_DELETE_WORD:
-            return executeDeletePerson(commandArgs);
-        case COMMAND_EDIT_WORD:
-            return executeEditPerson(commandArgs);
-        case COMMAND_CLEAR_WORD:
-            return executeClearAddressBook();
-        case COMMAND_HELP_WORD:
-            return getUsageInfoForAllCommands();
-        case COMMAND_EXIT_WORD:
-            executeExitProgramRequest();
-        default:
-            return getMessageForInvalidCommandInput(commandType, getUsageInfoForAllCommands());
+            case COMMAND_ADD_WORD:
+                return executeAddPerson(commandArgs);
+            case COMMAND_FIND_WORD:
+                return executeFindPersons(commandArgs);
+            case COMMAND_LIST_WORD:
+                return executeListAllPersonsInAddressBook();
+            case COMMAND_SORT_WORD:
+                return executeSortAllPersonInAddressBook();
+            case COMMAND_DELETE_WORD:
+                return executeDeletePerson(commandArgs);
+            case COMMAND_EDIT_WORD:
+                return executeEditPerson(commandArgs);
+            case COMMAND_CLEAR_WORD:
+                return executeClearAddressBook();
+            case COMMAND_HELP_WORD:
+                return getUsageInfoForAllCommands();
+            case COMMAND_EXIT_WORD:
+                executeExitProgramRequest();
+            default:
+                return getMessageForInvalidCommandInput(commandType, getUsageInfoForAllCommands());
         }
     }
 
     /**
      * Splits raw user input into command word and command arguments string
      *
-     * @return  size 2 array; first element is the command type and second element is the arguments string
+     * @return size 2 array; first element is the command type and second element is the arguments string
      */
     private static String[] splitCommandWordAndArgs(String rawUserInput) {
-        final String[] split =  rawUserInput.trim().split("\\s+", 2);
-        return split.length == 2 ? split : new String[] { split[0] , "" }; // else case: no parameters
+        final String[] split = rawUserInput.trim().split("\\s+", 2);
+        return split.length == 2 ? split : new String[]{split[0], ""}; // else case: no parameters
     }
 
     /**
@@ -443,9 +443,9 @@ public class AddressBook {
     /**
      * Constructs a feedback message for a successful add person command execution.
      *
-     * @see #executeAddPerson(String)
      * @param addedPerson person who was successfully added
      * @return successful add person feedback message
+     * @see #executeAddPerson(String)
      */
     private static String getMessageForSuccessfulAddPerson(HashMap<PersonProperty, String> addedPerson) {
         return String.format(MESSAGE_ADDED,
@@ -476,7 +476,7 @@ public class AddressBook {
      * @param personsDisplayed used to generate summary
      * @return summary message for persons displayed
      */
-    private static String getMessageForPersonsDisplayedSummary(ArrayList<HashMap<PersonProperty, String> > personsDisplayed) {
+    private static String getMessageForPersonsDisplayedSummary(ArrayList<HashMap<PersonProperty, String>> personsDisplayed) {
         return String.format(MESSAGE_PERSONS_FOUND_OVERVIEW, personsDisplayed.size());
     }
 
@@ -518,10 +518,11 @@ public class AddressBook {
      * Execute edit person, rationale as that to edit, we delete the original person and update (add) a new one
      * For now, the newly edited person is put at the end, no meaning to remain the numbering, because the index
      * can come from a find, which makes the indices meaningless
+     *
      * @param commandArgs, the command args specified in example
      * @return string to indicate the successfully edit or failures
      */
-    private static String executeEditPerson (String commandArgs) {
+    private static String executeEditPerson(String commandArgs) {
 
         //initialization
         int index;
@@ -532,7 +533,7 @@ public class AddressBook {
             final String[] split = commandArgs.trim().split("\\s+", 2); //exclude edit command and index
             index = Integer.parseInt(split[0]);
             personArgs = split[1];
-        } catch (Exception e ) {
+        } catch (Exception e) {
             return getMessageForInvalidCommandInput(COMMAND_EDIT_WORD, getUsageInfoForEditCommand());
         }
 
@@ -560,10 +561,11 @@ public class AddressBook {
 
     /**
      * check edit index input validity
+     *
      * @param index, integer representing the index inputted
      * @return the validity, true as valid
      */
-    private static boolean isEditIndexValid (int index) {
+    private static boolean isEditIndexValid(int index) {
         try {
             return index >= DISPLAYED_INDEX_OFFSET;
         } catch (NumberFormatException nfe) {
@@ -573,6 +575,7 @@ public class AddressBook {
 
     /**
      * Return a string of message for successfully edited person
+     *
      * @param editedPerson, a hashmap structure
      * @return a string for successfully edited person details
      */
@@ -591,7 +594,7 @@ public class AddressBook {
      * @param commandArgs full command args string from the user
      * @return feedback display message for the operation result
      */
-    private static String executeDeletePerson (String commandArgs) {
+    private static String executeDeletePerson(String commandArgs) {
         if (!isDeletePersonArgsValid(commandArgs)) {
             return getMessageForInvalidCommandInput(COMMAND_DELETE_WORD, getUsageInfoForDeleteCommand());
         }
@@ -601,7 +604,7 @@ public class AddressBook {
         }
         final HashMap<PersonProperty, String> targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
         return deletePersonFromAddressBook(targetInModel) ? getMessageForSuccessfulDelete(targetInModel) // success
-                                                          : MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
+                : MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
     }
 
     /**
@@ -610,7 +613,7 @@ public class AddressBook {
      * @param rawArgs raw command args string for the delete person command
      * @return whether the input args string is valid
      */
-    private static boolean isDeletePersonArgsValid (String rawArgs) {
+    private static boolean isDeletePersonArgsValid(String rawArgs) {
         try {
             final int extractedIndex = Integer.parseInt(rawArgs.trim()); // use standard libraries to parse
             return extractedIndex >= DISPLAYED_INDEX_OFFSET;
@@ -625,7 +628,7 @@ public class AddressBook {
      * @param rawArgs raw command args string for the delete person command
      * @return extracted index
      */
-    private static int extractTargetIndexFromDeletePersonArgs (String rawArgs) {
+    private static int extractTargetIndexFromDeletePersonArgs(String rawArgs) {
         return Integer.parseInt(rawArgs.trim());
     }
 
@@ -642,9 +645,9 @@ public class AddressBook {
     /**
      * Constructs a feedback message for a successful delete person command execution.
      *
-     * @see #executeDeletePerson(String)
      * @param deletedPerson successfully deleted
      * @return successful delete person feedback message
+     * @see #executeDeletePerson(String)
      */
     private static String getMessageForSuccessfulDelete(HashMap<PersonProperty, String> deletedPerson) {
         return String.format(MESSAGE_DELETE_PERSON_SUCCESS, getMessageForFormattedPersonData(deletedPerson));
@@ -666,17 +669,18 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeListAllPersonsInAddressBook() {
-        ArrayList<HashMap<PersonProperty, String> > toBeDisplayed = getAllPersonsInAddressBook();
+        ArrayList<HashMap<PersonProperty, String>> toBeDisplayed = getAllPersonsInAddressBook();
         showToUser(toBeDisplayed);
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
     }
 
     /**
      * Sorts and then Displays all persons in the address book; in alphabetical order. (ASCII standard)
+     *
      * @return feedback display message for the operation result
      */
     private static String executeSortAllPersonInAddressBook() {
-        ArrayList<HashMap<PersonProperty, String> > persons = sortAllPersonsInAddressBook();
+        ArrayList<HashMap<PersonProperty, String>> persons = sortAllPersonsInAddressBook();
 
         //delete all the users and then gradually add each Person into the address book.
         clearAddressBook();
@@ -690,15 +694,16 @@ public class AddressBook {
 
     /**
      * Sorts all the persons currently inside the address book.
+     *
      * @return the alphabetically sorted person collection
      */
     private static ArrayList<HashMap<PersonProperty, String>> sortAllPersonsInAddressBook() {
-        ArrayList<HashMap<PersonProperty, String> > retrieved = getAllPersonsInAddressBook();
-        ArrayList<HashMap<PersonProperty, String> > persons = new ArrayList<>();
+        ArrayList<HashMap<PersonProperty, String>> retrieved = getAllPersonsInAddressBook();
+        ArrayList<HashMap<PersonProperty, String>> persons = new ArrayList<>();
         for (HashMap<PersonProperty, String> person : retrieved) {
             persons.add(hashMapDeepCopy(person));
         }
-        Collections.sort (persons, new HashMapComparator ());
+        Collections.sort(persons, new HashMapComparator());
         return persons;
     }
 
@@ -750,7 +755,6 @@ public class AddressBook {
     /**
      * Shows the list of persons to the user.
      * The list will be indexed, starting from 1.
-     *
      */
     private static void showToUser(ArrayList<HashMap<PersonProperty, String>> persons) {
         String listAsString = getDisplayString(persons);
@@ -761,14 +765,14 @@ public class AddressBook {
     /**
      * Returns the display string representation of the list of persons.
      */
-    private static String getDisplayString(ArrayList<HashMap<PersonProperty, String> > persons) {
+    private static String getDisplayString(ArrayList<HashMap<PersonProperty, String>> persons) {
         final StringBuilder messageAccumulator = new StringBuilder();
         for (int i = 0; i < persons.size(); i++) {
             final HashMap<PersonProperty, String> person = persons.get(i);
             final int displayIndex = i + DISPLAYED_INDEX_OFFSET;
             messageAccumulator.append('\t')
-                              .append(getIndexedPersonListElementMessage(displayIndex, person))
-                              .append(LS);
+                    .append(getIndexedPersonListElementMessage(displayIndex, person))
+                    .append(LS);
         }
         return messageAccumulator.toString();
     }
@@ -777,7 +781,7 @@ public class AddressBook {
      * Constructs a prettified listing element message to represent a person and their data.
      *
      * @param visibleIndex visible index for this listing
-     * @param person to show
+     * @param person       to show
      * @return formatted listing message with index
      */
     private static String getIndexedPersonListElementMessage(int visibleIndex, HashMap<PersonProperty, String> person) {
@@ -812,7 +816,7 @@ public class AddressBook {
      * @return the actual person object in the last shown person listing
      */
     private static HashMap<PersonProperty, String> getPersonByLastVisibleIndex(int lastVisibleIndex) {
-       return latestPersonListingView.get(lastVisibleIndex - DISPLAYED_INDEX_OFFSET);
+        return latestPersonListingView.get(lastVisibleIndex - DISPLAYED_INDEX_OFFSET);
     }
 
 
@@ -851,8 +855,8 @@ public class AddressBook {
      * @param filePath file to load from
      * @return the list of decoded persons
      */
-    private static ArrayList<HashMap<PersonProperty, String> > loadPersonsFromFile(String filePath) {
-        final Optional<ArrayList<HashMap<PersonProperty, String> > > successfullyDecoded = decodePersonsFromStrings(getLinesInFile(filePath));
+    private static ArrayList<HashMap<PersonProperty, String>> loadPersonsFromFile(String filePath) {
+        final Optional<ArrayList<HashMap<PersonProperty, String>>> successfullyDecoded = decodePersonsFromStrings(getLinesInFile(filePath));
         if (!successfullyDecoded.isPresent()) {
             showToUser(MESSAGE_INVALID_STORAGE_FILE_CONTENT);
             exitProgram();
@@ -883,7 +887,7 @@ public class AddressBook {
      *
      * @param filePath file for saving
      */
-    private static void savePersonsToFile(ArrayList<HashMap<PersonProperty, String> > persons, String filePath) {
+    private static void savePersonsToFile(ArrayList<HashMap<PersonProperty, String>> persons, String filePath) {
         final ArrayList<String> linesToWrite = encodePersonsToStrings(persons);
         try {
             Files.write(Paths.get(storageFilePath), linesToWrite);
@@ -944,7 +948,7 @@ public class AddressBook {
      *
      * @param persons list of persons to initialise the model with
      */
-    private static void initialiseAddressBookModel(ArrayList<HashMap<PersonProperty, String> > persons) {
+    private static void initialiseAddressBookModel(ArrayList<HashMap<PersonProperty, String>> persons) {
         ALL_PERSONS.clear();
         ALL_PERSONS.addAll(persons);
     }
@@ -996,7 +1000,7 @@ public class AddressBook {
     /**
      * Creates a person from the given data.
      *
-     * @param name of person
+     * @param name  of person
      * @param phone without data prefix
      * @param email without data prefix
      * @return constructed person in a HashMap Format
@@ -1020,7 +1024,7 @@ public class AddressBook {
         return String.format(PERSON_STRING_REPRESENTATION,
                 getNameFromPerson(person), getPhoneFromPerson(person), getEmailFromPerson(person),
                 getDOBFromPerson(person)
-                );
+        );
     }
 
     /**
@@ -1029,7 +1033,7 @@ public class AddressBook {
      * @param persons to be encoded
      * @return encoded strings
      */
-    private static ArrayList<String> encodePersonsToStrings(ArrayList<HashMap<PersonProperty, String> > persons) {
+    private static ArrayList<String> encodePersonsToStrings(ArrayList<HashMap<PersonProperty, String>> persons) {
         final ArrayList<String> encoded = new ArrayList<>();
         for (HashMap<PersonProperty, String> person : persons) {
             encoded.add(encodePersonToString(person));
@@ -1049,7 +1053,7 @@ public class AddressBook {
      *
      * @param encoded string to be decoded
      * @return if cannot decode: empty Optional
-     *         else: Optional containing decoded person in a HashMap Format
+     * else: Optional containing decoded person in a HashMap Format
      */
     private static Optional<HashMap<PersonProperty, String>> decodePersonFromString(String encoded) {
         // check that we can extract the parts of a person from the encoded string
@@ -1072,7 +1076,7 @@ public class AddressBook {
      *
      * @param encodedPersons strings to be decoded
      * @return if cannot decode any: empty Optional
-     *         else: Optional containing decoded persons
+     * else: Optional containing decoded persons
      */
     private static Optional<ArrayList<HashMap<PersonProperty, String>>> decodePersonsFromStrings(ArrayList<String> encodedPersons) {
         final ArrayList<HashMap<PersonProperty, String>> decodedPersons = new ArrayList<>();
@@ -1134,26 +1138,25 @@ public class AddressBook {
             return removePrefixSign(encoded.substring(indexOfPhonePrefix, encoded.length()).trim(),
                     PERSON_DATA_PREFIX_PHONE);
 
-        // phone is middle arg, DOB is the last. target is from own prefix to next prefix
+            // phone is middle arg, DOB is the last. target is from own prefix to next prefix
         } else if (indexOfPhonePrefix > indexOfEmailPrefix && indexOfPhonePrefix < indexOfDOBPrefix) {
             return removePrefixSign(
                     encoded.substring(indexOfPhonePrefix, indexOfDOBPrefix).trim(),
                     PERSON_DATA_PREFIX_PHONE);
 
-        // phone is the middle arg, Email is the last. target is from own prefix to next prefix
-        } else if (indexOfPhonePrefix < indexOfEmailPrefix && indexOfPhonePrefix > indexOfDOBPrefix ) {
+            // phone is the middle arg, Email is the last. target is from own prefix to next prefix
+        } else if (indexOfPhonePrefix < indexOfEmailPrefix && indexOfPhonePrefix > indexOfDOBPrefix) {
             return removePrefixSign(
                     encoded.substring(indexOfPhonePrefix, indexOfEmailPrefix).trim(),
                     PERSON_DATA_PREFIX_PHONE);
 
-        //phone is the middle arg, but in front of any of the other two prefix. target is to the next (conditional)
+            //phone is the middle arg, but in front of any of the other two prefix. target is to the next (conditional)
         } else {
             if (indexOfDOBPrefix > indexOfEmailPrefix) {
                 return removePrefixSign(
                         encoded.substring(indexOfPhonePrefix, indexOfEmailPrefix).trim(),
                         PERSON_DATA_PREFIX_PHONE);
-            }
-            else {
+            } else {
                 return removePrefixSign(
                         encoded.substring(indexOfPhonePrefix, indexOfDOBPrefix).trim(),
                         PERSON_DATA_PREFIX_PHONE);
@@ -1179,26 +1182,25 @@ public class AddressBook {
             return removePrefixSign(encoded.substring(indexOfEmailPrefix, encoded.length()).trim(),
                     PERSON_DATA_PREFIX_EMAIL);
 
-        // email is middle arg, DOB is the last. target is from own prefix to next prefix
+            // email is middle arg, DOB is the last. target is from own prefix to next prefix
         } else if (indexOfEmailPrefix > indexOfPhonePrefix && indexOfEmailPrefix < indexOfDOBPrefix) {
             return removePrefixSign(
                     encoded.substring(indexOfEmailPrefix, indexOfDOBPrefix).trim(),
                     PERSON_DATA_PREFIX_EMAIL);
 
-        // email is the middle arg, Phone is the last. target is from own prefix to next prefix
-        } else if (indexOfEmailPrefix < indexOfPhonePrefix && indexOfEmailPrefix > indexOfDOBPrefix ) {
+            // email is the middle arg, Phone is the last. target is from own prefix to next prefix
+        } else if (indexOfEmailPrefix < indexOfPhonePrefix && indexOfEmailPrefix > indexOfDOBPrefix) {
             return removePrefixSign(
                     encoded.substring(indexOfEmailPrefix, indexOfPhonePrefix).trim(),
                     PERSON_DATA_PREFIX_EMAIL);
 
-        //email is the middle arg, but in front of any of the other two prefix. target is to the next (conditional)
+            //email is the middle arg, but in front of any of the other two prefix. target is to the next (conditional)
         } else {
             if (indexOfDOBPrefix > indexOfPhonePrefix) {
                 return removePrefixSign(
                         encoded.substring(indexOfEmailPrefix, indexOfPhonePrefix).trim(),
                         PERSON_DATA_PREFIX_EMAIL);
-            }
-            else {
+            } else {
                 return removePrefixSign(
                         encoded.substring(indexOfEmailPrefix, indexOfDOBPrefix).trim(),
                         PERSON_DATA_PREFIX_EMAIL);
@@ -1222,26 +1224,25 @@ public class AddressBook {
             return removePrefixSign(encoded.substring(indexOfDOBPrefix, encoded.length()).trim(),
                     PERSON_DATA_PREFIX_DOB);
 
-        // dob is middle arg, email is the last. target is from own prefix to next prefix
+            // dob is middle arg, email is the last. target is from own prefix to next prefix
         } else if (indexOfDOBPrefix > indexOfPhonePrefix && indexOfDOBPrefix < indexOfEmailPrefix) {
             return removePrefixSign(
                     encoded.substring(indexOfDOBPrefix, indexOfEmailPrefix).trim(),
                     PERSON_DATA_PREFIX_DOB);
 
-        // dob is the middle arg, Phone is the last. target is from own prefix to next prefix
-        } else if (indexOfDOBPrefix < indexOfPhonePrefix && indexOfDOBPrefix > indexOfEmailPrefix ) {
+            // dob is the middle arg, Phone is the last. target is from own prefix to next prefix
+        } else if (indexOfDOBPrefix < indexOfPhonePrefix && indexOfDOBPrefix > indexOfEmailPrefix) {
             return removePrefixSign(
                     encoded.substring(indexOfDOBPrefix, indexOfPhonePrefix).trim(),
                     PERSON_DATA_PREFIX_DOB);
 
-        // dob is the middle arg, but in front of any of the other two prefix. target is to the next (conditional)
+            // dob is the middle arg, but in front of any of the other two prefix. target is to the next (conditional)
         } else {
             if (indexOfEmailPrefix > indexOfPhonePrefix) {
                 return removePrefixSign(
                         encoded.substring(indexOfDOBPrefix, indexOfPhonePrefix).trim(),
                         PERSON_DATA_PREFIX_DOB);
-            }
-            else {
+            } else {
                 return removePrefixSign(
                         encoded.substring(indexOfDOBPrefix, indexOfEmailPrefix).trim(),
                         PERSON_DATA_PREFIX_DOB);
@@ -1317,7 +1318,9 @@ public class AddressBook {
      * ===============================================
      */
 
-    /** Returns usage info for all commands */
+    /**
+     * Returns usage info for all commands
+     */
     private static String getUsageInfoForAllCommands() {
         return getUsageInfoForAddCommand() + LS
                 + getUsageInfoForFindCommand() + LS
@@ -1330,40 +1333,52 @@ public class AddressBook {
                 + getUsageInfoForHelpCommand();
     }
 
-    /** Returns the string for showing 'add' command usage instruction */
+    /**
+     * Returns the string for showing 'add' command usage instruction
+     */
     private static String getUsageInfoForAddCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_ADD_WORD, COMMAND_ADD_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_ADD_PARAMETERS) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_ADD_EXAMPLE) + LS;
     }
 
-    /** Returns the string for showing 'find' command usage instruction */
+    /**
+     * Returns the string for showing 'find' command usage instruction
+     */
     private static String getUsageInfoForFindCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_FIND_WORD, COMMAND_FIND_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_FIND_PARAMETERS) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_FIND_EXAMPLE) + LS;
     }
 
-    /** Returns the string for showing 'delete' command usage instruction */
+    /**
+     * Returns the string for showing 'delete' command usage instruction
+     */
     private static String getUsageInfoForDeleteCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_DELETE_WORD, COMMAND_DELETE_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_DELETE_PARAMETER) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_DELETE_EXAMPLE) + LS;
     }
 
-    /** Returns string for showing 'clear' command usage instruction */
+    /**
+     * Returns string for showing 'clear' command usage instruction
+     */
     private static String getUsageInfoForClearCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_CLEAR_WORD, COMMAND_CLEAR_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_CLEAR_EXAMPLE) + LS;
     }
 
-    /** Returns the string for showing 'view' command usage instruction */
+    /**
+     * Returns the string for showing 'view' command usage instruction
+     */
     private static String getUsageInfoForViewCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_LIST_WORD, COMMAND_LIST_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_LIST_EXAMPLE) + LS;
     }
 
-    /** Returns string for showing 'sort' command usage instruction */
+    /**
+     * Returns string for showing 'sort' command usage instruction
+     */
     private static String getUsageInfoForSortCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_SORT_WORD, COMMAND_SORT_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_SORT_EXAMPLE) + LS;
@@ -1375,13 +1390,17 @@ public class AddressBook {
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_EDIT_EXAMPLE) + LS;
     }
 
-    /** Returns string for showing 'help' command usage instruction */
+    /**
+     * Returns string for showing 'help' command usage instruction
+     */
     private static String getUsageInfoForHelpCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_HELP_WORD, COMMAND_HELP_DESC)
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_HELP_EXAMPLE);
     }
 
-    /** Returns the string for showing 'exit' command usage instruction */
+    /**
+     * Returns the string for showing 'exit' command usage instruction
+     */
     private static String getUsageInfoForExitCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_EXIT_WORD, COMMAND_EXIT_DESC)
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_EXIT_EXAMPLE);
@@ -1397,9 +1416,9 @@ public class AddressBook {
     /**
      * Removes prefix(p/, d/, etc) from parameter string if the prefix occurs at the start of the fullString
      *
-     * @param fullString  Parameter as a fullString
-     * @param prefix  Parameter prefix to be removed
-     * @return  string without the sign
+     * @param fullString Parameter as a fullString
+     * @param prefix     Parameter prefix to be removed
+     * @return string without the sign
      */
     private static String removePrefixSign(String fullString, String prefix) {
         if (fullString.startsWith(prefix)) {
@@ -1423,9 +1442,10 @@ public class AddressBook {
      */
     private static class HashMapComparator implements Comparator<HashMap<PersonProperty, String>> {
 
-        public HashMapComparator () {}
+        public HashMapComparator() {
+        }
 
-        public int compare (HashMap<PersonProperty, String> person1, HashMap<PersonProperty, String> person2) {
+        public int compare(HashMap<PersonProperty, String> person1, HashMap<PersonProperty, String> person2) {
             String name1 = person1.get(PersonProperty.NAME);
             String name2 = person2.get(PersonProperty.NAME);
             return name1.compareTo(name2);
@@ -1434,10 +1454,11 @@ public class AddressBook {
 
     /**
      * A HashMap deepcopier that takes one hashmap and return a newly created deep copy by key value pairs
+     *
      * @param src, the src HashMap to be copied
      * @return des, the des HashMap copied to be returned
      */
-    private static HashMap<PersonProperty, String> hashMapDeepCopy (HashMap<PersonProperty, String> src) {
+    private static HashMap<PersonProperty, String> hashMapDeepCopy(HashMap<PersonProperty, String> src) {
         HashMap<PersonProperty, String> des = new HashMap<>();
         for (PersonProperty key : src.keySet()) {
             des.put(key, src.get(key));
