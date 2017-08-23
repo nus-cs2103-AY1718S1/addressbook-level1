@@ -872,9 +872,9 @@ public class AddressBook {
      */
     private static HashMap <String, String> makePersonFromData(String name, String phone, String email) {
         final HashMap <String, String> person = new HashMap<String, String> ();
-        person[PERSON_PROPERTY_NAME] = name;
-        person[PERSON_PROPERTY_PHONE] = phone;
-        person[PERSON_PROPERTY_EMAIL] = email;
+        person.put(PERSON_PROPERTY_NAME, name);
+        person.put(PERSON_PROPERTY_EMAIL, email);
+        person.put(PERSON_PROPERTY_PHONE, phone);
         return person;
     }
 
