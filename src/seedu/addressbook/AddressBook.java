@@ -1031,9 +1031,9 @@ public class AddressBook {
      * @param person String array representing the person (used in internal data)
      */
     private static boolean isPersonDataValid(HashMap<String, String> person) {
-        return isPersonNameValid(person[PERSON_PROPERTY_NAME])
-                && isPersonPhoneValid(person[PERSON_PROPERTY_PHONE])
-                && isPersonEmailValid(person[PERSON_PROPERTY_EMAIL]);
+        return isPersonNameValid(person.get(PERSON_PROPERTY_NAME))
+                && isPersonPhoneValid(person.get(PERSON_PROPERTY_PHONE))
+                && isPersonEmailValid(person.get(PERSON_PROPERTY_EMAIL));
     }
 
     /*
