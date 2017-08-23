@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.HashMap;
 
 /*
  * NOTE : =============================================================
@@ -869,11 +870,11 @@ public class AddressBook {
      * @param email without data prefix
      * @return constructed person
      */
-    private static String[] makePersonFromData(String name, String phone, String email) {
-        final String[] person = new String[PERSON_DATA_COUNT];
-        person[PERSON_DATA_INDEX_NAME] = name;
-        person[PERSON_DATA_INDEX_PHONE] = phone;
-        person[PERSON_DATA_INDEX_EMAIL] = email;
+    private static HashMap <String, String> makePersonFromData(String name, String phone, String email) {
+        final HashMap <String, String> person = new HashMap<String, String> ();
+        person[PERSON_PROPERTY_NAME] = name;
+        person[PERSON_PROPERTY_PHONE] = phone;
+        person[PERSON_PROPERTY_EMAIL] = email;
         return person;
     }
 
