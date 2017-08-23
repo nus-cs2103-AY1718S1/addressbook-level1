@@ -618,6 +618,18 @@ public class AddressBook {
         }
     }
 
+    /*
+    private static void showToUser(String[] message) {
+        for (String m : message) {
+            System.out.println(LINE_PREFIX + m);
+        }
+    }
+
+    private static void showToUser(String message) {
+        System.out.println(LINE_PREFIX + message);
+    }
+    */
+
     /**
      * Shows the list of persons to the user.
      * The list will be indexed, starting from 1.
