@@ -141,9 +141,10 @@ public class AddressBook {
      * used by the internal String[] storage format.
      * For example, a person's name is stored as the 0th element in the array.
      */
-    private static final int PERSON_DATA_INDEX_NAME = 0;
-    private static final int PERSON_DATA_INDEX_PHONE = 1;
-    private static final int PERSON_DATA_INDEX_EMAIL = 2;
+
+    private static final String PERSON_PROPERTY_NAME = "name";
+    private static final String PERSON_PROPERTY_EMAIL = "email";
+    private static final String PERSON_PROPERTY_PHONE = "phone";
 
     /**
      * The number of data elements for a single person.
