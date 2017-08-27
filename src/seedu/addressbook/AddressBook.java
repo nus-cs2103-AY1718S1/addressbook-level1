@@ -6,7 +6,10 @@ package seedu.addressbook;
  * Yes, it is possible to write non-OO code using an OO language.
  * ====================================================================
  */
-//PROJECT TODO: Password, Dynamic fields, Filter (WHERE and LIKE)
+//PROJECT TODO: Generic Parameter Collection
+//PROJECT TODO: Password
+//PROJECT TODO: Dynamic fields
+//PROJECT TODO: Filter
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -1181,6 +1184,7 @@ public class AddressBook {
      * @return true if the given person was found and deleted in the model
      */
     private static boolean deletePersonFromAddressBook(Person exactPerson) {
+        //TODO: "confirm delete?" query before delete
         final boolean changed = ALL_PERSONS.remove(exactPerson);
         if (changed) {
             savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
@@ -1217,6 +1221,7 @@ public class AddressBook {
         return ALL_PERSONS;
     }
 
+    //TODO: parse parameter implmentation
     /**
      *
      * @param rawArgs raw command args string for the delete person command
@@ -1236,7 +1241,8 @@ public class AddressBook {
      */
     private static ArrayList<Person> getSortedPersonsInAddressBook(ArrayList<Person> persons, String[] sortArgs) {
         ArrayList<Person> sortedPersons = new ArrayList<>(persons);
-        for (int i = sortArgs.length - 1; i >= 0; i--) {//loop will iterate in reverse order (sortArgs[0] has highest priority)
+        //loop will iterate in reverse order (sortArgs[0] has highest priority)
+        for (int i = sortArgs.length - 1; i >= 0; i--) {
             switch (sortArgs[i]) {
                 case PERSON_DATA_PREFIX_NAME:
                     sortedPersons.sort(Comparator.comparing(Person::getName)); break;
@@ -1436,6 +1442,7 @@ public class AddressBook {
      * @return sort arguments substring
      */
     private static String extractSortParameters(String findPersonCommandArgs) {
+        //TODO extract generic parameter implementation
         String[] splitWords = findPersonCommandArgs.split(" ");
         StringBuilder sortParameterStringBuilder = new StringBuilder();
         for (String word : splitWords) {
