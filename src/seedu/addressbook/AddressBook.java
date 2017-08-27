@@ -736,11 +736,11 @@ public class AddressBook {
      */
     private static ArrayList<HashMap<String, String>> loadPersonsFromFile(String filePath) {
         final Optional<ArrayList<HashMap<String, String>>> successfullyDecoded = decodePersonsFromStrings(getLinesInFile(filePath));
-        if (!successfullyDecoded.isPresent()) {
-            showToUser(MESSAGE_INVALID_STORAGE_FILE_CONTENT);
-            exitProgram();
+        if (successfullyDecoded.isPresent()) {
+            return successfullyDecoded.get();
         }
-        return successfullyDecoded.get();
+        showToUser(MESSAGE_INVALID_STORAGE_FILE_CONTENT);
+        exitProgram();
     }
 
     /**
@@ -923,16 +923,16 @@ public class AddressBook {
      */
     private static Optional<HashMap<String, String>> decodePersonFromString(String encoded) {
         // check that we can extract the parts of a person from the encoded string
-        if (!isPersonDataExtractableFrom(encoded)) {
-            return Optional.empty();
+        if (isPersonDataExtractableFrom(encoded)) {
+            final HashMap<String, String> decodedPerson = makePersonFromData(
+                    extractNameFromPersonString(encoded),
+                    extractPhoneFromPersonString(encoded),
+                    extractEmailFromPersonString(encoded)
+            );
+            // check that the constructed person is valid
+            return isPersonDataValid(decodedPerson) ? Optional.of(decodedPerson) : Optional.empty();
         }
-        final HashMap<String, String> decodedPerson = makePersonFromData(
-                extractNameFromPersonString(encoded),
-                extractPhoneFromPersonString(encoded),
-                extractEmailFromPersonString(encoded)
-        );
-        // check that the constructed person is valid
-        return isPersonDataValid(decodedPerson) ? Optional.of(decodedPerson) : Optional.empty();
+        return Optional.empty();
     }
 
     /**
