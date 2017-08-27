@@ -737,10 +737,10 @@ public class AddressBook {
     private static ArrayList<HashMap<String, String>> loadPersonsFromFile(String filePath) {
         final Optional<ArrayList<HashMap<String, String>>> successfullyDecoded = decodePersonsFromStrings(getLinesInFile(filePath));
         if (successfullyDecoded.isPresent()) {
-            return successfullyDecoded.get();
+            showToUser(MESSAGE_INVALID_STORAGE_FILE_CONTENT);
+            exitProgram();
         }
-        showToUser(MESSAGE_INVALID_STORAGE_FILE_CONTENT);
-        exitProgram();
+        return successfullyDecoded.get();
     }
 
     /**
@@ -963,10 +963,12 @@ public class AddressBook {
     private static boolean isPersonDataExtractableFrom(String personData) {
         final String matchAnyPersonDataPrefix = PERSON_DATA_PREFIX_PHONE + '|' + PERSON_DATA_PREFIX_EMAIL;
         final String[] splitArgs = personData.trim().split(matchAnyPersonDataPrefix);
-        return splitArgs.length == 3 // 3 arguments
-                && !splitArgs[0].isEmpty() // non-empty arguments
-                && !splitArgs[1].isEmpty()
-                && !splitArgs[2].isEmpty();
+        for (String arg: splitArgs) {
+            if (arg.isEmpty()) {
+                return false;
+            }
+        }
+        return splitArgs.length == PERSON_DATA_COUNT;
     }
 
     /**
