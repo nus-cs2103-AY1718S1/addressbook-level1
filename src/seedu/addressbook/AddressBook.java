@@ -1106,8 +1106,7 @@ public class AddressBook {
                 && !splitArgs[2].isEmpty()
                 && !splitArgs[3].isEmpty();
     }
-ls
-    œ∑
+
     /**
      * Extracts substring representing person name from person string representation
      *
