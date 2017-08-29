@@ -98,9 +98,9 @@ public class AddressBook {
                                                       + PERSON_DATA_PREFIX_EMAIL + "EMAIL";
     private static final String COMMAND_ADD_EXAMPLE = COMMAND_ADD_WORD + " John Doe p/98765432 e/johnd@gmail.com";
 
-    private static final String COMMAND_SORT_WORD = "sortby";
-    private static final String COMMAND_SORT_DESC = "Sorts list of persons from the last find/list call by input field";
-    private static final String COMMAND_SORT_PARAMETER = "FIELD"
+    private static final String COMMAND_SORT_WORD = "sort";
+    private static final String COMMAND_SORT_DESC = "Sorts persons from the last find/list call by asc/desc name order";
+    private static final String COMMAND_SORT_PARAMETER = "ASC/DESC"
     private static final String COMMAND_SORT_EXAMPLE = COMMAND_SORT_WORD + " NAME";
 
     private static final String COMMAND_FIND_WORD = "find";
@@ -1098,6 +1098,7 @@ public class AddressBook {
     /** Returns usage info for all commands */
     private static String getUsageInfoForAllCommands() {
         return getUsageInfoForAddCommand() + LS
+                + getUsageInfoForSortCommand() + LS
                 + getUsageInfoForFindCommand() + LS
                 + getUsageInfoForViewCommand() + LS
                 + getUsageInfoForDeleteCommand() + LS
@@ -1111,6 +1112,13 @@ public class AddressBook {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_ADD_WORD, COMMAND_ADD_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_ADD_PARAMETERS) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_ADD_EXAMPLE) + LS;
+    }
+
+    /** Returns the string for showing 'sort' command usage instruction */
+    private static String getUsageInfoForSortCommand() {
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_SORT_WORD, COMMAND_SORT_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_SORT_PARAMETER) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_SORT_EXAMPLE) + LS;
     }
 
     /** Returns the string for showing 'find' command usage instruction */
