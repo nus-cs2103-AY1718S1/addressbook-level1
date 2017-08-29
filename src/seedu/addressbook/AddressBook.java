@@ -98,6 +98,11 @@ public class AddressBook {
                                                       + PERSON_DATA_PREFIX_EMAIL + "EMAIL";
     private static final String COMMAND_ADD_EXAMPLE = COMMAND_ADD_WORD + " John Doe p/98765432 e/johnd@gmail.com";
 
+    private static final String COMMAND_SORT_WORD = "sortby";
+    private static final String COMMAND_SORT_DESC = "Sorts list of persons from the last find/list call by input field";
+    private static final String COMMAND_SORT_PARAMETER = "FIELD"
+    private static final String COMMAND_SORT_EXAMPLE = COMMAND_SORT_WORD + " NAME";
+
     private static final String COMMAND_FIND_WORD = "find";
     private static final String COMMAND_FIND_DESC = "Finds all persons whose names contain any of the specified "
                                         + "keywords (case-sensitive) and displays them as a list with index numbers.";
@@ -365,6 +370,8 @@ public class AddressBook {
         switch (commandType) {
             case COMMAND_ADD_WORD:
                 return executeAddPerson(commandArgs);
+            case COMMAND_SORT_BY:
+                return executeSortPerson(commandArgs);
             case COMMAND_FIND_WORD:
                 return executeFindPersons(commandArgs);
             case COMMAND_LIST_WORD:
