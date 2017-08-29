@@ -99,8 +99,8 @@ public class AddressBook {
     private static final String COMMAND_ADD_EXAMPLE = COMMAND_ADD_WORD + " John Doe p/98765432 e/johnd@gmail.com";
 
     private static final String COMMAND_SORT_WORD = "sort";
-    private static final String COMMAND_SORT_DESC = "Sorts persons from the last find/list call by asc/desc name order";
-    private static final String COMMAND_SORT_PARAMETER = "ASC/DESC"
+    private static final String COMMAND_SORT_DESC = "Sorts persons list by asc/desc name order";
+    private static final String COMMAND_SORT_PARAMETER = "ASC/DESC";
     private static final String COMMAND_SORT_EXAMPLE = COMMAND_SORT_WORD + " NAME";
 
     private static final String COMMAND_FIND_WORD = "find";
@@ -511,6 +511,38 @@ public class AddressBook {
         final HashMap<String, String> targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
         return deletePersonFromAddressBook(targetInModel) ? getMessageForSuccessfulDelete(targetInModel) // success
                                                           : MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
+    }
+
+    /**
+     * Sorts entries by ascending or descending order by NAME
+     *
+     * @param commandArgs full command args string from the user
+     * @return feedback display message for the operation result
+     */
+    private static String executeSortPerson(String commandArgs) {
+        ArrayList<HashMap<String, String>> targetPersonList = ALL_PERSONS;
+
+        ArrayList<String> personNames = new ArrayList<String> ();
+        HashMap<String, HashMap<String, String>> bruteHash = new HashMap<String, HashMap<String, String>> ();
+        for (HashMap<String, String> person: targetPersonList) {
+            personNames.add(person.get(PERSON_PROPERTY_NAME));
+            bruteHash.put(person.get(PERSON_PROPERTY_NAME), person);
+        }
+
+        if (commandArgs.equals("ASC")) {
+            Collections.sort(personNames);
+        } else if (commandArgs.equals("DESC")) {
+            Collections.sort(targetPersonList, Collections.reverseOrder());
+        } else {
+            return getMessageForInvalidCommandInput(COMMAND_SORT_WORD, getUsageInfoForSortCommand());
+        }
+
+        targetPersonList.clear();
+        for (String name: personNames) {
+            addPersonToAddressBook(bruteHash.get(name));
+        }
+
+        return getMessageForPersonsDisplayedSummary(targetPersonList);
     }
 
     /**
