@@ -871,7 +871,6 @@ public class AddressBook {
         person[PERSON_DATA_INDEX_NAME] = name;
         person[PERSON_DATA_INDEX_PHONE] = phone;
         person[PERSON_DATA_INDEX_EMAIL] = email;
-        System.out.printf("TEST: %s, %s, %s\n", name, phone, email);
         return person;
     }
 
@@ -979,11 +978,10 @@ public class AddressBook {
 
         // Name is a special case since it has fixed position but no prefix
         if (field.equals("name")) {
-            return person_encoded.split(sep)[0];
+            return person_encoded.split(sep)[0].trim();
         }
 
         String prefix = PERSON_DATA_PREFIXES.get(field);
-        System.out.println("Sep:: " + sep);
         Pattern p = Pattern.compile("(?:"+prefix+")(.+?)(?:\\s|$)");
         Matcher m = p.matcher(person_encoded);
         if (m.find()) return m.group(1);
