@@ -14,14 +14,10 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /*
  * NOTE : =============================================================
@@ -92,17 +88,24 @@ public class AddressBook {
     private static final String MESSAGE_USING_DEFAULT_FILE = "Using default storage file : " + DEFAULT_STORAGE_FILEPATH;
 
     // These are the prefix strings to define the data type of a command parameter
-    private static final String PERSON_DATA_PREFIX_PHONE = "p/";
-    private static final String PERSON_DATA_PREFIX_EMAIL = "e/";
+    private static final Map<String, String> PERSON_DATA_PREFIXES = createPrefixesHash();
+    private static Map<String, String> createPrefixesHash()
+    {
+        Map<String,String> m = new HashMap<>();
+        m.put("phone", "p/");
+        m.put("email", "e/");
+        m.put("name", null);
+        return m;
+    }
 
     private static final String PERSON_STRING_REPRESENTATION = "%1$s " // name
-                                                            + PERSON_DATA_PREFIX_PHONE + "%2$s " // phone
-                                                            + PERSON_DATA_PREFIX_EMAIL + "%3$s"; // email
+                                                            + PERSON_DATA_PREFIXES.get("phone") + "%2$s " // phone
+                                                            + PERSON_DATA_PREFIXES.get("email") + "%3$s"; // email
     private static final String COMMAND_ADD_WORD = "add";
     private static final String COMMAND_ADD_DESC = "Adds a person to the address book.";
     private static final String COMMAND_ADD_PARAMETERS = "NAME "
-                                                      + PERSON_DATA_PREFIX_PHONE + "PHONE_NUMBER "
-                                                      + PERSON_DATA_PREFIX_EMAIL + "EMAIL";
+                                                      + PERSON_DATA_PREFIXES.get("phone")+ "PHONE_NUMBER "
+                                                      + PERSON_DATA_PREFIXES.get("email") + "EMAIL";
     private static final String COMMAND_ADD_EXAMPLE = COMMAND_ADD_WORD + " John Doe p/98765432 e/johnd@gmail.com";
 
     private static final String COMMAND_FIND_WORD = "find";
@@ -262,13 +265,8 @@ public class AddressBook {
             exitProgram();
         }
 
-        if (args.length == 1) {
-            setupGivenFileForStorage(args[0]);
-        }
-
-        if(args.length == 0) {
-            setupDefaultFileForStorage();
-        }
+        if (args.length == 1) setupGivenFileForStorage(args[0]);
+        if (args.length == 0) setupDefaultFileForStorage();
     }
 
     /**
@@ -873,6 +871,7 @@ public class AddressBook {
         person[PERSON_DATA_INDEX_NAME] = name;
         person[PERSON_DATA_INDEX_PHONE] = phone;
         person[PERSON_DATA_INDEX_EMAIL] = email;
+        System.out.printf("TEST: %s, %s, %s\n", name, phone, email);
         return person;
     }
 
@@ -921,9 +920,9 @@ public class AddressBook {
             return Optional.empty();
         }
         final String[] decodedPerson = makePersonFromData(
-                extractNameFromPersonString(encoded),
-                extractPhoneFromPersonString(encoded),
-                extractEmailFromPersonString(encoded)
+                extractFieldFromPersonString("name", encoded),
+                extractFieldFromPersonString("phone", encoded),
+                extractFieldFromPersonString("email", encoded)
         );
         // check that the constructed person is valid
         return isPersonDataValid(decodedPerson) ? Optional.of(decodedPerson) : Optional.empty();
@@ -955,7 +954,7 @@ public class AddressBook {
      * @param personData person string representation
      */
     private static boolean isPersonDataExtractableFrom(String personData) {
-        final String matchAnyPersonDataPrefix = PERSON_DATA_PREFIX_PHONE + '|' + PERSON_DATA_PREFIX_EMAIL;
+        final String matchAnyPersonDataPrefix = PERSON_DATA_PREFIXES.get("phone")  + '|' + PERSON_DATA_PREFIXES.get("email") ;
         final String[] splitArgs = personData.trim().split(matchAnyPersonDataPrefix);
         return splitArgs.length == 3 // 3 arguments
                 && !splitArgs[0].isEmpty() // non-empty arguments
@@ -966,61 +965,30 @@ public class AddressBook {
     /**
      * Extracts substring representing person name from person string representation
      *
-     * @param encoded person string representation
-     * @return name argument
+     * @param field name of field to extract
+     * @param person_encoded person string representation
+     * @return value of the field for person
      */
-    private static String extractNameFromPersonString(String encoded) {
-        final int indexOfPhonePrefix = encoded.indexOf(PERSON_DATA_PREFIX_PHONE);
-        final int indexOfEmailPrefix = encoded.indexOf(PERSON_DATA_PREFIX_EMAIL);
-        // name is leading substring up to first data prefix symbol
-        int indexOfFirstPrefix = Math.min(indexOfEmailPrefix, indexOfPhonePrefix);
-        return encoded.substring(0, indexOfFirstPrefix).trim();
-    }
-
-    /**
-     * Extracts substring representing phone number from person string representation
-     *
-     * @param encoded person string representation
-     * @return phone number argument WITHOUT prefix
-     */
-    private static String extractPhoneFromPersonString(String encoded) {
-        final int indexOfPhonePrefix = encoded.indexOf(PERSON_DATA_PREFIX_PHONE);
-        final int indexOfEmailPrefix = encoded.indexOf(PERSON_DATA_PREFIX_EMAIL);
-
-        // phone is last arg, target is from prefix to end of string
-        if (indexOfPhonePrefix > indexOfEmailPrefix) {
-            return removePrefixSign(encoded.substring(indexOfPhonePrefix, encoded.length()).trim(),
-                    PERSON_DATA_PREFIX_PHONE);
-
-        // phone is middle arg, target is from own prefix to next prefix
-        } else {
-            return removePrefixSign(
-                    encoded.substring(indexOfPhonePrefix, indexOfEmailPrefix).trim(),
-                    PERSON_DATA_PREFIX_PHONE);
+    private static String extractFieldFromPersonString(String field, String person_encoded) {
+        if (!PERSON_DATA_PREFIXES.containsKey(field)) {
+            showToUser("ERROR: Key not found in PERSON_DATA_PREFIXES.");
+            return "";
         }
-    }
 
-    /**
-     * Extracts substring representing email from person string representation
-     *
-     * @param encoded person string representation
-     * @return email argument WITHOUT prefix
-     */
-    private static String extractEmailFromPersonString(String encoded) {
-        final int indexOfPhonePrefix = encoded.indexOf(PERSON_DATA_PREFIX_PHONE);
-        final int indexOfEmailPrefix = encoded.indexOf(PERSON_DATA_PREFIX_EMAIL);
+        String sep = PERSON_DATA_PREFIXES.values().stream().collect(Collectors.joining("|"));
 
-        // email is last arg, target is from prefix to end of string
-        if (indexOfEmailPrefix > indexOfPhonePrefix) {
-            return removePrefixSign(encoded.substring(indexOfEmailPrefix, encoded.length()).trim(),
-                    PERSON_DATA_PREFIX_EMAIL);
-
-        // email is middle arg, target is from own prefix to next prefix
-        } else {
-            return removePrefixSign(
-                    encoded.substring(indexOfEmailPrefix, indexOfPhonePrefix).trim(),
-                    PERSON_DATA_PREFIX_EMAIL);
+        // Name is a special case since it has fixed position but no prefix
+        if (field.equals("name")) {
+            return person_encoded.split(sep)[0];
         }
+
+        String prefix = PERSON_DATA_PREFIXES.get(field);
+        System.out.println("Sep:: " + sep);
+        Pattern p = Pattern.compile("(?:"+prefix+")(.+?)(?:\\s|$)");
+        Matcher m = p.matcher(person_encoded);
+        if (m.find()) return m.group(1);
+        // If no result is found
+        return "";
     }
 
     /**
