@@ -532,7 +532,7 @@ public class AddressBook {
         if (commandArgs.equals("ASC")) {
             Collections.sort(personNames);
         } else if (commandArgs.equals("DESC")) {
-            Collections.sort(targetPersonList, Collections.reverseOrder());
+            Collections.sort(personNames, Collections.reverseOrder());
         } else {
             return getMessageForInvalidCommandInput(COMMAND_SORT_WORD, getUsageInfoForSortCommand());
         }
