@@ -975,7 +975,7 @@ public class AddressBook {
             return "";
         }
 
-        String sep = PERSON_DATA_PREFIXES.keySet().stream().collect(Collectors.joining("|"));
+        String sep = PERSON_DATA_PREFIXES.values().stream().collect(Collectors.joining("|"));
 
         // Name is a special case since it has fixed position but no prefix
         if (field.equals("name")) {
@@ -983,9 +983,10 @@ public class AddressBook {
         }
 
         String prefix = PERSON_DATA_PREFIXES.get(field);
-        Pattern p = Pattern.compile(prefix + "(.+) " + sep);
+        System.out.println("Sep:: " + sep);
+        Pattern p = Pattern.compile("(?:"+prefix+")(.+?)(?:\\s|$)");
         Matcher m = p.matcher(person_encoded);
-        if (m.find()) return m.group();
+        if (m.find()) return m.group(1);
         // If no result is found
         return "";
     }
