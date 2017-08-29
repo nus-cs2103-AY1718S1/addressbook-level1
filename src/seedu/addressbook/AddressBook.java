@@ -89,8 +89,7 @@ public class AddressBook {
 
     // These are the prefix strings to define the data type of a command parameter
     private static final Map<String, String> PERSON_DATA_PREFIXES = createPrefixesHash();
-    private static Map<String, String> createPrefixesHash()
-    {
+    private static Map<String, String> createPrefixesHash() {
         Map<String,String> m = new HashMap<>();
         m.put("phone", "p/");
         m.put("email", "e/");
@@ -265,8 +264,13 @@ public class AddressBook {
             exitProgram();
         }
 
-        if (args.length == 1) setupGivenFileForStorage(args[0]);
-        if (args.length == 0) setupDefaultFileForStorage();
+        if (args.length == 1) {
+            setupGivenFileForStorage(args[0]);
+        }
+
+        if (args.length == 0) {
+            setupDefaultFileForStorage();
+        }
     }
 
     /**
