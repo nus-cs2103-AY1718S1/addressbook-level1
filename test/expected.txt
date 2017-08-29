@@ -143,52 +143,52 @@
 || 
 || ===================================================
 || Enter command: || [Command entered:  add Adam Brown p/111111 e/adam@gmail.com d/1995-1-1]
-|| New person added: Adam Brown, Phone: 111111, Email: adam@gmail.com, DOB: 1995-1-1
+|| New person added: Adam Brown, Phone: 111111, Email: adam@gmail.com, Dob: 1995-1-1
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
 || 
 || 1 persons found!
 || ===================================================
 || Enter command: || [Command entered:  add Betsy Choo p/222222 e/benchoo@nus.edu.sg d/1995-1-1]
-|| New person added: Betsy Choo, Phone: 222222, Email: benchoo@nus.edu.sg, DOB: 1995-1-1
+|| New person added: Betsy Choo, Phone: 222222, Email: benchoo@nus.edu.sg, Dob: 1995-1-1
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
 || 
 || 2 persons found!
 || ===================================================
 || Enter command: || [Command entered:  add Charlie Dickson e/charlie.d@nus.edu.sg p/333333 d/1995-1-1]
-|| New person added: Charlie Dickson, Phone: 333333, Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
+|| New person added: Charlie Dickson, Phone: 333333, Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
-|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
+|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
 || 
 || 3 persons found!
 || ===================================================
 || Enter command: || [Command entered:  add Dickson Ee e/dickson@nus.edu.sg p/444444 d/1995-1-1]
-|| New person added: Dickson Ee, Phone: 444444, Email: dickson@nus.edu.sg, DOB: 1995-1-1
+|| New person added: Dickson Ee, Phone: 444444, Email: dickson@nus.edu.sg, Dob: 1995-1-1
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
-|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
-|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
+|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
+|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, Dob: 1995-1-1
 || 
 || 4 persons found!
 || ===================================================
 || Enter command: || [Command entered:  add Esther Potato p/555555 e/esther@notreal.potato d/1995-1-1]
-|| New person added: Esther Potato, Phone: 555555, Email: esther@notreal.potato, DOB: 1995-1-1
+|| New person added: Esther Potato, Phone: 555555, Email: esther@notreal.potato, Dob: 1995-1-1
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
-|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
-|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, DOB: 1995-1-1
-|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
+|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
+|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, Dob: 1995-1-1
+|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, Dob: 1995-1-1
 || 
 || 5 persons found!
 || ===================================================
@@ -205,63 +205,63 @@
 || 0 persons found!
 || ===================================================
 || Enter command: || [Command entered:  find betsy]
-|| 	1. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
+|| 	1. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
 || 
 || 1 persons found!
 || ===================================================
 || Enter command: || [Command entered:  find Betsy]
-|| 	1. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
+|| 	1. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
 || 
 || 1 persons found!
 || ===================================================
 || Enter command: || [Command entered:  find Dickson]
-|| 	1. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
-|| 	2. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, DOB: 1995-1-1
+|| 	1. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
+|| 	2. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, Dob: 1995-1-1
 || 
 || 2 persons found!
 || ===================================================
 || Enter command: || [Command entered:  find Charlie Betsy]
-|| 	1. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
-|| 	2. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
+|| 	1. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
+|| 	2. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
 || 
 || 2 persons found!
 || ===================================================
 || Enter command: || [Command entered:  sort]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
-|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
-|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, DOB: 1995-1-1
-|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
+|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
+|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, Dob: 1995-1-1
+|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, Dob: 1995-1-1
 || 
 || 5 persons found!
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
-|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
-|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, DOB: 1995-1-1
-|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
+|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
+|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, Dob: 1995-1-1
+|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, Dob: 1995-1-1
 || 
 || 5 persons found!
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, DOB: 1995-1-1
-|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
-|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, DOB: 1995-1-1
-|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Betsy Choo  Phone Number: 222222  Email: benchoo@nus.edu.sg, Dob: 1995-1-1
+|| 	3. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
+|| 	4. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, Dob: 1995-1-1
+|| 	5. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, Dob: 1995-1-1
 || 
 || 5 persons found!
 || ===================================================
 || Enter command: || [Command entered:  edit 2 Bobby p/12344321 e/123@321.com d/1995-1-1]
-|| Person Edited: Bobby, Phone: 12344321, Email: 123@321.com, DOB: 1995-1-1
+|| Person Edited: Bobby, Phone: 12344321, Email: 123@321.com, Dob: 1995-1-1
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
-|| 	3. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, DOB: 1995-1-1
-|| 	4. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, DOB: 1995-1-1
-|| 	5. Bobby  Phone Number: 12344321  Email: 123@321.com, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
+|| 	3. Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, Dob: 1995-1-1
+|| 	4. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, Dob: 1995-1-1
+|| 	5. Bobby  Phone Number: 12344321  Email: 123@321.com, Dob: 1995-1-1
 || 
 || 5 persons found!
 || ===================================================
@@ -294,18 +294,18 @@
 || 
 || ===================================================
 || Enter command: || [Command entered:  delete 3]
-|| Deleted Person: Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, DOB: 1995-1-1
+|| Deleted Person: Dickson Ee  Phone Number: 444444  Email: dickson@nus.edu.sg, Dob: 1995-1-1
 || ===================================================
 || Enter command: || [Command entered:  delete 2]
-|| Deleted Person: Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, DOB: 1995-1-1
+|| Deleted Person: Charlie Dickson  Phone Number: 333333  Email: charlie.d@nus.edu.sg, Dob: 1995-1-1
 || ===================================================
 || Enter command: || [Command entered:  delete 2]
 || Person could not be found in address book
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, DOB: 1995-1-1
-|| 	3. Bobby  Phone Number: 12344321  Email: 123@321.com, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, Dob: 1995-1-1
+|| 	3. Bobby  Phone Number: 12344321  Email: 123@321.com, Dob: 1995-1-1
 || 
 || 3 persons found!
 || ===================================================
@@ -313,18 +313,18 @@
 || The person index provided is invalid
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
-|| 	2. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, DOB: 1995-1-1
-|| 	3. Bobby  Phone Number: 12344321  Email: 123@321.com, DOB: 1995-1-1
+|| 	1. Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
+|| 	2. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, Dob: 1995-1-1
+|| 	3. Bobby  Phone Number: 12344321  Email: 123@321.com, Dob: 1995-1-1
 || 
 || 3 persons found!
 || ===================================================
 || Enter command: || [Command entered:  delete 1]
-|| Deleted Person: Adam Brown  Phone Number: 111111  Email: adam@gmail.com, DOB: 1995-1-1
+|| Deleted Person: Adam Brown  Phone Number: 111111  Email: adam@gmail.com, Dob: 1995-1-1
 || ===================================================
 || Enter command: || [Command entered:  list]
-|| 	1. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, DOB: 1995-1-1
-|| 	2. Bobby  Phone Number: 12344321  Email: 123@321.com, DOB: 1995-1-1
+|| 	1. Esther Potato  Phone Number: 555555  Email: esther@notreal.potato, Dob: 1995-1-1
+|| 	2. Bobby  Phone Number: 12344321  Email: 123@321.com, Dob: 1995-1-1
 || 
 || 2 persons found!
 || ===================================================
