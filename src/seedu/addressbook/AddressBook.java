@@ -40,6 +40,7 @@ public class AddressBook {
      * Default file path used if the user doesn't provide the file name.
      */
     private static final String DEFAULT_STORAGE_FILEPATH = "addressbook.txt";
+    private static final String DEFAULT_STORAGE_BLOCKLIST = "blocklist.txt";
 
     /**
      * Version info of the program.
@@ -66,6 +67,7 @@ public class AddressBook {
      * =========================================================================
      */
     private static final String MESSAGE_ADDED = "New person added: %1$s, Phone: %2$s, Email: %3$s";
+    private static final String MESSAGE_BLOCKED = "Person blocked: %1$s, Phone: %2$s, Email: %3$s";
     private static final String MESSAGE_ADDRESSBOOK_CLEARED = "Address book has been cleared!";
     private static final String MESSAGE_COMMAND_HELP = "%1$s: %2$s";
     private static final String MESSAGE_COMMAND_HELP_PARAMETERS = "\tParameters: %1$s";
@@ -99,6 +101,8 @@ public class AddressBook {
                                                             + PERSON_DATA_PREFIX_PHONE + "%2$s " // phone
                                                             + PERSON_DATA_PREFIX_EMAIL + "%3$s"; // email
     private static final String COMMAND_ADD_WORD = "add";
+    private static final String COMMAND_BLOCK_WORD = "block";
+    private static final String COMMAND_BLOCKLIST_WORD = "blocklist";
     private static final String COMMAND_ADD_DESC = "Adds a person to the address book.";
     private static final String COMMAND_ADD_PARAMETERS = "NAME "
                                                       + PERSON_DATA_PREFIX_PHONE + "PHONE_NUMBER "
@@ -113,13 +117,17 @@ public class AddressBook {
 
     private static final String COMMAND_LIST_WORD = "list";
     private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers.";
+    private static final String COMMAND_BLOCKLIST_DESC = "Displays all persons as a block list.";
     private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD;
+    private static final String COMMAND_BLOCKLIST_EXAMPLE = COMMAND_BLOCKLIST_WORD;
 
     private static final String COMMAND_DELETE_WORD = "delete";
     private static final String COMMAND_DELETE_DESC = "Deletes a person identified by the index number used in "
                                                     + "the last find/list call.";
     private static final String COMMAND_DELETE_PARAMETER = "INDEX";
     private static final String COMMAND_DELETE_EXAMPLE = COMMAND_DELETE_WORD + " 1";
+    private static final String COMMAND_BLOCK_DESC = "Block a person identified by the index number used in " +
+                                                        "the last find/list call.";
 
     private static final String COMMAND_CLEAR_WORD = "clear";
     private static final String COMMAND_CLEAR_DESC = "Clears address book permanently.";
@@ -179,9 +187,10 @@ public class AddressBook {
      */
 
     /**
-     * List of all persons in the address book.
+     * List of all persons in the address book and block list.
      */
     private static final ArrayList<String[]> ALL_PERSONS = new ArrayList<>();
+    private static final ArrayList<String[]> BLOCK_PERSONS = new ArrayList<>();
 
     /**
      * Stores the most recent list of persons shown to the user as a result of a user command.
@@ -189,11 +198,12 @@ public class AddressBook {
      * those persons from this list.
      */
     private static ArrayList<String[]> latestPersonListingView = getAllPersonsInAddressBook(); // initial view is of all
-
+    //private static ArrayList<String[]> latestBlockListView = getBlockList(); //initial view for all block list
     /**
-     * The path to the file used for storing person data.
+     * The path to the file used for storing person data and block list.
      */
     private static String storageFilePath;
+    private static String storageBlockPath;
 
     /*
      * NOTE : =============================================================
@@ -284,6 +294,8 @@ public class AddressBook {
         }
 
         storageFilePath = filePath;
+        storageBlockPath = filePath;
+        createFileIfMissing(filePath);
         createFileIfMissing(filePath);
     }
 
@@ -303,7 +315,9 @@ public class AddressBook {
     private static void setupDefaultFileForStorage() {
         showToUser(MESSAGE_USING_DEFAULT_FILE);
         storageFilePath = DEFAULT_STORAGE_FILEPATH;
+        storageBlockPath = DEFAULT_STORAGE_BLOCKLIST;
         createFileIfMissing(storageFilePath);
+        createFileIfMissing(storageBlockPath);
     }
 
     /**
@@ -349,6 +363,7 @@ public class AddressBook {
      */
     private static void loadDataFromStorage() {
         initialiseAddressBookModel(loadPersonsFromFile(storageFilePath));
+        initialiseAddressBookModel(loadPersonsFromFile(storageBlockPath));
     }
 
 
@@ -369,6 +384,10 @@ public class AddressBook {
         final String commandType = commandTypeAndParams[0];
         final String commandArgs = commandTypeAndParams[1];
         switch (commandType) {
+            case COMMAND_BLOCKLIST_WORD:
+                return executeListBlockList();
+            case COMMAND_BLOCK_WORD:
+                return executeBlockPerson(commandArgs);
         case COMMAND_ADD_WORD:
             return executeAddPerson(commandArgs);
         case COMMAND_FIND_WORD:
@@ -431,6 +450,24 @@ public class AddressBook {
     }
 
     /**
+     * Add a person from the address book to the newly creaeted a list called blocklist.
+     * @param commandArgs index from the list
+     * @return feedback display for the successful block execuation
+     */
+    private static String executeBlockPerson(String commandArgs) {
+        if (!isDeletePersonArgsValid(commandArgs)){
+            return getMessageForInvalidCommandInput(COMMAND_BLOCK_WORD, getUsageInfoForDeleteCommand());
+        }
+        final int targetVisibleIndex = extractTargetIndexFromDeletePersonArgs(commandArgs);
+        if (!isDisplayIndexValidForLastPersonListingView(targetVisibleIndex)){
+            return MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+        }
+        final String[] targetINModel = getPersonByLastVisibleIndex(targetVisibleIndex);
+        addPersonToBlockList(targetINModel);
+        deletePersonFromAddressBook(targetINModel);
+        return getMessageForSuccessfulBlockPerson(targetINModel);
+    }
+    /**
      * Constructs a feedback message for a successful add person command execution.
      *
      * @see #executeAddPerson(String)
@@ -442,6 +479,9 @@ public class AddressBook {
                 getNameFromPerson(addedPerson), getPhoneFromPerson(addedPerson), getEmailFromPerson(addedPerson));
     }
 
+    private static String getMessageForSuccessfulBlockPerson (String[] blockedPerson) {
+        return String.format(MESSAGE_BLOCKED, getNameFromPerson(blockedPerson), getPhoneFromPerson(blockedPerson), getEmailFromPerson(blockedPerson));
+    }
     /**
      * Finds and lists all persons in address book whose name contains any of the argument keywords.
      * Keyword matching is case sensitive.
@@ -492,6 +532,18 @@ public class AddressBook {
         }
         return matchedPersons;
     }
+
+    /*private static ArrayList<String[]> getPersonWithPhoneNumber (Collection<String> keywords) {
+        final ArrayList<String[]> matchedPersons = new ArrayList<>();
+        for (String[] person : getAllPersonsInAddressBook()) {
+            final Set<String> inPhoneNumber = new HashSet<>(splitByWhitespace(getPersonWithPhoneNumber(person)));
+            if(!Collections.disjoint(inPhoneNumber, keywords)) {
+                matchedPersons.add(person);
+            }
+        }
+        return matchedPersons;
+    }*/
+
 
     /**
      * Deletes person identified using last displayed index.
@@ -579,6 +631,15 @@ public class AddressBook {
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
     }
 
+    /**
+     * Displays all persons in the block list.
+     * @return feedback display massage for the operation result
+     */
+    private static String executeListBlockList() {
+        ArrayList<String[]> tobeDisplayed = getBlockList();
+        showToUser(tobeDisplayed);
+        return getMessageForPersonsDisplayedSummary(tobeDisplayed);
+    }
     /**
      * Requests to terminate the program.
      */
@@ -770,7 +831,15 @@ public class AddressBook {
         }
     }
 
-
+    private static void savePersontoblock(ArrayList<String[]> persons, String filePath) {
+        final ArrayList<String> linesToWrite = encodePersonsToStrings(persons);
+        try {
+            Files.write(Paths.get(storageBlockPath), linesToWrite);
+        } catch (IOException ioe) {
+            showToUser(String.format(MESSAGE_ERROR_WRITING_TO_FILE, filePath));
+            exitProgram();
+        }
+    }
     /*
      * ================================================================================
      *        INTERNAL ADDRESS BOOK DATA METHODS
@@ -784,7 +853,16 @@ public class AddressBook {
      */
     private static void addPersonToAddressBook(String[] person) {
         ALL_PERSONS.add(person);
-        savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
+        savePersonsToFile(getAllPersonsInAddressBook(),storageFilePath);
+    }
+
+    /**
+     * Adds a person to the block list. Saves chages to storage file.
+     * @param person to add
+     */
+    private static void addPersonToBlockList(String[] person){
+        BLOCK_PERSONS.add(person);
+        savePersontoblock(getBlockList(), storageBlockPath);
     }
 
     /**
@@ -809,11 +887,20 @@ public class AddressBook {
     }
 
     /**
-     * Clears all persons in the address book and saves changes to file.
+     * Returns all persons in the block list
+     */
+    private static ArrayList<String[]> getBlockList(){
+        return BLOCK_PERSONS;
+    }
+    /**
+     * Clears all persons in the address book and block list.
+     * And saves changes to file.
      */
     private static void clearAddressBook() {
         ALL_PERSONS.clear();
+        BLOCK_PERSONS.clear();
         savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
+        savePersontoblock(getBlockList(), storageBlockPath);
     }
 
     /**
@@ -1083,8 +1170,10 @@ public class AddressBook {
     /** Returns usage info for all commands */
     private static String getUsageInfoForAllCommands() {
         return getUsageInfoForAddCommand() + LS
+                + getUsageInfoForBlockCommand() + LS
                 + getUsageInfoForFindCommand() + LS
                 + getUsageInfoForViewCommand() + LS
+                + getUsageInfoForBlockViewCommand() + LS
                 + getUsageInfoForDeleteCommand() + LS
                 + getUsageInfoForClearCommand() + LS
                 + getUsageInfoForExitCommand() + LS
@@ -1096,6 +1185,12 @@ public class AddressBook {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_ADD_WORD, COMMAND_ADD_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_ADD_PARAMETERS) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_ADD_EXAMPLE) + LS;
+    }
+
+    private static String getUsageInfoForBlockCommand() {
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_BLOCK_WORD, COMMAND_BLOCK_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_DELETE_PARAMETER) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_DELETE_EXAMPLE) + LS;
     }
 
     /** Returns the string for showing 'find' command usage instruction */
@@ -1124,6 +1219,10 @@ public class AddressBook {
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_LIST_EXAMPLE) + LS;
     }
 
+    private static String getUsageInfoForBlockViewCommand() {
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_BLOCKLIST_WORD, COMMAND_BLOCKLIST_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_BLOCKLIST_EXAMPLE) + LS;
+    }
     /** Returns string for showing 'help' command usage instruction */
     private static String getUsageInfoForHelpCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_HELP_WORD, COMMAND_HELP_DESC)
