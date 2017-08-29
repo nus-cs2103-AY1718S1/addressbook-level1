@@ -370,7 +370,7 @@ public class AddressBook {
         switch (commandType) {
             case COMMAND_ADD_WORD:
                 return executeAddPerson(commandArgs);
-            case COMMAND_SORT_BY:
+            case COMMAND_SORT_WORD:
                 return executeSortPerson(commandArgs);
             case COMMAND_FIND_WORD:
                 return executeFindPersons(commandArgs);
