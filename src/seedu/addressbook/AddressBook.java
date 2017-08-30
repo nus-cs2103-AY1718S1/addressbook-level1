@@ -774,7 +774,7 @@ public class AddressBook {
         } else if (foundIndex == indexArray.length - 1) {
             return encoded.length();
 
-            //found index is somewhere in the middle, target is from own prefix to next prefix
+            // found index is somewhere in the middle, target is from own prefix to next prefix
         } else {
             return indexArray[foundIndex + 1];
         }
@@ -1476,15 +1476,7 @@ public class AddressBook {
         String[] splitWords = findPersonCommandArgs.split(" ");
         StringBuilder sortParameterStringBuilder = new StringBuilder();
         for (String word : splitWords) {
-            if (word.equals(PERSON_DATA_PREFIX_NAME)
-                    || word.equals(PERSON_DATA_PREFIX_PHONE)
-                    || word.equals(PERSON_DATA_PREFIX_EMAIL)
-                    || word.equals(PERSON_DATA_PREFIX_NAME + COMMAND_LIST_DESCENDING)
-                    || word.equals(PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING)
-                    || word.equals(PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_DESCENDING)
-                    || word.equals(PERSON_DATA_PREFIX_NAME + COMMAND_LIST_ASCENDING)
-                    || word.equals(PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_ASCENDING)
-                    || word.equals(PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_ASCENDING)) {
+            if (isValidSortArgument(word)) {
                 sortParameterStringBuilder.append(word);
                 sortParameterStringBuilder.append(" ");
             }
