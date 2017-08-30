@@ -1719,14 +1719,19 @@ public class AddressBook {
      */
 
     /**
-     * Removes sign(p/, d/, etc) from parameter string
+     * Removes sign(p/, d/, etc) from parameter string if it is the first substring of the full string
      *
-     * @param s  Parameter as a string
-     * @param sign  Parameter sign to be removed
-     * @return  string without the sign
+     * @param fullString  Parameter as a string
+     * @param prefixSign  Parameter sign to be removed
+     * @return  string without the sign or full string if invalid
      */
-    private static String removePrefixSign(String s, String sign) {
-        return s.replace(sign, "");
+    private static String removeFirstPrefixSign(String fullString, String prefixSign) {
+        String checkStringPrefix = fullString.substring(0, prefixSign.length());
+        if (checkStringPrefix.equals(prefixSign))
+            return fullString.substring(prefixSign.length());
+        else {
+            return fullString;
+        }
     }
 
     /**
