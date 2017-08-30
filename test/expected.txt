@@ -54,7 +54,7 @@
 || Enter command: || [Command entered:  sfdfd]
 || Invalid command format: sfdfd 
 || 
-|| add: Adds a person to the address book.
+|| add: Adds a new person to the address book.
 || 	Parameters: NAME p/PHONE_NUMBER e/EMAIL
 || 	Example: add John Doe p/98765432 e/johnd@gmail.com
 ||  Jane Doe p/+6587765552 e/janed@gmail.com
@@ -69,7 +69,7 @@
 || 			list n/
 || 			list n/ p/DESC
 || 
-|| edit: Edits a particular index's parameter values.
+|| edit: Edits a particular person's information. Requires an index of a person from the most recent listing from the 'find' or 'list' command.
 || 	Parameters: INDEX [FIELD/VALUE]
 || 	Example: edit 1 n/Ricky Ray p/12345678
 || 			edit 2 e/noob@noob.com
@@ -109,7 +109,7 @@
 || ===================================================
 || Enter command: || [Command entered:  add wrong args wrong args]
 || Invalid command format: add 
-|| add: Adds a person to the address book.
+|| add: Adds a new person to the address book.
 || 	Parameters: NAME p/PHONE_NUMBER e/EMAIL
 || 	Example: add John Doe p/98765432 e/johnd@gmail.com
 ||  Jane Doe p/+6587765552 e/janed@gmail.com
@@ -117,7 +117,7 @@
 || ===================================================
 || Enter command: || [Command entered:  add Valid Name p/12345 valid@email.butNoPrefix]
 || Invalid command format: add 
-|| add: Adds a person to the address book.
+|| add: Adds a new person to the address book.
 || 	Parameters: NAME p/PHONE_NUMBER e/EMAIL
 || 	Example: add John Doe p/98765432 e/johnd@gmail.com
 ||  Jane Doe p/+6587765552 e/janed@gmail.com
@@ -125,7 +125,7 @@
 || ===================================================
 || Enter command: || [Command entered:  add Valid Name 12345 e/valid@email.butPhonePrefixMissing]
 || Invalid command format: add 
-|| add: Adds a person to the address book.
+|| add: Adds a new person to the address book.
 || 	Parameters: NAME p/PHONE_NUMBER e/EMAIL
 || 	Example: add John Doe p/98765432 e/johnd@gmail.com
 ||  Jane Doe p/+6587765552 e/janed@gmail.com
@@ -133,7 +133,7 @@
 || ===================================================
 || Enter command: || [Command entered:  add []\[;] p/12345 e/valid@e.mail]
 || Invalid command format: add 
-|| add: Adds a person to the address book.
+|| add: Adds a new person to the address book.
 || 	Parameters: NAME p/PHONE_NUMBER e/EMAIL
 || 	Example: add John Doe p/98765432 e/johnd@gmail.com
 ||  Jane Doe p/+6587765552 e/janed@gmail.com
@@ -141,7 +141,7 @@
 || ===================================================
 || Enter command: || [Command entered:  add Valid Name p/not_numbers e/valid@e.mail]
 || Invalid command format: add 
-|| add: Adds a person to the address book.
+|| add: Adds a new person to the address book.
 || 	Parameters: NAME p/PHONE_NUMBER e/EMAIL
 || 	Example: add John Doe p/98765432 e/johnd@gmail.com
 ||  Jane Doe p/+6587765552 e/janed@gmail.com
@@ -149,7 +149,7 @@
 || ===================================================
 || Enter command: || [Command entered:  add Valid Name p/12345 e/notAnEmail]
 || Invalid command format: add 
-|| add: Adds a person to the address book.
+|| add: Adds a new person to the address book.
 || 	Parameters: NAME p/PHONE_NUMBER e/EMAIL
 || 	Example: add John Doe p/98765432 e/johnd@gmail.com
 ||  Jane Doe p/+6587765552 e/janed@gmail.com
@@ -406,7 +406,7 @@
 || ===================================================
 || Enter command: || [Command entered:  edit]
 || Invalid command format: edit 
-|| edit: Edits a particular index's parameter values.
+|| edit: Edits a particular person's information. Requires an index of a person from the most recent listing from the 'find' or 'list' command.
 || 	Parameters: INDEX [FIELD/VALUE]
 || 	Example: edit 1 n/Ricky Ray p/12345678
 || 			edit 2 e/noob@noob.com
@@ -414,7 +414,7 @@
 || ===================================================
 || Enter command: || [Command entered:  edit 1]
 || Invalid command format: edit 
-|| edit: Edits a particular index's parameter values.
+|| edit: Edits a particular person's information. Requires an index of a person from the most recent listing from the 'find' or 'list' command.
 || 	Parameters: INDEX [FIELD/VALUE]
 || 	Example: edit 1 n/Ricky Ray p/12345678
 || 			edit 2 e/noob@noob.com
@@ -422,7 +422,7 @@
 || ===================================================
 || Enter command: || [Command entered:  edit 1 e/12421543]
 || Invalid command format: edit 
-|| edit: Edits a particular index's parameter values.
+|| edit: Edits a particular person's information. Requires an index of a person from the most recent listing from the 'find' or 'list' command.
 || 	Parameters: INDEX [FIELD/VALUE]
 || 	Example: edit 1 n/Ricky Ray p/12345678
 || 			edit 2 e/noob@noob.com
