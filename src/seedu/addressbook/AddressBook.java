@@ -669,20 +669,30 @@ public class AddressBook {
      */
     private static String executeEditPerson(String commandArgs) {
         saveStateBeforeOperation(); // save state for undo
+
+        // Check if edit arguments are valid (does not check for formatting)
         if (!isEditPersonArgsValid(commandArgs)) {
             return getMessageForInvalidCommandInput(COMMAND_EDIT_WORD, getUsageInfoForEditCommand());
         }
+
+        // Check if edit index is valid and set a reference if successful
         final int targetVisibleIndex = extractTargetIndexFromEditPersonArgs(commandArgs);
         if (!isDisplayIndexValidForLastPersonListingView(targetVisibleIndex)) {
             return MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
         }
         final Person targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
+
+        // Create a new "Person" object with the entered arguments or default target's values if not available
         Person newTarget = new Person(getNameFromEditCommandArgs(commandArgs, targetInModel),
                                       getPhoneFromEditCommandArgs(commandArgs, targetInModel),
                                       getEmailFromEditCommandArgs(commandArgs, targetInModel));
+
+        // Check if the new target's property fields are format-valid (e.g. RFC5322, E164)
         if (!isPersonDataValid(newTarget)) {
             return getMessageForInvalidCommandInput(COMMAND_EDIT_WORD, getUsageInfoForEditCommand());
         }
+
+        // Attempt execution in the model
         if (editPersonWithinAddressBook(targetInModel, newTarget)) {
 
             updateStateAfterSuccessfulOperation();  // update state after successful editor operation
@@ -831,14 +841,20 @@ public class AddressBook {
      */
     private static String executeDeletePerson(String commandArgs) {
         saveStateBeforeOperation(); // save state for undo
+
+        // Check if edit arguments are valid (does not check for formatting)
         if (!isDeletePersonArgsValid(commandArgs)) {
             return getMessageForInvalidCommandInput(COMMAND_DELETE_WORD, getUsageInfoForDeleteCommand());
         }
+
+        // Check if edit index is valid and set a reference if successful
         final int targetVisibleIndex = extractTargetIndexFromDeletePersonArgs(commandArgs);
         if (!isDisplayIndexValidForLastPersonListingView(targetVisibleIndex)) {
             return MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
         }
         final Person targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
+
+        // Attempt execution in the model
         if (deletePersonFromAddressBook(targetInModel)) {
 
             updateStateAfterSuccessfulOperation();  // update state after successful editor operation
