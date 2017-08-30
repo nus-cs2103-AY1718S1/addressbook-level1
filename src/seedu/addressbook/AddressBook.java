@@ -757,7 +757,7 @@ public class AddressBook {
         final int indexOfNamePrefix = encoded.indexOf(PERSON_DATA_PREFIX_NAME);
 
         // if no such occurrence, return original value.
-        if (indexOfNamePrefix == -1) return targetPerson.getName();
+        if (indexOfNamePrefix == -1) return getNameFromPerson(targetPerson);
 
         // calculate string from encoded data
         return removeFirstPrefixSign(
@@ -776,7 +776,7 @@ public class AddressBook {
         final int indexOfPhonePrefix = encoded.indexOf(PERSON_DATA_PREFIX_PHONE);
 
         // if no such occurrence, return original value.
-        if (indexOfPhonePrefix == -1) return targetPerson.getPhoneNumber();
+        if (indexOfPhonePrefix == -1) return getPhoneFromPerson(targetPerson);
 
         // calculate string from encoded data
         return removeFirstPrefixSign(
@@ -795,7 +795,7 @@ public class AddressBook {
         final int indexOfEmailPrefix = encoded.indexOf(PERSON_DATA_PREFIX_EMAIL);
 
         // if no such occurrence, return original value.
-        if (indexOfEmailPrefix == -1) return targetPerson.getEmail();
+        if (indexOfEmailPrefix == -1) return getEmailFromPerson(targetPerson);
 
         // calculate string from encoded data
         return removeFirstPrefixSign(
