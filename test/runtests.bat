@@ -21,5 +21,10 @@ java -classpath ..\bin seedu.addressbook.AddressBook "data/valid.filename" < exi
 REM run the program, feed commands from input.txt file and redirect the output to the actual.txt
 java -classpath ..\bin seedu.addressbook.AddressBook < input.txt >> actual.txt
 
+REM remove empty addressbook.txt after operations
+del addressbook.txt
+REM remove compiled files under bin directory after automated tests
+RD /s /q ..\bin
+
 REM compare the output to the expected output
 FC actual.txt expected.txt
