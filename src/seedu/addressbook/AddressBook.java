@@ -101,7 +101,7 @@ public class AddressBook {
     private static final String COMMAND_SORT_WORD = "sort";
     private static final String COMMAND_SORT_DESC = "Sorts persons list by asc/desc name order";
     private static final String COMMAND_SORT_PARAMETER = "ASC/DESC";
-    private static final String COMMAND_SORT_EXAMPLE = COMMAND_SORT_WORD + " NAME";
+    private static final String COMMAND_SORT_EXAMPLE = COMMAND_SORT_WORD + " ASC/DESC";
 
     private static final String COMMAND_FIND_WORD = "find";
     private static final String COMMAND_FIND_DESC = "Finds all persons whose names contain any of the specified "
