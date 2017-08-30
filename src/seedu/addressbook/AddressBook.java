@@ -1305,32 +1305,25 @@ public class AddressBook {
      */
     private static ArrayList<Person> getSortedPersonsInAddressBook(ArrayList<Person> persons, String[] sortArgs) {
         ArrayList<Person> sortedPersons = new ArrayList<>(persons);
-        //loop will iterate in reverse order (sortArgs[0] has highest priority)
-        for (int i = sortArgs.length - 1; i >= 0; i--) {
-            switch (sortArgs[i]) {
-                case PERSON_DATA_PREFIX_NAME:
-                    sortedPersons.sort(Comparator.comparing(Person::getName)); break;
-                case PERSON_DATA_PREFIX_PHONE:
-                    sortedPersons.sort(Comparator.comparing(Person::getPhoneNumber)); break;
-                case PERSON_DATA_PREFIX_EMAIL:
-                    sortedPersons.sort(Comparator.comparing(Person::getEmail)); break;
-                case PERSON_DATA_PREFIX_NAME + COMMAND_LIST_DESCENDING:
-                    sortedPersons.sort(Comparator.comparing(Person::getName).reversed()); break;
-                case PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING:
-                    sortedPersons.sort(Comparator.comparing(Person::getPhoneNumber).reversed()); break;
-                case PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_DESCENDING:
-                    sortedPersons.sort(Comparator.comparing(Person::getEmail).reversed()); break;
-                case PERSON_DATA_PREFIX_NAME + COMMAND_LIST_ASCENDING:
-                    sortedPersons.sort(Comparator.comparing(Person::getName)); break;
-                case PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_ASCENDING:
-                    sortedPersons.sort(Comparator.comparing(Person::getPhoneNumber)); break;
-                case PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_ASCENDING:
-                    sortedPersons.sort(Comparator.comparing(Person::getEmail)); break;
-                default:
-                    showToUser(getMessageForInvalidCommandInput(COMMAND_LIST_WORD, getUsageInfoForViewCommand()));
-                    return new ArrayList<>();
+
+        // If there is a sort argument that is not defined, return an empty result set.
+        for (String argument : sortArgs) {
+            if (!isValidSortArgument(argument)) {
+                showToUser(getMessageForInvalidCommandInput(COMMAND_LIST_WORD, getUsageInfoForViewCommand()));
+                return new ArrayList<>();
             }
         }
+
+        // Using a multi-argument comparator, we implement sort by x then by y then by z... efficiently.
+        sortedPersons.sort((person1, person2) -> {
+            int c = 0;
+            for (String sortArgument : sortArgs) {
+                if (c == 0)
+                    c = sortArgumentCompareValue(sortArgument, person1, person2);
+            }
+            return c;
+        });
+
         return sortedPersons;
     }
 
