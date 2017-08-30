@@ -542,8 +542,7 @@ public class AddressBook {
             final Person personToAdd = decodeResult.get();
             addPersonToAddressBook(personToAdd);
 
-            addStateAfterSuccessfulOperation(); // update state for undo
-            clearRedoStackAfterSuccessfulOperation(); // clear redo for new redo branch
+            updateStateAfterSuccessfulOperation();  // update state after successful editor operation
 
             return getMessageForSuccessfulAddPerson(personToAdd);
 
@@ -686,8 +685,7 @@ public class AddressBook {
         }
         if (editPersonWithinAddressBook(targetInModel, newTarget)) {
 
-            addStateAfterSuccessfulOperation(); // update state for undo
-            clearRedoStackAfterSuccessfulOperation(); // clear redo for new redo branch
+            updateStateAfterSuccessfulOperation();  // update state after successful editor operation
 
             return getMessageForSuccessfulEdit(targetInModel, newTarget); // success
         } else {
@@ -843,8 +841,7 @@ public class AddressBook {
         final Person targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
         if (deletePersonFromAddressBook(targetInModel)) {
 
-            addStateAfterSuccessfulOperation(); // update state for undo
-            clearRedoStackAfterSuccessfulOperation(); // clear redo for new redo branch
+            updateStateAfterSuccessfulOperation();  // update state after successful editor operation
 
             return getMessageForSuccessfulDelete(targetInModel); // success
         } else {
@@ -908,8 +905,7 @@ public class AddressBook {
 
         clearAddressBook(); // clear
 
-        addStateAfterSuccessfulOperation(); // update state for undo
-        clearRedoStackAfterSuccessfulOperation(); // clear redo for new redo branch
+        updateStateAfterSuccessfulOperation();  // update state after successful editor operation
 
         return MESSAGE_ADDRESSBOOK_CLEARED;
     }
@@ -974,6 +970,15 @@ public class AddressBook {
      */
     private static void clearRedoStackAfterSuccessfulOperation() {
         redoStack.clear();
+    }
+
+    /**
+     * Adds the latest saveState to the undo stack after a successful editor operation then clears the redo stack.
+     * Not to be used with redo operations.
+     */
+    private static void updateStateAfterSuccessfulOperation() {
+        addStateAfterSuccessfulOperation(); // update state for undo
+        clearRedoStackAfterSuccessfulOperation(); // clear redo for new redo branch
     }
 
     /**
