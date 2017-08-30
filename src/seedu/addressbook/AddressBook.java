@@ -123,7 +123,7 @@ public class AddressBook {
                                                             + PERSON_DATA_PREFIX_PHONE + "%2$s " // phone
                                                             + PERSON_DATA_PREFIX_EMAIL + "%3$s"; // email
     private static final String COMMAND_ADD_WORD = "add";
-    private static final String COMMAND_ADD_DESC = "Adds a person to the address book.";
+    private static final String COMMAND_ADD_DESC = "Adds a new person to the address book.";
     private static final String COMMAND_ADD_PARAMETERS = "NAME "
                                                       + PERSON_DATA_PREFIX_PHONE + "PHONE_NUMBER "
                                                       + PERSON_DATA_PREFIX_EMAIL + "EMAIL";
@@ -152,7 +152,8 @@ public class AddressBook {
     private static final String COMMAND_FIND_EXAMPLE = COMMAND_FIND_WORD + " alice bob charlie n/ p/DESC";
 
     private static final String COMMAND_EDIT_WORD = "edit";
-    private static final String COMMAND_EDIT_DESC = "Edits a particular index's parameter values.";
+    private static final String COMMAND_EDIT_DESC = "Edits a particular person's information. " +
+            "Requires an index of a person from the most recent listing from the 'find' or 'list' command.";
     private static final String COMMAND_EDIT_PARAMETERS = "INDEX [FIELD/VALUE]";
     private static final String COMMAND_EDIT_EXAMPLE = COMMAND_EDIT_WORD + " 1 n/Ricky Ray p/12345678"
                                         + LS + "\t\t\t" + COMMAND_EDIT_WORD + " 2 e/noob@noob.com";
