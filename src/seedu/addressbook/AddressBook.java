@@ -1545,9 +1545,9 @@ public class AddressBook {
      * @param person String array representing the person (used in internal data)
      */
     private static boolean isPersonDataValid(Person person) {
-        return isPersonNameValid(person.getName())
-                && isPersonPhoneValid(person.getPhoneNumber())
-                && isPersonEmailValid(person.getEmail());
+        return isPersonNameValid(getNameFromPerson(person))
+                && isPersonPhoneValid(getPhoneFromPerson(person))
+                && isPersonEmailValid(getEmailFromPerson(person));
     }
 
     /*
