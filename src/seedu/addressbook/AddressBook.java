@@ -68,6 +68,7 @@ public class AddressBook {
     private static final String MESSAGE_ADDED = "New person added: %1$s, Phone: %2$s, Email: %3$s";
     private static final String MESSAGE_ADDRESSBOOK_CLEARED = "Address book has been cleared!";
     private static final String MESSAGE_COMMAND_HELP = "%1$s: %2$s";
+    private static final String MESSAGE_COMMAND_HELP_V2 = "%1$s, %2$s: %3$s";
     private static final String MESSAGE_COMMAND_HELP_PARAMETERS = "\tParameters: %1$s";
     private static final String MESSAGE_COMMAND_HELP_EXAMPLE = "\tExample: %1$s";
     private static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
@@ -112,8 +113,10 @@ public class AddressBook {
     private static final String COMMAND_FIND_EXAMPLE = COMMAND_FIND_WORD + " alice bob charlie";
 
     private static final String COMMAND_LIST_WORD = "list";
+    private static final String COMMAND_LIST_WORD_SHORTFORM = "ls";
     private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers.";
     private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD;
+    private static final String COMMAND_LIST_EXAMPLE_V2 = COMMAND_LIST_WORD_SHORTFORM;
 
     private static final String COMMAND_DELETE_WORD = "delete";
     private static final String COMMAND_DELETE_DESC = "Deletes a person identified by the index number used in "
@@ -374,6 +377,8 @@ public class AddressBook {
         case COMMAND_FIND_WORD:
             return executeFindPersons(commandArgs);
         case COMMAND_LIST_WORD:
+            return executeListAllPersonsInAddressBook();
+        case COMMAND_LIST_WORD_SHORTFORM:
             return executeListAllPersonsInAddressBook();
         case COMMAND_DELETE_WORD:
             return executeDeletePerson(commandArgs);
@@ -1120,8 +1125,9 @@ public class AddressBook {
 
     /** Returns the string for showing 'view' command usage instruction */
     private static String getUsageInfoForViewCommand() {
-        return String.format(MESSAGE_COMMAND_HELP, COMMAND_LIST_WORD, COMMAND_LIST_DESC) + LS
-                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_LIST_EXAMPLE) + LS;
+        return String.format(MESSAGE_COMMAND_HELP_V2, COMMAND_LIST_WORD, COMMAND_LIST_WORD_SHORTFORM, COMMAND_LIST_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_LIST_EXAMPLE) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_LIST_EXAMPLE_V2) + LS;
     }
 
     /** Returns string for showing 'help' command usage instruction */
