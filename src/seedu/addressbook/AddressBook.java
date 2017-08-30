@@ -580,6 +580,17 @@ public class AddressBook {
     }
 
     /**
+     * Checks if a given sort argument string is a valid sort argument.
+     *
+     * @see #POSSIBLE_SORT_ARGUMENTS
+     * @param sortArgument the argument prefix string to be checked.
+     * @return true if argument is valid, false otherwise.
+     */
+    private static boolean isValidSortArgument(String sortArgument) {
+        return POSSIBLE_SORT_ARGUMENTS.contains(sortArgument);
+    }
+
+    /**
      * Executes and extends compareTo for two Person objects given a particular sort argument string.
      *
      * @param sortArgument string of sort argument prefix.
@@ -1323,17 +1334,6 @@ public class AddressBook {
         return sortedPersons;
     }
 
-    /**
-     * Checks if a given sort argument string is a valid sort argument.
-     *
-     * @see #POSSIBLE_SORT_ARGUMENTS
-     * @param sortArgument the argument prefix string to be checked.
-     * @return true if argument is valid, false otherwise.
-     */
-    private static boolean isValidSortArgument(String sortArgument) {
-        return POSSIBLE_SORT_ARGUMENTS.contains(sortArgument);
-    }
-    
     /**
      * Clears all persons in the address book and saves changes to file.
      */
