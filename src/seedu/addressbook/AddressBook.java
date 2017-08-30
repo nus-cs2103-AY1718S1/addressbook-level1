@@ -108,6 +108,16 @@ public class AddressBook {
     private static final String PERSON_DATA_PREFIX_EMAIL = "e/";
     private static final String COMMAND_SORT_PARAMETER_DESCENDING = "DESC";
     private static final String COMMAND_SORT_PARAMETER_ASCENDING = "ASC";
+    private static final HashSet<String> POSSIBLE_SORT_ARGUMENTS =
+            new HashSet<>(Arrays.asList(PERSON_DATA_PREFIX_NAME,
+                                        PERSON_DATA_PREFIX_PHONE,
+                                        PERSON_DATA_PREFIX_EMAIL,
+                                        PERSON_DATA_PREFIX_NAME.concat(COMMAND_SORT_PARAMETER_DESCENDING),
+                                        PERSON_DATA_PREFIX_PHONE.concat(COMMAND_SORT_PARAMETER_DESCENDING),
+                                        PERSON_DATA_PREFIX_EMAIL.concat(COMMAND_SORT_PARAMETER_DESCENDING),
+                                        PERSON_DATA_PREFIX_NAME.concat(COMMAND_SORT_PARAMETER_ASCENDING),
+                                        PERSON_DATA_PREFIX_PHONE.concat(COMMAND_SORT_PARAMETER_ASCENDING),
+                                        PERSON_DATA_PREFIX_EMAIL.concat(COMMAND_SORT_PARAMETER_ASCENDING)));
 
     private static final String PERSON_STRING_REPRESENTATION = "%1$s " // name
                                                             + PERSON_DATA_PREFIX_PHONE + "%2$s " // phone
@@ -1279,6 +1289,17 @@ public class AddressBook {
         return sortedPersons;
     }
 
+    /**
+     * Checks if a given sort argument string is a valid sort argument.
+     *
+     * @see #POSSIBLE_SORT_ARGUMENTS
+     * @param sortArgument the argument prefix string to be checked.
+     * @return true if argument is valid, false otherwise.
+     */
+    private static boolean isValidSortArgument(String sortArgument) {
+        return POSSIBLE_SORT_ARGUMENTS.contains(sortArgument);
+    }
+    
     /**
      * Clears all persons in the address book and saves changes to file.
      */
