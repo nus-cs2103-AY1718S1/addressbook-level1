@@ -106,6 +106,8 @@ public class AddressBook {
     private static final String PERSON_DATA_PREFIX_NAME = "n/";
     private static final String PERSON_DATA_PREFIX_PHONE = "p/";
     private static final String PERSON_DATA_PREFIX_EMAIL = "e/";
+    private static final String COMMAND_SORT_PARAMETER_DESCENDING = "DESC";
+    private static final String COMMAND_SORT_PARAMETER_ASCENDING = "ASC";
 
     private static final String PERSON_STRING_REPRESENTATION = "%1$s " // name
                                                             + PERSON_DATA_PREFIX_PHONE + "%2$s " // phone
@@ -121,18 +123,16 @@ public class AddressBook {
     private static final String COMMAND_LIST_WORD = "list";
     private static final String COMMAND_LIST_DESC = "Displays all persons as a list with index numbers, "
                                         + "sorted by addition order or the specified sort order.";
-    private static final String COMMAND_LIST_DESCENDING = "DESC";
-    private static final String COMMAND_LIST_ASCENDING = "ASC";
     private static final String COMMAND_LIST_PARAMETER = "[optional:SORT_FIELD - '" + PERSON_DATA_PREFIX_NAME + "' "
                                         +"'" + PERSON_DATA_PREFIX_PHONE + "' "
                                         +"'" + PERSON_DATA_PREFIX_EMAIL + "' "
-                                        +"'" + PERSON_DATA_PREFIX_NAME + COMMAND_LIST_DESCENDING + "' "
-                                        +"'" + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING + "' "
-                                        +"'" + PERSON_DATA_PREFIX_EMAIL + COMMAND_LIST_DESCENDING + "']";
+                                        +"'" + PERSON_DATA_PREFIX_NAME + COMMAND_SORT_PARAMETER_DESCENDING + "' "
+                                        +"'" + PERSON_DATA_PREFIX_PHONE + COMMAND_SORT_PARAMETER_DESCENDING + "' "
+                                        +"'" + PERSON_DATA_PREFIX_EMAIL + COMMAND_SORT_PARAMETER_DESCENDING + "']";
     private static final String COMMAND_LIST_EXAMPLE = COMMAND_LIST_WORD + LS + "\t\t\t"
                                         + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + LS + "\t\t\t"
                                         + COMMAND_LIST_WORD + " " + PERSON_DATA_PREFIX_NAME + " "
-                                        + PERSON_DATA_PREFIX_PHONE + COMMAND_LIST_DESCENDING;
+                                        + PERSON_DATA_PREFIX_PHONE + COMMAND_SORT_PARAMETER_DESCENDING;
 
     private static final String COMMAND_FIND_WORD = "find";
     private static final String COMMAND_FIND_DESC = "Finds all persons whose names contain any of the specified "
