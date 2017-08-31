@@ -344,7 +344,7 @@
 || ===================================================
 || Enter command: || [Command entered:  find Betsy]
 || 	1. Betsy Choo  Phone Number: 222222  Email: betsychoo@nus.edu.sg
-||
+|| 
 || 1 persons found!
 || ===================================================
 || Enter command: || [Command entered:  find betsy]
@@ -431,15 +431,15 @@
 || The person index provided is invalid
 || ===================================================
 || Enter command: || [Command entered:  edit 2 p/333333 e/newbetsychoo@nus.edu.sg]
-|| Old Person: Betsy Choo  Phone Number: 222222  Email: betsychoo@nus.edu.sg
+|| Old Person: Betsy Choo  Phone Number: 222222  Email: betsychoo@nus.edu.sg 
 || 	New Person: Betsy Choo  Phone Number: 333333  Email: newbetsychoo@nus.edu.sg
 || ===================================================
 || Enter command: || [Command entered:  edit 2 p/444444]
-|| Old Person: Betsy Choo  Phone Number: 333333  Email: newbetsychoo@nus.edu.sg
+|| Old Person: Betsy Choo  Phone Number: 333333  Email: newbetsychoo@nus.edu.sg 
 || 	New Person: Betsy Choo  Phone Number: 444444  Email: newbetsychoo@nus.edu.sg
 || ===================================================
 || Enter command: || [Command entered:  edit 2 e/betsychoo2@nus.edu.sg]
-|| Old Person: Betsy Choo  Phone Number: 444444  Email: newbetsychoo@nus.edu.sg
+|| Old Person: Betsy Choo  Phone Number: 444444  Email: newbetsychoo@nus.edu.sg 
 || 	New Person: Betsy Choo  Phone Number: 444444  Email: betsychoo2@nus.edu.sg
 || ===================================================
 || Enter command: || [Command entered:  undo]
@@ -519,7 +519,7 @@
 || 	6. Alpha  Phone Number: 12345678  Email: alpha.potato@nus.edu.sg
 || 	7. Alpha  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
 || 	8. Bravo a  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
-||
+|| 
 || 8 persons found!
 || ===================================================
 || Enter command: || [Command entered:  delete 2]
@@ -547,7 +547,7 @@
 || 	5. Alpha  Phone Number: 12345678  Email: alpha.potato@nus.edu.sg
 || 	6. Alpha  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
 || 	7. Bravo a  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
-||
+|| 
 || 7 persons found!
 || ===================================================
 || Enter command: || [Command entered:  delete 4]
