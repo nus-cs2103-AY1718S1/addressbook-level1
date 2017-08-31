@@ -867,6 +867,20 @@ public class AddressBook {
     }
 
     /**
+     * Constructs a message to prompt the user before a delete operation.
+     *
+     * @param personToDelete the person to be deleted.
+     * @return a string containing the message to prompt the user.
+     */
+    private static String getMessageForConfirmDeletePerson(Person personToDelete) {
+        return String.format(MESSAGE_CONFIRM_DANGEROUS_OPERATION,
+                COMMAND_DELETE_WORD,
+                getMessageForFormattedPersonData(personToDelete),
+                COMMAND_CONFIRM_WORD,
+                COMMAND_UNCONFIRM_WORD);
+    }
+
+    /**
      * Constructs a feedback message for a successful delete person command execution.
      *
      * @see #executeDeletePerson(String)
