@@ -86,6 +86,7 @@ public class AddressBook {
     private static final String MESSAGE_GOODBYE = "Exiting Address Book... Good bye!";
     private static final String MESSAGE_APPLICATION_ERROR = "Application Error: %1$s command was unable to be resolved.";
     private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format: %1$s " + LS + "%2$s";
+    private static final String MESSAGE_DANGEROUS_OPERATION_CANCELLED = "%1$s operation has been cancelled.";
     private static final String MESSAGE_EMPTY_HISTORY_STACK = "Unable to %1$s: You are already at the most recent %1$s state.";
     private static final String MESSAGE_INVALID_FILE = "The given file name [%1$s] is not a valid file name!";
     private static final String MESSAGE_INVALID_PROGRAM_ARGS = "Too many parameters! Correct program argument format:"
@@ -869,6 +870,16 @@ public class AddressBook {
      */
     private static String getMessageForSuccessfulDelete(Person deletedPerson) {
         return String.format(MESSAGE_DELETE_PERSON_SUCCESS, getMessageForFormattedPersonData(deletedPerson));
+    }
+
+    /**
+     * Constructs a message to inform that the user has cancelled a dangerous operation.
+     *
+     * @param userCommand the command word for the dangerous operation.
+     * @return a formatted string showing the cancelled operation.
+     */
+    private static String getMessageForCancelledDangerousOperation(String userCommand) {
+        return String.format(MESSAGE_DANGEROUS_OPERATION_CANCELLED, userCommand);
     }
 
     /**
