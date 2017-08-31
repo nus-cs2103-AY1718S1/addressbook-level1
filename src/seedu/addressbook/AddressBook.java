@@ -204,8 +204,6 @@ public class AddressBook {
      * Regex format for name formatting.
      * Custom format that allows for letters whitespaces, apostrophes, periods and hyphens.
      * Also has minimum length of 1 and max of 100.
-     *  I'd really rather not overdo this functionality. Why:
-     *  http://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/
      */
     private static final Pattern NAME_REGEX = Pattern.compile("^[a-zA-Z\\s'.,-]{1,100}$");
 
