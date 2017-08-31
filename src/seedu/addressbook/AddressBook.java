@@ -648,7 +648,7 @@ public class AddressBook {
                                       getEmailFromEditCommandArgs(commandArgs, targetInModel));
 
         // Check if the new target's property fields are format-valid (e.g. RFC5322, E164)
-        if (!isPersonDataValid(newTarget)) {
+        if (!isPersonValid(newTarget)) {
             return getMessageForInvalidCommandInput(COMMAND_EDIT_WORD, getUsageInfoForEditCommand());
         }
 
@@ -1549,7 +1549,7 @@ public class AddressBook {
                 extractEmailFromPersonString(encoded)
         );
         // check that the constructed person is valid
-        return isPersonDataValid(decodedPerson) ? Optional.of(decodedPerson) : Optional.empty();
+        return isPersonValid(decodedPerson) ? Optional.of(decodedPerson) : Optional.empty();
     }
 
     /**
@@ -1667,11 +1667,11 @@ public class AddressBook {
     }
 
     /**
-     * Returns true if the given person's data fields are valid
+     * Returns true if the given person is valid.
      *
-     * @param person String array representing the person (used in internal data)
+     * @param person Person object representation (used in internal data)
      */
-    private static boolean isPersonDataValid(Person person) {
+    private static boolean isPersonValid(Person person) {
         return person != null
                 && isPersonNameValid(getNameFromPerson(person))
                 && isPersonPhoneValid(getPhoneFromPerson(person))
