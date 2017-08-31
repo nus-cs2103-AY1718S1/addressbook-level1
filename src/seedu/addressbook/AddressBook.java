@@ -578,51 +578,6 @@ public class AddressBook {
     }
 
     /**
-     * Checks if a given sort argument string is a valid sort argument.
-     *
-     * @see #POSSIBLE_SORT_ARGUMENTS
-     * @param sortArgument the argument prefix string to be checked.
-     * @return true if argument is valid, false otherwise.
-     */
-    private static boolean isValidSortArgument(String sortArgument) {
-        return POSSIBLE_SORT_ARGUMENTS.contains(sortArgument);
-    }
-
-    /**
-     * Executes and extends compareTo for two Person objects given a particular sort argument string.
-     *
-     * @param sortArgument string of sort argument prefix.
-     * @param person1 first person to be compared to.
-     * @param person2 other person to be compared to.
-     * @return object.compareTo(other) value for the two persons or 0 if sort argument is invalid.
-     */
-    private static int sortArgumentCompareValue(String sortArgument, Person person1, Person person2) {
-        switch (sortArgument) {
-            case PERSON_DATA_PREFIX_NAME:
-                return getNameFromPerson(person1).compareTo(getNameFromPerson(person2));
-            case PERSON_DATA_PREFIX_PHONE:
-                return getPhoneFromPerson(person1).compareTo(getPhoneFromPerson(person2));
-            case PERSON_DATA_PREFIX_EMAIL:
-                return getEmailFromPerson(person1).compareTo(getEmailFromPerson(person2));
-            case PERSON_DATA_PREFIX_NAME + COMMAND_SORT_PARAMETER_DESCENDING:
-                return getNameFromPerson(person2).compareTo(getNameFromPerson(person1));
-            case PERSON_DATA_PREFIX_PHONE + COMMAND_SORT_PARAMETER_DESCENDING:
-                return getPhoneFromPerson(person2).compareTo(getPhoneFromPerson(person1));
-            case PERSON_DATA_PREFIX_EMAIL + COMMAND_SORT_PARAMETER_DESCENDING:
-                return getEmailFromPerson(person2).compareTo(getEmailFromPerson(person1));
-            case PERSON_DATA_PREFIX_NAME + COMMAND_SORT_PARAMETER_ASCENDING:
-                return getNameFromPerson(person1).compareTo(getNameFromPerson(person2));
-            case PERSON_DATA_PREFIX_PHONE + COMMAND_SORT_PARAMETER_ASCENDING:
-                return getPhoneFromPerson(person1).compareTo(getPhoneFromPerson(person2));
-            case PERSON_DATA_PREFIX_EMAIL + COMMAND_SORT_PARAMETER_ASCENDING:
-                return getEmailFromPerson(person1).compareTo(getEmailFromPerson(person2));
-            default:
-                showToUser(getMessageForInvalidCommandInput(COMMAND_LIST_WORD, getUsageInfoForViewCommand()));
-                return 0;
-        }
-    }
-
-    /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.
      *
      * @param personsDisplayed used to generate summary
@@ -1355,6 +1310,51 @@ public class AddressBook {
         });
 
         return sortedPersons;
+    }
+
+    /**
+     * Checks if a given sort argument string is a valid sort argument.
+     *
+     * @see #POSSIBLE_SORT_ARGUMENTS
+     * @param sortArgument the argument prefix string to be checked.
+     * @return true if argument is valid, false otherwise.
+     */
+    private static boolean isValidSortArgument(String sortArgument) {
+        return POSSIBLE_SORT_ARGUMENTS.contains(sortArgument);
+    }
+
+    /**
+     * Executes and extends compareTo for two Person objects given a particular sort argument string.
+     *
+     * @param sortArgument string of sort argument prefix.
+     * @param person1 first person to be compared to.
+     * @param person2 other person to be compared to.
+     * @return object.compareTo(other) value for the two persons or 0 if sort argument is invalid.
+     */
+    private static int sortArgumentCompareValue(String sortArgument, Person person1, Person person2) {
+        switch (sortArgument) {
+            case PERSON_DATA_PREFIX_NAME:
+                return getNameFromPerson(person1).compareTo(getNameFromPerson(person2));
+            case PERSON_DATA_PREFIX_PHONE:
+                return getPhoneFromPerson(person1).compareTo(getPhoneFromPerson(person2));
+            case PERSON_DATA_PREFIX_EMAIL:
+                return getEmailFromPerson(person1).compareTo(getEmailFromPerson(person2));
+            case PERSON_DATA_PREFIX_NAME + COMMAND_SORT_PARAMETER_DESCENDING:
+                return getNameFromPerson(person2).compareTo(getNameFromPerson(person1));
+            case PERSON_DATA_PREFIX_PHONE + COMMAND_SORT_PARAMETER_DESCENDING:
+                return getPhoneFromPerson(person2).compareTo(getPhoneFromPerson(person1));
+            case PERSON_DATA_PREFIX_EMAIL + COMMAND_SORT_PARAMETER_DESCENDING:
+                return getEmailFromPerson(person2).compareTo(getEmailFromPerson(person1));
+            case PERSON_DATA_PREFIX_NAME + COMMAND_SORT_PARAMETER_ASCENDING:
+                return getNameFromPerson(person1).compareTo(getNameFromPerson(person2));
+            case PERSON_DATA_PREFIX_PHONE + COMMAND_SORT_PARAMETER_ASCENDING:
+                return getPhoneFromPerson(person1).compareTo(getPhoneFromPerson(person2));
+            case PERSON_DATA_PREFIX_EMAIL + COMMAND_SORT_PARAMETER_ASCENDING:
+                return getEmailFromPerson(person1).compareTo(getEmailFromPerson(person2));
+            default:
+                showToUser(getMessageForInvalidCommandInput(COMMAND_LIST_WORD, getUsageInfoForViewCommand()));
+                return 0;
+        }
     }
 
     /**
