@@ -892,6 +892,25 @@ public class AddressBook {
     }
 
     /**
+     * Gets user input for a dangerous operation and returns true if user has allowed the operation to proceed.
+     *
+     * @param promptString the message to prompt the user with.
+     * @return true if user entered the confirm command or false if user entered the un-confirm command,
+     * otherwise recursively call the function for a valid input.
+     */
+    private static boolean isDangerousOperationConfirmed(String promptString) {
+        String userInput = getUserInput(promptString);
+        echoUserCommand(userInput);
+        if (userInput.toLowerCase().equals(COMMAND_CONFIRM_WORD)
+         || userInput.toLowerCase().equals(COMMAND_UNCONFIRM_WORD)) {
+            return userInput.toLowerCase().equals(COMMAND_CONFIRM_WORD);
+        } else {
+            showToUser(String.format(MESSAGE_INVALID_CONFIRMATION_COMMAND, COMMAND_CONFIRM_WORD, COMMAND_UNCONFIRM_WORD));
+            return isDangerousOperationConfirmed(promptString);
+        }
+    }
+
+    /**
      * Constructs a message to inform that the user has cancelled a dangerous operation.
      *
      * @param userCommand the command word for the dangerous operation.
