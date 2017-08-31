@@ -815,6 +815,9 @@ public class AddressBook {
             return MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
         }
         final Person targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
+        if (!isPersonValid(targetInModel)) {
+            return MESSAGE_PERSON_NOT_IN_ADDRESSBOOK;
+        }
 
         // Prompt user to confirm delete
         if (isDangerousOperationConfirmed(getMessageForConfirmDeletePerson(targetInModel))) {
@@ -905,9 +908,11 @@ public class AddressBook {
     private static boolean isDangerousOperationConfirmed(String promptString) {
         String userInput = getUserInput(promptString);
         echoUserCommand(userInput);
-        if (userInput.toLowerCase().equals(COMMAND_CONFIRM_WORD)
-         || userInput.toLowerCase().equals(COMMAND_UNCONFIRM_WORD)) {
-            return userInput.toLowerCase().equals(COMMAND_CONFIRM_WORD);
+        String[] commandTypeAndParams = splitCommandWordAndArgs(userInput);
+        String commandType = commandTypeAndParams[0];
+        if (commandType.toLowerCase().equals(COMMAND_CONFIRM_WORD)
+         || commandType.toLowerCase().equals(COMMAND_UNCONFIRM_WORD)) {
+            return commandType.toLowerCase().equals(COMMAND_CONFIRM_WORD);
         } else {
             showToUser(String.format(MESSAGE_INVALID_CONFIRMATION_COMMAND, COMMAND_CONFIRM_WORD, COMMAND_UNCONFIRM_WORD));
             return isDangerousOperationConfirmed(promptString);
@@ -1311,7 +1316,8 @@ public class AddressBook {
      * @return true if the given person was found and deleted in the model
      */
     private static boolean deletePersonFromAddressBook(Person exactPerson) {
-        final boolean changed = ALL_PERSONS.remove(exactPerson);
+        final boolean changed = ALL_PERSONS.remove(exactPerson)
+                && (latestPersonListingView.set(latestPersonListingView.indexOf(exactPerson), null) == exactPerson);
         if (changed) {
             savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
         }
