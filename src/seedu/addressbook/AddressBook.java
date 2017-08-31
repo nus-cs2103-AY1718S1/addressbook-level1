@@ -940,7 +940,7 @@ public class AddressBook {
         if (!loadAddressbookState(historyStack.pop())) {
             return getMessageForApplicationError(COMMAND_UNDO_WORD);
         }
-        redoStack.push(saveState);
+        addRedoStateAfterSuccessfulUndo();
         updateLatestViewedPersonListing(getAllPersonsInAddressBook());
         return getMessageForSuccessfulUndoRedo(saveState, COMMAND_UNDO_WORD);
     }
@@ -979,6 +979,15 @@ public class AddressBook {
     private static void addStateAfterSuccessfulOperation() {
         while (historyStack.size() >= MAX_HISTORY_SIZE) historyStack.removeElementAt(0);
         historyStack.push(saveState);
+    }
+
+    /**
+     * Adds the latest saveState to the redo stack after a successful undo operation.
+     * This will automatically match the maximum history size so no additional check is necessary.
+     * Needs to be called after successful execution of an undo operation.
+     */
+    private static void addRedoStateAfterSuccessfulUndo() {
+        redoStack.push(saveState);
     }
 
     /**
