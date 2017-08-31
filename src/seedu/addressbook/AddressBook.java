@@ -111,6 +111,10 @@ public class AddressBook {
     private static final String PERSON_DATA_PREFIX_EMAIL = "e/";
     private static final String COMMAND_SORT_PARAMETER_DESCENDING = "DESC";
     private static final String COMMAND_SORT_PARAMETER_ASCENDING = "ASC";
+    private static final HashSet<String> POSSIBLE_PREFIXES =
+            new HashSet<>(Arrays.asList(PERSON_DATA_PREFIX_NAME,
+                                        PERSON_DATA_PREFIX_PHONE,
+                                        PERSON_DATA_PREFIX_EMAIL));
     private static final HashSet<String> POSSIBLE_SORT_ARGUMENTS =
             new HashSet<>(Arrays.asList(PERSON_DATA_PREFIX_NAME,
                                         PERSON_DATA_PREFIX_PHONE,
