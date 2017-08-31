@@ -530,9 +530,11 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeAddPerson(String commandArgs) {
-        saveStateBeforeOperation(); // save state for undo
         // try decoding a person from the raw args
         final Optional<Person> decodeResult = decodePersonFromString(commandArgs);
+
+        // save state for undo
+        saveStateBeforeOperation();
 
         // checks if args are valid (decode result will not be present if the person is invalid)
         if (decodeResult.isPresent()) {
@@ -622,8 +624,6 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeEditPerson(String commandArgs) {
-        saveStateBeforeOperation(); // save state for undo
-
         // Check if edit arguments are valid (does not check for formatting)
         if (!isEditPersonArgsValid(commandArgs)) {
             return getMessageForInvalidCommandInput(COMMAND_EDIT_WORD, getUsageInfoForEditCommand());
@@ -645,6 +645,9 @@ public class AddressBook {
         if (!isPersonDataValid(newTarget)) {
             return getMessageForInvalidCommandInput(COMMAND_EDIT_WORD, getUsageInfoForEditCommand());
         }
+
+        // save state for undo
+        saveStateBeforeOperation();
 
         // Attempt execution in the model
         if (editPersonWithinAddressBook(targetInModel, newTarget)) {
@@ -794,7 +797,6 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeDeletePerson(String commandArgs) {
-        saveStateBeforeOperation(); // save state for undo
 
         // Check if edit arguments are valid (does not check for formatting)
         if (!isDeletePersonArgsValid(commandArgs)) {
@@ -807,6 +809,9 @@ public class AddressBook {
             return MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
         }
         final Person targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
+
+        // save state for undo
+        saveStateBeforeOperation();
 
         // Attempt execution in the model
         if (deletePersonFromAddressBook(targetInModel)) {
