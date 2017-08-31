@@ -817,8 +817,13 @@ public class AddressBook {
         }
         final Person targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
 
-        // save state for undo
-        saveStateBeforeOperation();
+        // Prompt user to confirm delete
+        if (isDangerousOperationConfirmed(getMessageForConfirmDeletePerson(targetInModel))) {
+            // save state for undo
+            saveStateBeforeOperation();
+        } else {
+            return getMessageForCancelledDangerousOperation(COMMAND_DELETE_WORD);
+        }
 
         // Attempt execution in the model
         if (deletePersonFromAddressBook(targetInModel)) {
@@ -939,13 +944,20 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeClearAddressBook() {
-        saveStateBeforeOperation(); // save state for undo
+        // Prompt user to confirm clear address book
+        if (isDangerousOperationConfirmed(getMessageForConfirmClearAddressbook())) {
+            // save state for undo
+            saveStateBeforeOperation();
 
-        clearAddressBook(); // clear
+            clearAddressBook(); // clear
 
-        updateStateAfterSuccessfulOperation();  // update state after successful editor operation
+            // update state after successful editor operation
+            updateStateAfterSuccessfulOperation();
 
-        return MESSAGE_ADDRESSBOOK_CLEARED;
+            return MESSAGE_ADDRESSBOOK_CLEARED;
+        } else {
+            return getMessageForCancelledDangerousOperation(COMMAND_CLEAR_WORD);
+        }
     }
 
     /**
@@ -1300,7 +1312,6 @@ public class AddressBook {
      * @return true if the given person was found and deleted in the model
      */
     private static boolean deletePersonFromAddressBook(Person exactPerson) {
-        //TODO: "confirm delete?" query before delete
         final boolean changed = ALL_PERSONS.remove(exactPerson);
         if (changed) {
             savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
