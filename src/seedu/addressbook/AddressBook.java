@@ -902,6 +902,19 @@ public class AddressBook {
     }
 
     /**
+     * Constructs a message to prompt the user before a clear operation.
+     *
+     * @return a string containing the message to prompt the user.
+     */
+    private static String getMessageForConfirmClearAddressbook() {
+        return String.format(MESSAGE_CONFIRM_DANGEROUS_OPERATION,
+                COMMAND_CLEAR_WORD,
+                storageFilePath,
+                COMMAND_CONFIRM_WORD,
+                COMMAND_UNCONFIRM_WORD);
+    }
+
+    /**
      * Clears all persons in the address book.
      *
      * @return feedback display message for the operation result
