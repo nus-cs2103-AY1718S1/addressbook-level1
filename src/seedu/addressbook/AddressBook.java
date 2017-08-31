@@ -1349,8 +1349,9 @@ public class AddressBook {
         sortedPersons.sort((person1, person2) -> {
             int c = 0;
             for (String sortArgument : sortArgs) {
-                if (c == 0)
+                if (c == 0) {
                     c = sortArgumentCompareValue(sortArgument, person1, person2);
+                }
             }
             return c;
         });
