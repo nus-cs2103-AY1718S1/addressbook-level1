@@ -71,6 +71,7 @@ public class AddressBook {
      * at which java String.format(...) method can insert values.
      * =========================================================================
      */
+    private static final String MESSAGE_PROMPT_USER_INPUT = "Enter command: ";
     private static final String MESSAGE_ADDED = "New person added: %1$s";
     private static final String MESSAGE_ADDRESSBOOK_CLEARED = "Address book has been cleared!";
     private static final String MESSAGE_COMMAND_HELP = "%1$s: %2$s";
@@ -298,7 +299,7 @@ public class AddressBook {
         processProgramArgs(args);
         loadDataFromStorage();
         while (true) {
-            String userCommand = getUserInput(LINE_PREFIX + "Enter command: ");
+            String userCommand = getUserInput(MESSAGE_PROMPT_USER_INPUT);
             echoUserCommand(userCommand);
             String feedback = executeCommand(userCommand);
             showResultToUser(feedback);
@@ -1025,7 +1026,7 @@ public class AddressBook {
      * @return full line entered by the user
      */
     private static String getUserInput(String promptText) {
-        System.out.print(promptText);
+        System.out.print(LINE_PREFIX + promptText);
         String inputLine = SCANNER.nextLine();
         // silently consume all blank and comment lines
         while (inputLine.trim().isEmpty() || inputLine.trim().charAt(0) == INPUT_COMMENT_MARKER) {
