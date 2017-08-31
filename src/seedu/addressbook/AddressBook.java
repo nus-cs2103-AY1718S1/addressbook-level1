@@ -190,7 +190,7 @@ public class AddressBook {
      */
     private static ArrayList<String[]> latestPersonListingView = getAllPersonsInAddressBook(); // initial view is of all
 
-    /**
+    /** test
      * The path to the file used for storing person data.
      */
     private static String storageFilePath;
