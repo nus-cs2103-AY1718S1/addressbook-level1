@@ -450,37 +450,31 @@
 || Successfully completed undo operation. Changes:
 || New person added: Adam Brown  Phone Number: 444444  Email: newbetsychoo@nus.edu.sg
 || Deleted Person: Adam Brown  Phone Number: 444444  Email: betsychoo2@nus.edu.sg
-|| 
 || ===================================================
 || Enter command: || [Command entered:  undo]
 || Successfully completed undo operation. Changes:
 || New person added: Adam Brown  Phone Number: 333333  Email: newbetsychoo@nus.edu.sg
 || Deleted Person: Adam Brown  Phone Number: 444444  Email: newbetsychoo@nus.edu.sg
-|| 
 || ===================================================
 || Enter command: || [Command entered:  undo]
 || Successfully completed undo operation. Changes:
 || New person added: Adam Brown  Phone Number: 111111  Email: adam@gmail.com
 || Deleted Person: Adam Brown  Phone Number: 333333  Email: newbetsychoo@nus.edu.sg
-|| 
 || ===================================================
 || Enter command: || [Command entered:  redo]
 || Successfully completed redo operation. Changes:
 || New person added: Adam Brown  Phone Number: 333333  Email: newbetsychoo@nus.edu.sg
 || Deleted Person: Adam Brown  Phone Number: 111111  Email: adam@gmail.com
-|| 
 || ===================================================
 || Enter command: || [Command entered:  redo]
 || Successfully completed redo operation. Changes:
 || New person added: Adam Brown  Phone Number: 444444  Email: newbetsychoo@nus.edu.sg
 || Deleted Person: Adam Brown  Phone Number: 333333  Email: newbetsychoo@nus.edu.sg
-|| 
 || ===================================================
 || Enter command: || [Command entered:  redo]
 || Successfully completed redo operation. Changes:
 || New person added: Adam Brown  Phone Number: 444444  Email: betsychoo2@nus.edu.sg
 || Deleted Person: Adam Brown  Phone Number: 444444  Email: newbetsychoo@nus.edu.sg
-|| 
 || ===================================================
 || Enter command: || [Command entered:  redo]
 || Unable to redo: You are already at the most recent redo state.
@@ -568,7 +562,6 @@
 || New person added: Alpha  Phone Number: 22345678  Email: alpha.22@nus.edu.sg
 || New person added: Alpha  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
 || New person added: Bravo a  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
-|| 
 || ===================================================
 || Enter command: || [Command entered:  redo]
 || Successfully completed redo operation. Changes:
@@ -576,7 +569,6 @@
 || Deleted Person: Alpha  Phone Number: 22345678  Email: alpha.22@nus.edu.sg
 || Deleted Person: Alpha  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
 || Deleted Person: Bravo a  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
-|| 
 || ===================================================
 || Enter command: || [Command entered:  undo]
 || Successfully completed undo operation. Changes:
@@ -584,7 +576,6 @@
 || New person added: Alpha  Phone Number: 22345678  Email: alpha.22@nus.edu.sg
 || New person added: Alpha  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
 || New person added: Bravo a  Phone Number: 22345678  Email: alpha.sashimi@nus.edu.sg
-|| 
 || ===================================================
 || Enter command: || [Command entered:  clear]
 || Address book has been cleared!

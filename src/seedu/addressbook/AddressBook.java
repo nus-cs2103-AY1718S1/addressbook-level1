@@ -79,7 +79,7 @@ public class AddressBook {
     private static final String MESSAGE_EDIT_PERSON_SUCCESS = "Old Person: %1$s "
                                                             + LS + "\tNew Person: %2$s";
     private static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
-    private static final String MESSAGE_UNDO_REDO_SUCCESS = "Successfully completed %1$s operation. Changes:" + LS;
+    private static final String MESSAGE_UNDO_REDO_SUCCESS = "Successfully completed %1$s operation. Changes:";
     private static final String MESSAGE_DISPLAY_PERSON_DATA = "%1$s  Phone Number: %2$s  Email: %3$s";
     private static final String MESSAGE_DISPLAY_LIST_ELEMENT_INDEX = "%1$d. ";
     private static final String MESSAGE_GOODBYE = "Exiting Address Book... Good bye!";
@@ -1012,15 +1012,15 @@ public class AddressBook {
         // show added elements not existing in previous
         for (Person person : getAllPersonsInAddressBook()) {
             if (!previousState.contains(person)) {
-                successfulMessageBuilder.append(getMessageForSuccessfulAddPerson(person));
                 successfulMessageBuilder.append(LS);
+                successfulMessageBuilder.append(getMessageForSuccessfulAddPerson(person));
             }
         }
         // show elements in previous not existing in current
         for (Person person : previousState) {
             if (!getAllPersonsInAddressBook().contains(person)) {
-                successfulMessageBuilder.append(getMessageForSuccessfulDelete(person));
                 successfulMessageBuilder.append(LS);
+                successfulMessageBuilder.append(getMessageForSuccessfulDelete(person));
             }
         }
         return successfulMessageBuilder.toString();
