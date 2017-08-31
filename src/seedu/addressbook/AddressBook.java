@@ -298,7 +298,7 @@ public class AddressBook {
         processProgramArgs(args);
         loadDataFromStorage();
         while (true) {
-            String userCommand = getUserInput();
+            String userCommand = getUserInput(LINE_PREFIX + "Enter command: ");
             echoUserCommand(userCommand);
             String feedback = executeCommand(userCommand);
             showResultToUser(feedback);
@@ -1024,8 +1024,8 @@ public class AddressBook {
      *
      * @return full line entered by the user
      */
-    private static String getUserInput() {
-        System.out.print(LINE_PREFIX + "Enter command: ");
+    private static String getUserInput(String promptText) {
+        System.out.print(promptText);
         String inputLine = SCANNER.nextLine();
         // silently consume all blank and comment lines
         while (inputLine.trim().isEmpty() || inputLine.trim().charAt(0) == INPUT_COMMENT_MARKER) {
