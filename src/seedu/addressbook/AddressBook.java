@@ -10,11 +10,23 @@ package seedu.addressbook;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Scanner;
+import java.util.Set;
+
+
 
 /*
  * NOTE : =============================================================
@@ -218,6 +230,7 @@ public class AddressBook {
         showWelcomeMessage();
         processProgramArgs(args);
         loadDataFromStorage();
+
         while (true) {
             String userCommand = getUserInput();
             echoUserCommand(userCommand);
@@ -285,7 +298,6 @@ public class AddressBook {
      * Exits if the file name is not acceptable.
      */
     private static void setupGivenFileForStorage(String filePath) {
-
         if (!isValidFilePath(filePath)) {
             showToUser(String.format(MESSAGE_INVALID_FILE, filePath));
             exitProgram();
@@ -323,12 +335,14 @@ public class AddressBook {
         if (filePath == null) {
             return false;
         }
+
         Path filePathToValidate;
         try {
             filePathToValidate = Paths.get(filePath);
         } catch (InvalidPathException ipe) {
             return false;
         }
+
         return hasValidParentDirectory(filePathToValidate) && hasValidFileName(filePathToValidate);
     }
 
@@ -337,6 +351,7 @@ public class AddressBook {
      */
     private static boolean hasValidParentDirectory(Path filePath) {
         Path parentDirectory = filePath.getParent();
+
         return parentDirectory == null || Files.isDirectory(parentDirectory);
     }
 
@@ -347,8 +362,9 @@ public class AddressBook {
      * If a file already exists, it must be a regular file.
      */
     private static boolean hasValidFileName(Path filePath) {
-        if(filePath.getFileName().toString().lastIndexOf('.') <= 0)
+        if (filePath.getFileName().toString().lastIndexOf('.') <= 0)
             return false;
+
         return (!Files.exists(filePath) || Files.isRegularFile(filePath));
     }
 
@@ -377,6 +393,7 @@ public class AddressBook {
         final String[] commandTypeAndParams = splitCommandWordAndArgs(userInputString);
         final String commandType = commandTypeAndParams[0];
         final String commandArgs = commandTypeAndParams[1];
+
         switch (commandType) {
         case COMMAND_ADD_WORD:
             return executeAddPerson(commandArgs);
@@ -440,6 +457,7 @@ public class AddressBook {
         // add the person as specified
         final String[] personToAdd = decodeResult.get();
         addPersonToAddressBook(personToAdd);
+
         return getMessageForSuccessfulAddPerson(personToAdd);
     }
 
@@ -455,16 +473,32 @@ public class AddressBook {
                 getNameFromPerson(addedPerson), getPhoneFromPerson(addedPerson), getEmailFromPerson(addedPerson));
     }
 
+    /**
+     * Adds a group (specified by the command args) to the address book.
+     * The entire command arguments string is treated as a string representation of the group to add.
+     *
+     * @param commandArgs full command args string from the user
+     * @return feedback display message for the operation result
+     */
     private static String executeAddGroup(String commandArgs) {
-        if(commandArgs == null)
+        if (commandArgs == null)
             return getMessageForInvalidCommandInput(COMMAND_ADDGROUP_WORD, getUsageInfoForAddgroupCommand());
         ALL_GROUPS.put(commandArgs, new HashMap<String, ArrayList<String[]>>());
+
         return getMessageForSuccessfulAddgroup(commandArgs);
     }
 
+    /**
+     * Constructs a feedback message for a successful add group command execution.
+     *
+     * @see #executeAddGroup(String)
+     * @param addedGroup group that was successfully added
+     * @return successful add group feedback message
+     */
     private static String getMessageForSuccessfulAddgroup(String addedGroup) {
         return String.format(MESSAGE_ADDED_GROUP, addedGroup);
     }
+
     /**
      * Finds and lists all persons in address book whose name contains any of the argument keywords.
      * Keyword matching is case sensitive.
@@ -475,7 +509,9 @@ public class AddressBook {
     private static String executeFindPersons(String commandArgs) {
         final Set<String> keywords = extractKeywordsFromFindPersonArgs(commandArgs);
         final ArrayList<String[]> personsFound = getPersonsWithNameContainingAnyKeyword(keywords);
+
         showToUser(personsFound);
+
         return getMessageForPersonsDisplayedSummary(personsFound);
     }
 
@@ -507,12 +543,14 @@ public class AddressBook {
      */
     private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
+
         for (String[] person : getAllPersonsInAddressBook()) {
             final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
             if (!Collections.disjoint(wordsInName, keywords)) {
                 matchedPersons.add(person);
             }
         }
+
         return matchedPersons;
     }
 
@@ -526,11 +564,14 @@ public class AddressBook {
         if (!isDeletePersonArgsValid(commandArgs)) {
             return getMessageForInvalidCommandInput(COMMAND_DELETE_WORD, getUsageInfoForDeleteCommand());
         }
+
         final int targetVisibleIndex = extractTargetIndexFromDeletePersonArgs(commandArgs);
         if (!isDisplayIndexValidForLastPersonListingView(targetVisibleIndex)) {
             return MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
         }
+
         final String[] targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
+
         return deletePersonFromAddressBook(targetInModel) ? getMessageForSuccessfulDelete(targetInModel) // success
                                                           : MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
     }
@@ -588,6 +629,7 @@ public class AddressBook {
      */
     private static String executeClearAddressBook() {
         clearAddressBook();
+
         return MESSAGE_ADDRESSBOOK_CLEARED;
     }
 
@@ -598,7 +640,9 @@ public class AddressBook {
      */
     private static String executeListAllPersonsInAddressBook() {
         ArrayList<String[]> toBeDisplayed = getAllPersonsInAddressBook();
+
         showToUser(toBeDisplayed);
+
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
     }
 
@@ -627,10 +671,12 @@ public class AddressBook {
     private static String getUserInput() {
         System.out.print(LINE_PREFIX + "Enter command: ");
         String inputLine = SCANNER.nextLine();
+
         // silently consume all blank and comment lines
         while (inputLine.trim().isEmpty() || inputLine.trim().charAt(0) == INPUT_COMMENT_MARKER) {
             inputLine = SCANNER.nextLine();
         }
+
         return inputLine;
     }
 
@@ -666,6 +712,7 @@ public class AddressBook {
      */
     private static String getDisplayString(ArrayList<String[]> persons) {
         final StringBuilder messageAccumulator = new StringBuilder();
+
         for (int i = 0; i < persons.size(); i++) {
             final String[] person = persons.get(i);
             final int displayIndex = i + DISPLAYED_INDEX_OFFSET;
@@ -673,6 +720,7 @@ public class AddressBook {
                               .append(getIndexedPersonListElementMessage(displayIndex, person))
                               .append(LS);
         }
+
         return messageAccumulator.toString();
     }
 
@@ -732,6 +780,7 @@ public class AddressBook {
      */
     private static void createFileIfMissing(String filePath) {
         final File storageFile = new File(filePath);
+
         if (storageFile.exists()) {
             return;
         }
@@ -756,10 +805,12 @@ public class AddressBook {
      */
     private static ArrayList<String[]> loadPersonsFromFile(String filePath) {
         final Optional<ArrayList<String[]>> successfullyDecoded = decodePersonsFromStrings(getLinesInFile(filePath));
+
         if (!successfullyDecoded.isPresent()) {
             showToUser(MESSAGE_INVALID_STORAGE_FILE_CONTENT);
             exitProgram();
         }
+
         return successfullyDecoded.get();
     }
 
@@ -769,6 +820,7 @@ public class AddressBook {
      */
     private static ArrayList<String> getLinesInFile(String filePath) {
         ArrayList<String> lines = null;
+
         try {
             lines = new ArrayList<>(Files.readAllLines(Paths.get(filePath)));
         } catch (FileNotFoundException fnfe) {
@@ -778,6 +830,7 @@ public class AddressBook {
             showToUser(String.format(MESSAGE_ERROR_READING_FROM_FILE, filePath));
             exitProgram();
         }
+
         return lines;
     }
 
@@ -788,6 +841,7 @@ public class AddressBook {
      */
     private static void savePersonsToFile(ArrayList<String[]> persons, String filePath) {
         final ArrayList<String> linesToWrite = encodePersonsToStrings(persons);
+
         try {
             Files.write(Paths.get(storageFilePath), linesToWrite);
         } catch (IOException ioe) {
@@ -821,9 +875,11 @@ public class AddressBook {
      */
     private static boolean deletePersonFromAddressBook(String[] exactPerson) {
         final boolean changed = ALL_PERSONS.remove(exactPerson);
+
         if (changed) {
             savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
         }
+
         return changed;
     }
 
@@ -896,9 +952,11 @@ public class AddressBook {
      */
     private static String[] makePersonFromData(String name, String phone, String email) {
         final String[] person = new String[PERSON_DATA_COUNT];
+
         person[PERSON_DATA_INDEX_NAME] = name;
         person[PERSON_DATA_INDEX_PHONE] = phone;
         person[PERSON_DATA_INDEX_EMAIL] = email;
+
         return person;
     }
 
@@ -921,9 +979,11 @@ public class AddressBook {
      */
     private static ArrayList<String> encodePersonsToStrings(ArrayList<String[]> persons) {
         final ArrayList<String> encoded = new ArrayList<>();
+
         for (String[] person : persons) {
             encoded.add(encodePersonToString(person));
         }
+
         return encoded;
     }
 
@@ -951,6 +1011,7 @@ public class AddressBook {
                 extractPhoneFromPersonString(encoded),
                 extractEmailFromPersonString(encoded)
         );
+
         // check that the constructed person is valid
         return isPersonDataValid(decodedPerson) ? Optional.of(decodedPerson) : Optional.empty();
     }
@@ -964,6 +1025,7 @@ public class AddressBook {
      */
     private static Optional<ArrayList<String[]>> decodePersonsFromStrings(ArrayList<String> encodedPersons) {
         final ArrayList<String[]> decodedPersons = new ArrayList<>();
+
         for (String encodedPerson : encodedPersons) {
             final Optional<String[]> decodedPerson = decodePersonFromString(encodedPerson);
             if (!decodedPerson.isPresent()) {
@@ -971,6 +1033,7 @@ public class AddressBook {
             }
             decodedPersons.add(decodedPerson.get());
         }
+
         return Optional.of(decodedPersons);
     }
 
@@ -983,6 +1046,7 @@ public class AddressBook {
     private static boolean isPersonDataExtractableFrom(String personData) {
         final String matchAnyPersonDataPrefix = PERSON_DATA_PREFIX_PHONE + '|' + PERSON_DATA_PREFIX_EMAIL;
         final String[] splitArgs = personData.trim().split(matchAnyPersonDataPrefix);
+
         return splitArgs.length == 3 // 3 arguments
                 && !splitArgs[0].isEmpty() // non-empty arguments
                 && !splitArgs[1].isEmpty()
@@ -998,8 +1062,10 @@ public class AddressBook {
     private static String extractNameFromPersonString(String encoded) {
         final int indexOfPhonePrefix = encoded.indexOf(PERSON_DATA_PREFIX_PHONE);
         final int indexOfEmailPrefix = encoded.indexOf(PERSON_DATA_PREFIX_EMAIL);
+
         // name is leading substring up to first data prefix symbol
         int indexOfFirstPrefix = Math.min(indexOfEmailPrefix, indexOfPhonePrefix);
+
         return encoded.substring(0, indexOfFirstPrefix).trim();
     }
 
