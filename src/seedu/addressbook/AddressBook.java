@@ -14,14 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /*
  * NOTE : =============================================================
@@ -66,6 +59,7 @@ public class AddressBook {
      * =========================================================================
      */
     private static final String MESSAGE_ADDED = "New person added: %1$s, Phone: %2$s, Email: %3$s";
+    private static final String MESSAGE_ADDED_GROUP = "New group added: %1$s";
     private static final String MESSAGE_ADDRESSBOOK_CLEARED = "Address book has been cleared!";
     private static final String MESSAGE_COMMAND_HELP = "%1$s: %2$s";
     private static final String MESSAGE_COMMAND_HELP_PARAMETERS = "\tParameters: %1$s";
@@ -104,6 +98,15 @@ public class AddressBook {
                                                       + PERSON_DATA_PREFIX_PHONE + "PHONE_NUMBER "
                                                       + PERSON_DATA_PREFIX_EMAIL + "EMAIL";
     private static final String COMMAND_ADD_EXAMPLE = COMMAND_ADD_WORD + " John Doe p/98765432 e/johnd@gmail.com";
+
+    private static final String COMMAND_ADDGROUP_WORD = "addgroup";
+    private static final String COMMAND_ADDGROUP_DESC = "Adds a group to the address book.";
+    private static final String COMMAND_ADDGROUP_PARAMETERS = "NAME";
+    private static final String COMMAND_ADDGROUP_EXAMPLE = COMMAND_ADDGROUP_WORD + " NUS";
+
+    private static final String COMMAND_LISTGROUP_WORD = "listgroup";
+    private static final String COMMAND_LISTGROUP_DESC = "Displays all groups with index numbers.";
+    private static final String COMMAND_LISTGROUP_EXAMPLE = COMMAND_ADDGROUP_WORD;
 
     private static final String COMMAND_FIND_WORD = "find";
     private static final String COMMAND_FIND_DESC = "Finds all persons whose names contain any of the specified "
@@ -182,6 +185,11 @@ public class AddressBook {
      * List of all persons in the address book.
      */
     private static final ArrayList<String[]> ALL_PERSONS = new ArrayList<>();
+
+    /**
+     * List of all groups in the address book.
+     */
+    private static final HashMap<String, HashMap<String, ArrayList<String[]>>> ALL_GROUPS = new HashMap<>();
 
     /**
      * Stores the most recent list of persons shown to the user as a result of a user command.
@@ -372,10 +380,14 @@ public class AddressBook {
         switch (commandType) {
         case COMMAND_ADD_WORD:
             return executeAddPerson(commandArgs);
+        case COMMAND_ADDGROUP_WORD:
+            return executeAddGroup(commandArgs);
         case COMMAND_FIND_WORD:
             return executeFindPersons(commandArgs);
         case COMMAND_LIST_WORD:
             return executeListAllPersonsInAddressBook();
+        //case COMMAND_LISTGROUP_WORD:
+            //return executeListAllGroupsInAddressBook();
         case COMMAND_DELETE_WORD:
             return executeDeletePerson(commandArgs);
         case COMMAND_CLEAR_WORD:
@@ -443,6 +455,16 @@ public class AddressBook {
                 getNameFromPerson(addedPerson), getPhoneFromPerson(addedPerson), getEmailFromPerson(addedPerson));
     }
 
+    private static String executeAddGroup(String commandArgs) {
+        if(commandArgs == null)
+            return getMessageForInvalidCommandInput(COMMAND_ADDGROUP_WORD, getUsageInfoForAddgroupCommand());
+        ALL_GROUPS.put(commandArgs, new HashMap<String, ArrayList<String[]>>());
+        return getMessageForSuccessfulAddgroup(commandArgs);
+    }
+
+    private static String getMessageForSuccessfulAddgroup(String addedGroup) {
+        return String.format(MESSAGE_ADDED_GROUP, addedGroup);
+    }
     /**
      * Finds and lists all persons in address book whose name contains any of the argument keywords.
      * Keyword matching is case sensitive.
@@ -580,6 +602,9 @@ public class AddressBook {
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
     }
 
+    //private static String executeListAllGroupsInAddressBook() {
+
+    //}
     /**
      * Requests to terminate the program.
      */
@@ -1084,6 +1109,7 @@ public class AddressBook {
     /** Returns usage info for all commands */
     private static String getUsageInfoForAllCommands() {
         return getUsageInfoForAddCommand() + LS
+                + getUsageInfoForAddgroupCommand() + LS
                 + getUsageInfoForFindCommand() + LS
                 + getUsageInfoForViewCommand() + LS
                 + getUsageInfoForDeleteCommand() + LS
@@ -1097,6 +1123,13 @@ public class AddressBook {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_ADD_WORD, COMMAND_ADD_DESC) + LS
                 + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_ADD_PARAMETERS) + LS
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_ADD_EXAMPLE) + LS;
+    }
+
+    /** Returns the string for showing 'addgroup' command usage instruction*/
+    private static String getUsageInfoForAddgroupCommand(){
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_ADDGROUP_WORD, COMMAND_ADDGROUP_DESC) + LS
+                + String.format(MESSAGE_COMMAND_HELP_PARAMETERS, COMMAND_ADDGROUP_PARAMETERS) + LS
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_ADDGROUP_EXAMPLE) + LS;
     }
 
     /** Returns the string for showing 'find' command usage instruction */
