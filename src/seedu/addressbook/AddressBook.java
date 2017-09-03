@@ -1786,6 +1786,39 @@ public class AddressBook {
      */
 
     /**
+     * Extracts all the possible prefixes in the userCommand string.
+     * 
+     * @see #POSSIBLE_PREFIXES
+     * @param userCommand
+     * @return
+     */
+    private static String[] extractCommandArgPrefixes(String userCommand) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Extracts the command argument under the prefix-less portion of an argument string.
+     * For example, in the command "add abc p/1234 e/a@a.com", "abc" is the name and is hence the prefix-less argument
+     * 
+     * @param userCommand
+     * @return
+     */
+    private static String extractCommandArgPrefixless(String userCommand) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Extracts the command arguments under a specified prefix of an argument string.
+     * 
+     * @param prefix
+     * @param userCommand
+     * @return
+     */
+    private static String[] extractCommandArgs(String prefix, String userCommand) {
+        throw new NotImplementedException();
+    }
+    
+    /**
      * Removes sign(p/, d/, etc) from parameter string if it is the first substring of the full string
      *
      * @param fullString  Parameter as a string
