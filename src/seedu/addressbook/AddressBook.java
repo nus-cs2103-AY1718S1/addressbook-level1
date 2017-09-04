@@ -292,6 +292,11 @@ public class AddressBook {
      */
     private static String storageFilePath;
 
+    /**
+     * Operator to allow continued loop execution in main method.
+     */
+    private static boolean isProgramRunning = true;
+    
     /*
      * NOTE : =============================================================
      * Notice how this method solves the whole problem at a very high level.
@@ -307,7 +312,7 @@ public class AddressBook {
         showWelcomeMessage();
         processProgramArgs(args);
         loadDataFromStorage();
-        while (true) {
+        while (isProgramRunning) {
             String userCommand = getUserInput(MESSAGE_PROMPT_USER_INPUT);
             echoUserCommand(userCommand);
             String feedback = executeCommand(userCommand);
