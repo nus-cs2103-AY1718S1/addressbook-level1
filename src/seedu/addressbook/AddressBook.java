@@ -886,8 +886,8 @@ public class AddressBook {
     private static boolean isDangerousOperationConfirmed(String promptString) {
         String userInput = getUserInput(promptString);
         echoUserCommand(userInput);
-        String[] commandTypeAndParams = splitCommandWordAndArgs(userInput);
-        String commandType = commandTypeAndParams[0];
+        final String[] commandTypeAndParams = splitCommandWordAndArgs(userInput);
+        final String commandType = commandTypeAndParams[0];
         if (commandType.toLowerCase().equals(COMMAND_CONFIRM_WORD)
          || commandType.toLowerCase().equals(COMMAND_UNCONFIRM_WORD)) {
             return commandType.toLowerCase().equals(COMMAND_CONFIRM_WORD);
