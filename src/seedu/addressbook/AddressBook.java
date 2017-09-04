@@ -71,31 +71,31 @@ public class AddressBook {
      * =========================================================================
      */
     private static final String MESSAGE_PROMPT_USER_INPUT = "Enter command: ";
+    private static final String MESSAGE_PROMPT_DANGEROUS_OPERATION = "Confirm %1$s %2$s? (%3$s/%4$s): ";
+    private static final String MESSAGE_CONFIRMATION_OPERATION_CANCELLED = "%1$s operation has been cancelled.";
     private static final String MESSAGE_ADDED = "New person added: %1$s";
     private static final String MESSAGE_ADDRESSBOOK_CLEARED = "Address book has been cleared!";
     private static final String MESSAGE_COMMAND_HELP = "%1$s: %2$s";
     private static final String MESSAGE_COMMAND_HELP_PARAMETERS = "\tParameters: %1$s";
     private static final String MESSAGE_COMMAND_HELP_EXAMPLE = "\tExample: %1$s";
-    private static final String MESSAGE_EDIT_PERSON_SUCCESS = "Old Person: %1$s "
+    private static final String MESSAGE_SUCCESS_EDIT_PERSON = "Old Person: %1$s "
                                                             + LS + "\tNew Person: %2$s";
-    private static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
-    private static final String MESSAGE_UNDO_REDO_SUCCESS = "Successfully completed %1$s operation. Changes:";
+    private static final String MESSAGE_SUCCESS_DELETE_PERSON = "Deleted Person: %1$s";
+    private static final String MESSAGE_SUCCESS_UNDO_REDO = "Successfully completed %1$s operation. Changes:";
     private static final String MESSAGE_DISPLAY_PERSON_DATA = "%1$s  Phone Number: %2$s  Email: %3$s";
     private static final String MESSAGE_DISPLAY_LIST_ELEMENT_INDEX = "%1$d. ";
     private static final String MESSAGE_GOODBYE = "Exiting Address Book... Good bye!";
-    private static final String MESSAGE_APPLICATION_ERROR = "Application Error: %1$s command was unable to be resolved.";
-    private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format: %1$s " + LS + "%2$s";
-    private static final String MESSAGE_CONFIRM_DANGEROUS_OPERATION = "Confirm %1$s %2$s? (%3$s/%4$s): ";
-    private static final String MESSAGE_DANGEROUS_OPERATION_CANCELLED = "%1$s operation has been cancelled.";
-    private static final String MESSAGE_INVALID_CONFIRMATION_COMMAND = "Invalid confirmation command. Enter only '%1$s' or '%2$s'.";
-    private static final String MESSAGE_EMPTY_HISTORY_STACK = "Unable to %1$s: You are already at the most recent %1$s state.";
-    private static final String MESSAGE_INVALID_FILE = "The given file name [%1$s] is not a valid file name!";
-    private static final String MESSAGE_INVALID_PROGRAM_ARGS = "Too many parameters! Correct program argument format:"
+    private static final String MESSAGE_ERROR_APPLICATION = "Application Error: %1$s command was unable to be resolved.";
+    private static final String MESSAGE_ERROR_INVALID_COMMAND_FORMAT = "Invalid command format: %1$s " + LS + "%2$s";
+    private static final String MESSAGE_ERROR_INVALID_CONFIRMATION_FORMAT = "Invalid confirmation command. Enter only '%1$s' or '%2$s'.";
+    private static final String MESSAGE_ERROR_EMPTY_HISTORY_STACK = "Unable to %1$s: You are already at the most recent %1$s state.";
+    private static final String MESSAGE_ERROR_INVALID_FILE = "The given file name [%1$s] is not a valid file name!";
+    private static final String MESSAGE_ERROR_INVALID_PROGRAM_ARGS = "Too many parameters! Correct program argument format:"
                                                             + LS + "\tjava AddressBook"
                                                             + LS + "\tjava AddressBook [custom storage file path]";
-    private static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided is invalid";
-    private static final String MESSAGE_INVALID_STORAGE_FILE_CONTENT = "Storage file has invalid content";
-    private static final String MESSAGE_PERSON_NOT_IN_ADDRESSBOOK = "Person could not be found in address book";
+    private static final String MESSAGE_ERROR_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided is invalid";
+    private static final String MESSAGE_ERROR_INVALID_STORAGE_FILE_CONTENT = "Storage file has invalid content";
+    private static final String MESSAGE_ERROR_PERSON_NOT_IN_ADDRESSBOOK = "Person could not be found in address book";
     private static final String MESSAGE_ERROR_CREATING_STORAGE_FILE = "Error: unable to create file: %1$s";
     private static final String MESSAGE_ERROR_MISSING_STORAGE_FILE = "Storage file missing: %1$s";
     private static final String MESSAGE_ERROR_READING_FROM_FILE = "Unexpected error: unable to read from file: %1$s";
@@ -360,7 +360,7 @@ public class AddressBook {
      */
     private static void processProgramArgs(String[] args) {
         if (args.length >= 2) {
-            showToUser(MESSAGE_INVALID_PROGRAM_ARGS);
+            showToUser(MESSAGE_ERROR_INVALID_PROGRAM_ARGS);
             exitProgram();
         }
 
@@ -381,7 +381,7 @@ public class AddressBook {
     private static void setupGivenFileForStorage(String filePath) {
 
         if (!isValidFilePath(filePath)) {
-            showToUser(String.format(MESSAGE_INVALID_FILE, filePath));
+            showToUser(String.format(MESSAGE_ERROR_INVALID_FILE, filePath));
             exitProgram();
         }
 
@@ -513,7 +513,7 @@ public class AddressBook {
      * @return application error message
      */
     private static String getMessageForApplicationError(String userCommand) {
-        return String.format(MESSAGE_APPLICATION_ERROR, userCommand);
+        return String.format(MESSAGE_ERROR_APPLICATION, userCommand);
     }
 
     /**
@@ -524,7 +524,7 @@ public class AddressBook {
      * @return invalid command args feedback message
      */
     private static String getMessageForInvalidCommandInput(String userCommand, String correctUsageInfo) {
-        return String.format(MESSAGE_INVALID_COMMAND_FORMAT, userCommand, correctUsageInfo);
+        return String.format(MESSAGE_ERROR_INVALID_COMMAND_FORMAT, userCommand, correctUsageInfo);
     }
 
     /**
@@ -534,7 +534,7 @@ public class AddressBook {
      * @return empty history stack feedback message
      */
     private static String getMessageForEmptyHistoryStack(String userCommand) {
-        return String.format(MESSAGE_EMPTY_HISTORY_STACK, userCommand);
+        return String.format(MESSAGE_ERROR_EMPTY_HISTORY_STACK, userCommand);
     }
 
     /**
@@ -647,7 +647,7 @@ public class AddressBook {
         // Check if edit index is valid and set a reference if successful
         final int targetVisibleIndex = extractTargetIndexFromEditPersonArgs(commandArgs);
         if (!isDisplayIndexValidForLastPersonListingView(targetVisibleIndex)) {
-            return MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+            return MESSAGE_ERROR_INVALID_PERSON_DISPLAYED_INDEX;
         }
         final Person targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
 
@@ -671,7 +671,7 @@ public class AddressBook {
 
             return getMessageForSuccessfulEdit(targetInModel, newTarget); // success
         } else {
-            return MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
+            return MESSAGE_ERROR_PERSON_NOT_IN_ADDRESSBOOK; // not found
         }
     }
 
@@ -712,7 +712,7 @@ public class AddressBook {
      * @return successful edit person feedback message
      */
     private static String getMessageForSuccessfulEdit(Person oldPerson, Person newPerson) {
-        return String.format(MESSAGE_EDIT_PERSON_SUCCESS,
+        return String.format(MESSAGE_SUCCESS_EDIT_PERSON,
                                 getMessageForFormattedPersonData(oldPerson),
                                 getMessageForFormattedPersonData(newPerson));
     }
@@ -790,11 +790,11 @@ public class AddressBook {
         // Check if edit index is valid and set a reference if successful
         final int targetVisibleIndex = extractTargetIndexFromDeletePersonArgs(commandArgs);
         if (!isDisplayIndexValidForLastPersonListingView(targetVisibleIndex)) {
-            return MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+            return MESSAGE_ERROR_INVALID_PERSON_DISPLAYED_INDEX;
         }
         final Person targetInModel = getPersonByLastVisibleIndex(targetVisibleIndex);
         if (!isPersonValid(targetInModel)) {
-            return MESSAGE_PERSON_NOT_IN_ADDRESSBOOK;
+            return MESSAGE_ERROR_PERSON_NOT_IN_ADDRESSBOOK;
         }
 
         // Prompt user to confirm delete
@@ -812,7 +812,7 @@ public class AddressBook {
 
             return getMessageForSuccessfulDelete(targetInModel); // success
         } else {
-            return MESSAGE_PERSON_NOT_IN_ADDRESSBOOK; // not found
+            return MESSAGE_ERROR_PERSON_NOT_IN_ADDRESSBOOK; // not found
         }
     }
 
@@ -858,7 +858,7 @@ public class AddressBook {
      * @return a string containing the message to prompt the user.
      */
     private static String getMessageForConfirmDeletePerson(Person personToDelete) {
-        return String.format(MESSAGE_CONFIRM_DANGEROUS_OPERATION,
+        return String.format(MESSAGE_PROMPT_DANGEROUS_OPERATION,
                 COMMAND_DELETE_WORD,
                 getMessageForFormattedPersonData(personToDelete),
                 COMMAND_CONFIRM_WORD,
@@ -873,7 +873,7 @@ public class AddressBook {
      * @return successful delete person feedback message
      */
     private static String getMessageForSuccessfulDelete(Person deletedPerson) {
-        return String.format(MESSAGE_DELETE_PERSON_SUCCESS, getMessageForFormattedPersonData(deletedPerson));
+        return String.format(MESSAGE_SUCCESS_DELETE_PERSON, getMessageForFormattedPersonData(deletedPerson));
     }
 
     /**
@@ -892,7 +892,7 @@ public class AddressBook {
          || commandType.toLowerCase().equals(COMMAND_UNCONFIRM_WORD)) {
             return commandType.toLowerCase().equals(COMMAND_CONFIRM_WORD);
         } else {
-            showToUser(String.format(MESSAGE_INVALID_CONFIRMATION_COMMAND, COMMAND_CONFIRM_WORD, COMMAND_UNCONFIRM_WORD));
+            showToUser(String.format(MESSAGE_ERROR_INVALID_CONFIRMATION_FORMAT, COMMAND_CONFIRM_WORD, COMMAND_UNCONFIRM_WORD));
             return isDangerousOperationConfirmed(promptString);
         }
     }
@@ -904,7 +904,7 @@ public class AddressBook {
      * @return a formatted string showing the cancelled operation.
      */
     private static String getMessageForCancelledDangerousOperation(String userCommand) {
-        return String.format(MESSAGE_DANGEROUS_OPERATION_CANCELLED, userCommand);
+        return String.format(MESSAGE_CONFIRMATION_OPERATION_CANCELLED, userCommand);
     }
 
     /**
@@ -913,7 +913,7 @@ public class AddressBook {
      * @return a string containing the message to prompt the user.
      */
     private static String getMessageForConfirmClearAddressbook() {
-        return String.format(MESSAGE_CONFIRM_DANGEROUS_OPERATION,
+        return String.format(MESSAGE_PROMPT_DANGEROUS_OPERATION,
                 COMMAND_CLEAR_WORD,
                 storageFilePath,
                 COMMAND_CONFIRM_WORD,
@@ -1032,7 +1032,7 @@ public class AddressBook {
      * @return successful undo or redo feedback message
      */
     private static String getMessageForSuccessfulUndoRedo(ArrayList<Person> previousState, String userCommand) {
-        StringBuilder successfulMessageBuilder = new StringBuilder(String.format(MESSAGE_UNDO_REDO_SUCCESS, userCommand));
+        StringBuilder successfulMessageBuilder = new StringBuilder(String.format(MESSAGE_SUCCESS_UNDO_REDO, userCommand));
         // show added elements not existing in previous
         for (Person person : getAllPersonsInAddressBook()) {
             if (!previousState.contains(person)) {
@@ -1214,7 +1214,7 @@ public class AddressBook {
     private static ArrayList<Person> loadPersonsFromFile(String filePath) {
         final Optional<ArrayList<Person>> successfullyDecoded = decodePersonsFromStrings(getLinesInFile(filePath));
         if (!successfullyDecoded.isPresent()) {
-            showToUser(MESSAGE_INVALID_STORAGE_FILE_CONTENT);
+            showToUser(MESSAGE_ERROR_INVALID_STORAGE_FILE_CONTENT);
             exitProgram();
         }
         return successfullyDecoded.get();
