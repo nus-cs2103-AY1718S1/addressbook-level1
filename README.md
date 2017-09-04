@@ -76,9 +76,9 @@ Examples:
 #### Listing all persons: `list`
 
 > Shows a list of persons, as an indexed list, in the order they were added to the address book, 
-oldest first.
+oldest first. The 'name' parameter can be included to sort by name alphabetically.
 
-Format: `list`  
+Format: `list [name]`
 
 #### Finding a person by keyword `find`
 > Finds persons that match given keywords
