@@ -481,9 +481,10 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeAddGroup(String commandArgs) {
-        if (commandArgs == null)
+        commandArgs = commandArgs.trim();
+        if (commandArgs == null || commandArgs == "")
             return getMessageForInvalidCommandInput(COMMAND_ADDGROUP_WORD, getUsageInfoForAddgroupCommand());
-        ALL_GROUPS.put(commandArgs, new HashMap<String, ArrayList<String[]>>());
+        ALL_GROUPS.put(commandArgs, new HashMap<>());
 
         return getMessageForSuccessfulAddgroup(commandArgs);
     }
@@ -850,6 +851,16 @@ public class AddressBook {
         }
     }
 
+    private static void saveGroupToFile(ArrayList<String[]> groups, String filePath) {
+        final ArrayList<String> linesToWrite = encodeGroupsToStrings(groups);
+
+        try {
+            Files.write(Paths.get(storageFilePath), linesToWrite);
+        } catch (IOException ioe) {
+            showToUser(String.format(MESSAGE_ERROR_WRITING_TO_FILE, filePath));
+        }
+    }
+
 
     /*
      * ================================================================================
@@ -984,6 +995,21 @@ public class AddressBook {
             encoded.add(encodePersonToString(person));
         }
 
+        return encoded;
+    }
+
+    /**
+     * Encodes list of groups into list of decodable and readable string representations.
+     *
+     * @param groups to be encoded
+     * @return encoded strings
+     */
+    private static ArrayList<String> encodeGroupsToStrings(ArrayList<String[]> groups) {
+        final ArrayList<String> encoded = new ArrayList<>();
+
+        for(String[] group: groups) {
+            //encoded.add(encodeGroupToString(group));
+        }
         return encoded;
     }
 
