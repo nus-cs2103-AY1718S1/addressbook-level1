@@ -469,3 +469,5 @@ The full list of contributors for se-edu can be found [here](https://se-edu.gith
 
 [coding-standard]: https://github.com/oss-generic/process/blob/master/codingStandards/CodingStandard-Java.md "Java Coding Standard"
 [code-quality]: https://se-edu.github.io/se-book/codeQuality/ "Code Quality Best Practices"
+
+test
