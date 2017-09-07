@@ -782,6 +782,9 @@ public class AddressBook {
      *
      * @param person to add
      */
+
+
+    //testtest
     private static void addPersonToAddressBook(String[] person) {
         ALL_PERSONS.add(person);
         //sorts the list automatically
@@ -963,7 +966,9 @@ public class AddressBook {
         return splitArgs.length == 3 // 3 arguments
                 && !splitArgs[0].isEmpty() // non-empty arguments
                 && !splitArgs[1].isEmpty()
-                && !splitArgs[2].isEmpty();
+                && !splitArgs[2].isEmpty()
+                && splitArgs[1].length() == 9
+                && (splitArgs[1].charAt(0) == '8' || splitArgs[1].charAt(0) == '9');
     }
 
     /**
