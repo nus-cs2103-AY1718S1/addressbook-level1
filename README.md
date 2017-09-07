@@ -1,10 +1,10 @@
 # AddressBook (Level 1)
-* This is a CLI (Command Line Interface) Address Book application **written in procedural fashion**. 
-* It is a Java sample application intended for students learning Software Engineering while using Java as 
-  the main programming language. 
-* It provides a **reasonably well-written** code example that is **significantly bigger** than what students 
-  usually write in data structure modules. 
-* It can be used to achieve a number of beginner-level [learning outcomes](#learning-outcomes) without 
+* This is a CLI (Command Line Interface) Address Book application **written in procedural fashion**.
+* It is a Java sample application intended for students learning Software Engineering while using Java as
+  the main programming language.
+* It provides a **reasonably well-written** code example that is **significantly bigger** than what students
+  usually write in data structure modules.
+* It can be used to achieve a number of beginner-level [learning outcomes](#learning-outcomes) without
   running into the complications of OOP or GUI programmings.
 
 **Table of Contents**
@@ -35,7 +35,7 @@
 -----------------------------------------------------------------------------------------------------
 # User Guide
 
-This product is not meant for end-users and therefore there is no user-friendly installer. 
+This product is not meant for end-users and therefore there is no user-friendly installer.
 Please refer to the [Setting up](#setting-up) section to learn how to set up the project.
 
 ## Starting the program
@@ -59,9 +59,9 @@ Please refer to the [Setting up](#setting-up) section to learn how to set up the
 
 ## List of commands
 #### Viewing help: `help`
-Format: `help` 
+Format: `help`
  > Help is also shown if you enter an incorrect command e.g. `abcd`
- 
+
 #### Adding a person: `add`
 > Adds a person to the address book
 
@@ -69,43 +69,50 @@ Format: `add NAME p/PHONE_NUMBER e/EMAIL`
 > Words in `UPPER_CASE` are the parameters<br>
   Phone number and email can be in any order but the name must come first.
 
-Examples: 
+Examples:
 * `add John Doe p/98765432 e/johnd@gmail.com`
 * `add Betsy Crowe e/bencrowe@gmail.com p/1234567 `
 
 #### Listing all persons: `list`
 
-> Shows a list of persons, as an indexed list, in the order they were added to the address book, 
+> Shows a list of persons, as an indexed list, in the order they were added to the address book,
 oldest first.
 
 Format: `list`  
+
+#### Sorting all persons by name: `sort`
+
+> Sorts the list of persons by name, and displays persons
+in ascending or descending lexicographical order depending on user input.
+
+Format: `sort [ASC/DESC]`  
 
 #### Finding a person by keyword `find`
 > Finds persons that match given keywords
 
 Format: `find KEYWORD [MORE_KEYWORDS]`  
-> The search is case sensitive, the order of the keywords does not matter, only the name is searched, 
+> The search is case sensitive, the order of the keywords does not matter, only the name is searched,
 and persons matching at least one keyword will be returned (i.e. `OR` search).
 
-Examples: 
+Examples:
 * `find John`
   > Returns `John Doe` but not `john`
-   
+
 * `find Betsy Tim John`
   > Returns Any person having names `Betsy`, `Tim`, or `John`
 
 #### Deleting a person: `delete`
 
 Format: `delete INDEX`  
-> Deletes the person at the specified `INDEX`. 
+> Deletes the person at the specified `INDEX`.
   The index refers to the index numbers shown in the most recent listing.
 
-Examples: 
+Examples:
 * `list`<br>
   `delete 2`
   > Deletes the 2nd person in the address book.
-  
-* `find Betsy` <br> 
+
+* `find Betsy` <br>
   `delete 1`
   > Deletes the 1st person in the results of the `find` command.
 
@@ -116,8 +123,8 @@ Format: `clear`
 #### Exiting the program: `exit`
 Format: `exit`  
 
-#### Saving the data 
-Address book data are saved in the hard disk automatically after any command that changes the data. 
+#### Saving the data
+Address book data are saved in the hard disk automatically after any command that changes the data.
 There is no need to save manually.
 
 #### Changing the save location
@@ -144,7 +151,7 @@ Example:
 
 **Prerequisites**
 
-* JDK 8 or later 
+* JDK 8 or later
 * IntelliJ IDE
 
 **Importing the project into IntelliJ**
@@ -181,14 +188,14 @@ In-memory data are held in a `ArrayList<String[]>` where each `String[]` object 
 
 1. Open a DOS window in the `test` folder
 2. Run the `runtests.bat` script
-3. If the script reports that there is no difference between `actual.txt` and `expected.txt`, 
+3. If the script reports that there is no difference between `actual.txt` and `expected.txt`,
    the test has passed.
 
 **Mac/Unix/Linux**
 
 1. Open a terminal window in the `test` folder
 2. Run the `runtests.sh` script
-3. If the script reports that there is no difference between `actual.txt` and `expected.txt`, 
+3. If the script reports that there is no difference between `actual.txt` and `expected.txt`,
    the test has passed.
 
 **Troubleshooting test failures**
@@ -211,7 +218,7 @@ corresponding exercises.
 
 * Learn [how to set up a project in IntelliJ](https://se-edu.github.io/se-book/intellij/projectSetup/).
 
-#### Exercise: Setup project in IntelliJ 
+#### Exercise: Setup project in IntelliJ
 
 Part A:
 * Create a new project in IntelliJ and write a small HelloWorld program.
@@ -226,10 +233,10 @@ Part B:
 
 ## Navigate code efficiently `[LO-CodeNavigation]`
 
-The `AddressBook.java` code is rather long, which makes it cumbersome to navigate by scrolling alone. 
-Navigating code using IDE shortcuts is a more efficient option. 
+The `AddressBook.java` code is rather long, which makes it cumbersome to navigate by scrolling alone.
+Navigating code using IDE shortcuts is a more efficient option.
 For example, <kbd>CTRL</kbd>+<kbd>B</kbd> will navigate to the definition of the method/field at the cursor.
- 
+
 Learn [basic IntelliJ code navigation features](https://se-edu.github.io/se-book/intellij/codeNavigation/).
 
 #### Exercise: Learn to navigate code using shortcuts
@@ -244,7 +251,7 @@ Learn [basic IntelliJ debugging features](https://se-edu.github.io/se-book/intel
 
 Prerequisite: `[LO-IdeSetup]`
 
-Demonstrate your debugging skills using the AddressBook code. 
+Demonstrate your debugging skills using the AddressBook code.
 
 Here are some things you can do in your demonstration:
 
@@ -262,7 +269,7 @@ Learn [how to automate testing of CLIs](https://se-edu.github.io/se-book/testing
 
 * Run the tests as explained in the [Testing](#testing) section.
 * Examine the test script to understand how the script works.
-* Add a few more tests to the `input.txt`. Run the tests. It should fail.<br> 
+* Add a few more tests to the `input.txt`. Run the tests. It should fail.<br>
   Modify `expected.txt` to make the tests pass again.
 * Edit the `AddressBook.java` to modify the behavior slightly and modify tests to match.
 
@@ -314,7 +321,7 @@ Compare the code with and without the varargs feature.
 
 ## Follow a coding standard `[LO-CodingStandard]`
 
-The given code follows the [coding standard][coding-standard] 
+The given code follows the [coding standard][coding-standard]
 for the most part.
 
 This learning outcome is covered by the exercise in `[LO-Refactor]`.
@@ -376,12 +383,12 @@ A well-abstracted method should do only one thing.
 While it is short, there are some problems with how it has been abstracted.
 
 1. It contains the term `sign` which is not a term used by the AddressBook vocabulary.
-   
+
    > **A method adds a new term to the vocabulary used to express the solution**.
    > Therefore, it is not good when a method name contains terms that are not strictly necessary to express the
    > solution (e.g. there is another term already used to express the same thing) or not in tune with the solution
    > (e.g. it does not go well with the other terms already used).
-   
+
 2. Its implementation is not doing exactly what is advertised by the method name and the header comment.
    For example, the code does not remove only prefixes; it removes `sign` from anywhere in the `s`.
 3. The method can be _more general_ and _more independent_ from the rest of the code. For example,
@@ -394,7 +401,7 @@ While it is short, there are some problems with how it has been abstracted.
     */
     private static String removePrefix(String fullString, String prefix) { ... }
    ```
-   
+
    If needed, a more AddressBook-specific method that works on parameter strings only can be defined.
    In that case, that method can make use of the more general method suggested above.
 
@@ -432,11 +439,11 @@ readability.
 
 #### Exercise 2: Refactor the code to make it worse!
 
-Sometimes, going in the wrong direction can be a good learning experience too. 
+Sometimes, going in the wrong direction can be a good learning experience too.
 In this exercise, we explore how low code qualities can go.
 
 * Refactor the code to make the code as bad as possible.<br>
-  i.e. How bad can you make it without breaking the functionality while still making it look like it was written by a 
+  i.e. How bad can you make it without breaking the functionality while still making it look like it was written by a
   programmer (but a very bad programmer :-)).
 * In particular, inlining methods can worsen the code quality fast.
 
