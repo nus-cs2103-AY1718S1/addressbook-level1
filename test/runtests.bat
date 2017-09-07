@@ -4,7 +4,7 @@ REM create bin directory if it doesn't exist
 if not exist ..\bin mkdir ..\bin
 
 REM compile the code into the bin folder
-javac  ..\src\seedu\addressbook\Addressbook.java -d ..\bin
+javac  ..\src\seedu\addressbook\*.java -d ..\bin
 
 REM (invalid) no parent directory, invalid filename with no extension
 java -classpath ..\bin seedu.addressbook.AddressBook " " < NUL > actual.txt
