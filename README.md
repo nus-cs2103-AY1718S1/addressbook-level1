@@ -84,12 +84,12 @@ Format: `list`
 > Finds persons that match given keywords
 
 Format: `find KEYWORD [MORE_KEYWORDS]`  
-> The search is case sensitive, the order of the keywords does not matter, only the name is searched, 
+> The search is case insensitive, the order of the keywords does not matter, only the name is searched, 
 and persons matching at least one keyword will be returned (i.e. `OR` search).
 
 Examples: 
-* `find John`
-  > Returns `John Doe` but not `john`
+* `find John` or `find john`
+  > Returns `John Doe`
    
 * `find Betsy Tim John`
   > Returns Any person having names `Betsy`, `Tim`, or `John`
