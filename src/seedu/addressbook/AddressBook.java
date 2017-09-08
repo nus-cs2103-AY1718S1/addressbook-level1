@@ -374,7 +374,7 @@ public class AddressBook {
         case COMMAND_FIND_WORD:
             return executeFindPersons(commandArgs);
         case COMMAND_LIST_WORD:
-            return executeListAllPersonsInAddressBook();
+            return executeListAllPersonsInAddressBook(commandArgs);
         case COMMAND_DELETE_WORD:
             return executeDeletePerson(commandArgs);
         case COMMAND_CLEAR_WORD:
@@ -570,13 +570,45 @@ public class AddressBook {
 
     /**
      * Displays all persons in the address book to the user; in added order.
+     * Users can type "name" as an additional argument to have the list sorted by name.
      *
      * @return feedback display message for the operation result
      */
-    private static String executeListAllPersonsInAddressBook() {
+    private static String executeListAllPersonsInAddressBook(String commandArgs) {
         ArrayList<String[]> toBeDisplayed = getAllPersonsInAddressBook();
+        if (commandArgs.equals("name")) {
+            sortListOfPersonsByName(toBeDisplayed);
+        }
         showToUser(toBeDisplayed);
         return getMessageForPersonsDisplayedSummary(toBeDisplayed);
+    }
+
+    /**
+     * Sorts an ArrayList of persons according to alphabetical order of name
+     *
+     * @param persons to be sorted
+     */
+    private static void sortListOfPersonsByName(ArrayList<String[]> persons) {
+        //use a simple, inefficient insertion sort
+        //the name is the first item in the String[] that represents a person
+        for (int k=1;k<persons.size();k++) {
+            for (int i=k;i>0;i--) {
+                swapPersonsInListIfNotInOrder(persons, i, i-1);
+            }
+        }
+    }
+
+    /**
+     * Swaps two persons in an ArrayList<String[]> of persons
+     *
+     * @param persons to be sorted
+     * @param i1 index of first person
+     * @param i2 index of second person
+     */
+    private static void swapPersonsInListIfNotInOrder(ArrayList<String[]> persons, int i1, int i2) {
+        if (persons.get(i1)[0].compareTo(persons.get(i2)[0]) < 0) {
+            Collections.swap(persons, i1, i2);
+        }
     }
 
     /**
